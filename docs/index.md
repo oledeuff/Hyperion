@@ -58,18 +58,18 @@ La partie logicielle du projet continuera d’être assurée sous la direction d
 
 ### 4. Bibliographie des références citées dans le projet 
 
-Briet, S. (1951). Qu’est-ce que la documentation? Éditions documentaires, industrielles et techniques.
-Buckland, M. K. (2012). Lodewyk bendikson and photographic techniques in documentation, 1910–1943. In T. Carbo & T. B. Hahn (Éds.), International perspectives on the history of information science and technology worldwide (p. 99 106). Information Today.
-Escarpit, R. (1976). Théorie générale de l’information et de la communication. Hachette Université.
-Le Deuff, O. (2017). Les humanités digitales. Hermes Science Publishing Ltd.
-Le Deuff, O. (2021). Hyperdocumentation. Iste Editions.
-Le Deuff, O. (2021b). L’Open source intelligence (OSINT) comme prisme hyperdocumentaire. I2D-Information, donnees documents, 1, 56 62.
-Le Deuff, O. (2021c). L’homme fluidique ou hyper-homme chez Paul Otlet (1868-1944). Une perspective transhumaniste complexe. Revues des Sciences Humaines, 341, Transhumanisme et Fictions posthumanistes.
-Le Deuff, O., & Perret, A. (2019). Hyperdocumentation : Origin and evolution of a concept. Journal of Documentation.
-Le Deuff, O., & Roumanos, R. (2021). Open source intelligence (OSINT) : Retour aux sources. I2D-Information, donnees documents, 1, 8 12.
-Mor, N., & Reich, Z. (2018). From « trust me » to « show me » journalism. Journalism Practice, 12(9), 1091 1108. https://doi.org/10.1080/17512786.2017.1376593
-Otlet, Paul. (1934). Traité de documentation : Le livre sur le livre : Théorie et pratique, (éditiones Mundaneum).
-Perret, A., Brioudes, G., Borel, C., & Le Deuff, O. (2024). Cosma (Version 2.4.1) [Logiciel]. Zenodo. https://doi.org/10.5281/zenodo.11544741
-Roumanos, R., & Le Deuff, O. (2021a). L’enquête OSINT. Des traces ouvertes au récit journalistique fermé. Revue Intelligibilité du numérique, 2. http://intelligibilite-numerique.numerev.com/numeros/n-2-2021/2621-enquete-osint-des-traces-ouvertes-au-recit-journalistique-ferme
-Roumanos, R., & Le Deuff, O. (2021b). S’extraire de l’immédiateté de l’événement ou la tentation d’un « journalisme irréductible ». Communication. Information médias théories pratiques, Vol. 38/1, Article Vol. 38/1. https://doi.org/10.4000/communication.13925
+- Briet, S. (1951). Qu’est-ce que la documentation? Éditions documentaires, industrielles et techniques.
+- Buckland, M. K. (2012). Lodewyk bendikson and photographic techniques in documentation, 1910–1943. In T. Carbo & T. B. Hahn (Éds.), International perspectives on the history of information science and technology worldwide (p. 99 106). Information Today.
+- Escarpit, R. (1976). Théorie générale de l’information et de la communication. Hachette Université.
+- Le Deuff, O. (2017). Les humanités digitales. Hermes Science Publishing Ltd.
+- Le Deuff, O. (2021). Hyperdocumentation. Iste Editions.
+- Le Deuff, O. (2021b). L’Open source intelligence (OSINT) comme prisme hyperdocumentaire. I2D-Information, donnees documents, 1, 56 62.
+- Le Deuff, O. (2021c). L’homme fluidique ou hyper-homme chez Paul Otlet (1868-1944). Une perspective transhumaniste complexe. Revues des Sciences Humaines, 341, Transhumanisme et Fictions posthumanistes.
+- Le Deuff, O., & Perret, A. (2019). Hyperdocumentation : Origin and evolution of a concept. Journal of Documentation.
+- Le Deuff, O., & Roumanos, R. (2021). Open source intelligence (OSINT) : Retour aux sources. I2D-Information, donnees documents, 1, 8 12.
+- Mor, N., & Reich, Z. (2018). From « trust me » to « show me » journalism. Journalism Practice, 12(9), 1091 1108. https://doi.org/10.1080/17512786.2017.1376593
+- Otlet, Paul. (1934). Traité de documentation : Le livre sur le livre : Théorie et pratique, (éditiones Mundaneum).
+- Perret, A., Brioudes, G., Borel, C., & Le Deuff, O. (2024). Cosma (Version 2.4.1) [Logiciel]. Zenodo. https://doi.org/10.5281/zenodo.11544741
+- Roumanos, R., & Le Deuff, O. (2021a). L’enquête OSINT. Des traces ouvertes au récit journalistique fermé. Revue Intelligibilité du numérique, 2. http://intelligibilite-numerique.numerev.com/numeros/n-2-2021/2621-enquete-osint-des-traces-ouvertes-au-recit-journalistique-ferme
+- Roumanos, R., & Le Deuff, O. (2021b). S’extraire de l’immédiateté de l’événement ou la tentation d’un « journalisme irréductible ». Communication. Information médias théories pratiques, Vol. 38/1, Article Vol. 38/1. https://doi.org/10.4000/communication.13925
 
