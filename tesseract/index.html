@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>HyperION · Porte d'entrée tesseract</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #050509;
+      --fg: #f5f5f7;
+      --accent: #ffb347;
+      --meta: #68e0cf;
+      --muted: #9b9bb2;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: radial-gradient(circle at top, #161629 0, #050509 55%, #000 100%);
+      color: var(--fg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    #scene-container {
+      position: fixed;
+      inset: 0;
+    }
+
+    canvas {
+      display: block;
+      cursor: pointer;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px clamp(20px, 5vw, 40px);
+      z-index: 2;
+    }
+
+    .overlay-top {
+      max-width: 560px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(5,5,15,0.9);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(255,179,71,0.55);
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 1rem + 2.4vw, 2.6rem);
+      margin: 0 0 4px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 span.hyper { font-weight: 300; }
+    h1 span.ion   { font-weight: 700; }
+
+    .subtitle {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 460px;
+    }
+
+    .node-label {
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: var(--meta);
+      opacity: 0.9;
+    }
+
+    .overlay-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .btn-enter {
+      pointer-events: auto;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: radial-gradient(circle at top left,#1c1c33 0,#060612 65%);
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      color: var(--fg);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.15s ease,
+                  background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-enter::after { content: "↳"; font-size: 0.9rem; }
+
+    .btn-enter:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.7);
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    .portal-flash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #ffffff 0, #ffffff 20%, #000000 80%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 3;
+      transition: opacity 0.9s ease;
+    }
+
+    body.show-portal .portal-flash { opacity: 1; }
+
+    @media (max-width: 640px) {
+      .overlay { padding: 14px 16px; }
+      .overlay-bottom { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div id="scene-container"></div>
+
+  <div class="overlay">
+    <div class="overlay-top">
+      <div class="pill">
+        <div class="pill-dot"></div>
+        <span>HyperION · Hyperdocumentation & Hyperinvestigation</span>
+      </div>
+      <h1>
+        <span class="hyper">Hyper</span><span class="ion">ION</span>
+      </h1>
+      <p class="subtitle" id="overlay-subtitle">
+        Méthodes et technologies de l’hyperinvestigation. Survolez un sommet du tesseract pour explorer un axe du projet.
+      </p>
+      <div class="node-label" id="node-label">
+        Survolez un sommet pour voir la section correspondante.
+      </div>
+    </div>
+
+    <div class="overlay-bottom">
+      <div class="hint">
+        🌀 Tesseract interactif : rotation 4D projetée en 3D.<br>
+        Cliquez sur un sommet pour “entrer” dans une section (ancre de test).
+      </div>
+      <button class="btn-enter" id="btn-enter" type="button">
+        Entrer dans l’hypercube
+      </button>
+    </div>
+  </div>
+
+  <div class="portal-flash"></div>
+
+  <script type="module">
+    import * as THREE from "https://unpkg.com/three@0.161.0/build/three.module.js";
+
+    const container = document.getElementById("scene-container");
+
+    // --- Scène de base ---
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x050509);
+
+    const camera = new THREE.PerspectiveCamera(
+      45,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      100
+    );
+    camera.position.set(0, 0, 8);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambient);
+    const pointLight = new THREE.PointLight(0xffffff, 1.0);
+    pointLight.position.set(6, 6, 10);
+    scene.add(pointLight);
+
+    // URLs de test – à remplacer par tes vraies sections
+    const sections = [
+      { title: "Hyperdocumentation", url: "#hyperdocumentation" },
+      { title: "Hyperinvestigation", url: "#hyperinvestigation" },
+      { title: "Osintoscope", url: "#osintoscope" },
+      { title: "MatrioscIA", url: "#matrioscIA" },
+      { title: "Journalisme hyperdocumenté", url: "#journalisme" },
+      { title: "Cosma Skritch", url: "#cosma-skritch" },
+      { title: "Lexique", url: "#lexique" },
+      { title: "Cartographies", url: "#cartographies" },
+      { title: "Corpus d’enquêtes", url: "#corpus" },
+      { title: "Méthodologies", url: "#methodes" },
+      { title: "Éthique & droit", url: "#ethique" },
+      { title: "Littératies & formation", url: "#litteraties" },
+      { title: "Équipe", url: "#equipe" },
+      { title: "Agenda", url: "#agenda" },
+      { title: "Perspective ERC", url: "#erc" },
+      { title: "Contact & ressources", url: "#contact" }
+    ];
+
+    // --- Tesseract 4D -> 3D ---
+    const tesseractGroup = new THREE.Group();
+    scene.add(tesseractGroup);
+
+    const baseMaterial = new THREE.MeshStandardMaterial({
+      color: 0x68e0cf,
+      emissive: 0x111133,
+      metalness: 0.35,
+      roughness: 0.4
+    });
+    const sphereGeometry = new THREE.SphereGeometry(0.08, 24, 24);
+
+    const vertices4D = [];
+    const vertexMeshes = [];
+    let idx = 0;
+
+    [-1, 1].forEach((sx) => {
+      [-1, 1].forEach((sy) => {
+        [-1, 1].forEach((sz) => {
+          [-1, 1].forEach((sw) => {
+            vertices4D.push({ x: sx, y: sy, z: sz, w: sw });
+            const mesh = new THREE.Mesh(sphereGeometry, baseMaterial.clone());
+            mesh.userData.section = sections[idx] || null;
+            tesseractGroup.add(mesh);
+            vertexMeshes.push(mesh);
+            idx++;
+          });
+        });
+      });
+    });
+
+    const edges = [];
+    for (let i = 0; i < vertices4D.length; i++) {
+      for (let j = i + 1; j < vertices4D.length; j++) {
+        const a = vertices4D[i];
+        const b = vertices4D[j];
+        let diff = 0;
+        if (a.x !== b.x) diff++;
+        if (a.y !== b.y) diff++;
+        if (a.z !== b.z) diff++;
+        if (a.w !== b.w) diff++;
+        if (diff === 1) edges.push([i, j]);
+      }
+    }
+
+    const edgePositions = new Float32Array(edges.length * 2 * 3);
+    const edgeGeometry = new THREE.BufferGeometry();
+    const edgeAttribute = new THREE.BufferAttribute(edgePositions, 3);
+    edgeGeometry.setAttribute("position", edgeAttribute);
+    const edgeMaterial = new THREE.LineBasicMaterial({
+      color: 0x444477,
+      transparent: true,
+      opacity: 0.85
+    });
+    const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+    tesseractGroup.add(edgeLines);
+
+    // --- Interactions ---
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    let hovered = null;
+
+    const nodeLabelEl = document.getElementById("node-label");
+    const subtitleEl = document.getElementById("overlay-subtitle");
+
+    function triggerPortal(section) {
+      if (!section || !section.url) return;
+      subtitleEl.textContent = section.title;
+      document.body.classList.add("show-portal");
+      setTimeout(() => {
+        window.location.href = section.url;
+      }, 900);
+    }
+
+    function onPointerMove(event) {
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    }
+
+    function onClick() {
+      if (hovered && hovered.userData.section) {
+        triggerPortal(hovered.userData.section);
+      }
+    }
+
+    renderer.domElement.addEventListener("pointermove", onPointerMove);
+    renderer.domElement.addEventListener("click", onClick);
+
+    const btnEnter = document.getElementById("btn-enter");
+    btnEnter.addEventListener("click", () => {
+      const fallback = sections[1] || sections[0];
+      triggerPortal(fallback);
+    });
+
+    // --- Animation ---
+    const start = performance.now();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = (performance.now() - start) / 1000;
+      const angleA = t * 0.45;
+      const angleB = t * 0.75;
+      const cosA = Math.cos(angleA), sinA = Math.sin(angleA);
+      const cosB = Math.cos(angleB), sinB = Math.sin(angleB);
+      const wDist = 4;
+
+      for (let i = 0; i < vertices4D.length; i++) {
+        const v = vertices4D[i];
+
+        const x1 = v.x * cosA - v.y * sinA;
+        const y1 = v.x * sinA + v.y * cosA;
+
+        const z1 = v.z * cosB - v.w * sinB;
+        const w1 = v.z * sinB + v.w * cosB;
+
+        const persp = wDist / (wDist - w1);
+        const px = x1 * persp;
+        const py = y1 * persp;
+        const pz = z1 * persp;
+
+        const mesh = vertexMeshes[i];
+        mesh.position.set(px, py, pz);
+      }
+
+      let ptr = 0;
+      for (let e = 0; e < edges.length; e++) {
+        const [aIndex, bIndex] = edges[e];
+        const aPos = vertexMeshes[aIndex].position;
+        const bPos = vertexMeshes[bIndex].position;
+
+        edgePositions[ptr++] = aPos.x;
+        edgePositions[ptr++] = aPos.y;
+        edgePositions[ptr++] = aPos.z;
+        edgePositions[ptr++] = bPos.x;
+        edgePositions[ptr++] = bPos.y;
+        edgePositions[ptr++] = bPos.z;
+      }
+      edgeAttribute.needsUpdate = true;
+
+      raycaster.setFromCamera(pointer, camera);
+      const intersects = raycaster.intersectObjects(vertexMeshes);
+
+      if (intersects.length > 0) {
+        const hit = intersects[0].object;
+        if (hovered !== hit) {
+          if (hovered) {
+            hovered.material.emissive.setHex(0x111133);
+            hovered.scale.set(1, 1, 1);
+          }
+          hovered = hit;
+          hovered.material.emissive.setHex(0x442200);
+          hovered.scale.set(1.4, 1.4, 1.4);
+          if (hovered.userData.section) {
+            nodeLabelEl.textContent = hovered.userData.section.title;
+          }
+        }
+      } else {
+        if (hovered) {
+          hovered.material.emissive.setHex(0x111133);
+          hovered.scale.set(1, 1, 1);
+          hovered = null;
+          nodeLabelEl.textContent =
+            "Survolez un sommet pour voir la section correspondante.";
+        }
+      }
+
+      tesseractGroup.rotation.y += 0.002;
+      tesseractGroup.rotation.x += 0.0008;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener("resize", () => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+  </script>
+</body>
+</html>
