@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>HyperION · Méthodes et technologies de l’hyperinvestigation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon-hyperion.svg" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-soft: #050816;
+      --fg: #f9fafb;
+      --muted: #9ca3af;
+      --border-soft: rgba(148, 163, 184, 0.45);
+      --accent: #1db6c3;
+      --accent-soft: #76cdcd;
+      --accent-warm: #f9968b;
+      --glass-bg: rgba(15, 23, 42, 0.78);
+      --glass-border: rgba(148, 163, 184, 0.6);
+      --shadow-soft: 0 22px 40px rgba(15, 23, 42, 0.7);
+      --header-height: 64px;
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f5f7;
+      --bg-soft: #e5e7eb;
+      --fg: #020617;
+      --muted: #6b7280;
+      --border-soft: rgba(148, 163, 184, 0.35);
+      --glass-bg: rgba(255, 255, 255, 0.76);
+      --glass-border: rgba(148, 163, 184, 0.3);
+      --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0b1220 0, var(--bg) 45%, #000 100%);
+      color: var(--fg);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header.topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 18px;
+      border-bottom: 1px solid var(--border-soft);
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.75), transparent);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top left, #3b82f6, #1db6c3, #f9968b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.8);
+      overflow: hidden;
+    }
+
+    .brand-logo-inner {
+      width: 70%;
+      height: 70%;
+      position: relative;
+    }
+
+    .brand-logo-inner::before,
+    .brand-logo-inner::after {
+      content: "";
+      position: absolute;
+      border-radius: 4px;
+      border: 2px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .brand-logo-inner::before {
+      inset: 5px 9px 13px 5px;
+    }
+
+    .brand-logo-inner::after {
+      inset: 11px 5px 5px 9px;
+      opacity: 0.9;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .brand-subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .pill-toggle,
+    .icon-button {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.6));
+      color: var(--fg);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      height: 30px;
+    }
+
+    .pill-toggle span {
+      opacity: 0.5;
+    }
+
+    .pill-toggle span.is-active {
+      opacity: 1;
+      font-weight: 600;
+    }
+
+    .icon-button {
+      width: 30px;
+      justify-content: center;
+      padding-inline: 0;
+    }
+
+    .icon-button svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .main-nav {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(var(--header-height) - 4px);
+      flex-direction: column;
+      align-items: flex-end;
+      padding: 8px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-soft);
+      min-width: 220px;
+    }
+
+    .main-nav.is-open {
+      display: flex;
+    }
+
+    .nav-link {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      font-size: 0.74rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      text-align: right;
+      width: 100%;
+    }
+
+    .nav-link:hover {
+      border-color: rgba(148, 163, 184, 0.5);
+      color: var(--fg);
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .nav-link.is-active {
+      border-color: var(--accent);
+      color: var(--fg);
+      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.6), rgba(15, 23, 42, 0.5));
+    }
+
+    .menu-toggle {
+      display: inline-flex;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--fg);
+      width: 30px;
+      height: 30px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      position: relative;
+      padding: 8px 16px 18px;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    #scene-container {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 360px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.7), rgba(0, 0, 0, 0.96));
+      box-shadow: var(--shadow-soft);
+    }
+
+    #scene-container canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .scene-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+      padding: 14px 18px;
+      z-index: 2;
+    }
+
+    .scene-overlay-top {
+      max-width: 360px;
+    }
+
+    .pill-project {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.86);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .pill-project-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(29, 182, 195, 0.8);
+    }
+
+    .scene-title {
+      font-size: 1.3rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin: 0 0 4px;
+    }
+
+    .scene-subtitle {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .scene-overlay-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .scene-hint {
+      font-size: 0.72rem;
+      color: var(--muted);
+      max-width: 320px;
+    }
+
+    .scene-node-label {
+      font-size: 0.75rem;
+      color: var(--accent-soft);
+      margin-top: 6px;
+    }
+
+    .scene-cta {
+      pointer-events: auto;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.6), rgba(15, 23, 42, 0.9));
+      color: var(--fg);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .scene-cta::after {
+      content: "↳";
+      font-size: 0.84rem;
+    }
+
+    aside#card-container {
+      position: relative;
+      flex: 0 0 320px;
+      max-width: 360px;
+      min-width: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      pointer-events: none;
+    }
+
+    .entry-card {
+      position: relative;
+      margin-left: auto;
+      max-width: 320px;
+      width: 100%;
+      border-radius: 18px;
+      padding: 14px 14px 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      pointer-events: auto;
+      color: var(--fg);
+      overflow: hidden;
+    }
+
+    .entry-card::before {
+      content: "";
+      position: absolute;
+      left: -60px;
+      top: 50%;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(148, 163, 184, 0.75));
+      opacity: 0.9;
+    }
+
+    .entry-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid transparent;
+      border-color: rgba(255, 255, 255, 0.04);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.8),
+        0 0 30px rgba(148, 163, 184, 0.18);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .entry-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .entry-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.14), rgba(15, 23, 42, 0.8));
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 1rem;
+    }
+
+    .entry-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .entry-title {
+      font-size: 0.9rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .entry-tag {
+      font-size: 0.64rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .entry-desc {
+      font-size: 0.78rem;
+      color: var(--fg);
+      opacity: 0.92;
+      margin: 0 0 10px;
+    }
+
+    .entry-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .entry-link {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      color: var(--fg);
+      background: radial-gradient(circle at top, rgba(29, 182, 195, 0.55), rgba(15, 23, 42, 0.9));
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .entry-link span {
+      font-size: 0.86rem;
+    }
+
+    .entry-meta {
+      font-size: 0.64rem;
+      color: var(--muted);
+    }
+
+    .entry-card[data-color] {
+      border-color: color-mix(in srgb, var(--entry-color) 40%, var(--glass-border) 60%);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.85),
+        0 18px 36px color-mix(in srgb, var(--entry-color) 35%, rgba(15, 23, 42, 0.8) 65%);
+    }
+
+    .entry-card[data-color]::before {
+      background: linear-gradient(to right, transparent, color-mix(in srgb, var(--entry-color) 80%, transparent 20%));
+    }
+
+    .entry-card[data-color] .entry-icon {
+      border-color: color-mix(in srgb, var(--entry-color) 70%, rgba(255, 255, 255, 0.12) 30%);
+      box-shadow: 0 0 20px color-mix(in srgb, var(--entry-color) 60%, transparent 40%);
+    }
+
+    footer.site-footer {
+      border-top: 1px solid var(--border-soft);
+      padding: 8px 18px 12px;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    footer.site-footer a {
+      color: var(--accent-soft);
+      text-decoration: none;
+    }
+
+    footer.site-footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 960px) {
+      main {
+        flex-direction: column;
+      }
+
+      aside#card-container {
+        flex: 0 0 auto;
+        max-width: 100%;
+        min-height: 150px;
+        padding-top: 10px;
+      }
+
+      .entry-card {
+        margin-inline: auto 0;
+        max-width: min(360px, 100%);
+      }
+
+      .entry-card::before {
+        left: 24px;
+        width: 40px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header.topbar {
+        padding-inline: 12px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      main {
+        padding: 8px 10px 14px;
+      }
+
+      .scene-overlay {
+        padding: 10px 12px;
+      }
+
+      .scene-overlay-top {
+        max-width: 260px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo">
+        <div class="brand-logo-inner"></div>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">HyperION</span>
+        <span class="brand-subtitle" data-i18n-subtitle>
+          Méthodes et technologies de l’hyperinvestigation
+        </span>
+      </div>
+    </div>
+    <div class="topbar-controls">
+      <button class="pill-toggle" id="lang-toggle" type="button" aria-label="Basculer la langue">
+        <span data-lang-label-fr class="is-active">FR</span>
+        <span>/</span>
+        <span data-lang-label-en>EN</span>
+      </button>
+      <button class="icon-button" id="theme-toggle" type="button" aria-label="Basculer thème">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M12 3.1a1 1 0 0 1 1 1v1.3a1 1 0 1 1-2 0V4.1a1 1 0 0 1 1-1Zm6.36 3.05a1 1 0 0 1 0 1.42l-.92.92a1 1 0 1 1-1.42-1.41l.92-.93a1 1 0 0 1 1.42 0ZM12 7.1a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm8 4.9a1 1 0 0 1 1 1v.3a1 1 0 1 1-2 0v-.3a1 1 0 0 1 1-1ZM6.34 7.57a1 1 0 0 1-1.41 0l-.93-.92A1 1 0 0 1 5.43 5.2l.92.93a1 1 0 0 1 0 1.42ZM4 12a1 1 0 0 1 1 1v.3a1 1 0 1 1-2 0V13a1 1 0 0 1 1-1Zm2.34 5.66a1 1 0 0 1 1.42 0l.92.93a1 1 0 0 1-1.41 1.41l-.93-.92a1 1 0 0 1 0-1.42Zm9.9 0a1 1 0 0 1 0 1.42l-.93.92a1 1 0 1 1-1.41-1.41l.92-.93a1 1 0 0 1 1.42 0Z"/>
+        </svg>
+      </button>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Afficher le menu">
+        ☰
+      </button>
+      <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
+        <!-- rempli en JS -->
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="scene-container" aria-label="Hypercube interactif">
+      <div class="scene-overlay">
+        <div class="scene-overlay-top">
+          <div class="pill-project">
+            <span class="pill-project-dot"></span>
+            <span data-i18n-pill>Projet de recherche IUF · Hyperdocumentation & hyperinvestigation</span>
+          </div>
+          <h1 class="scene-title">Hypercube</h1>
+          <p class="scene-subtitle" data-i18n-scene-subtitle>
+            Naviguez dans l’hypercube : chaque arête active ouvre une fiche du projet HyperION.
+          </p>
+          <div class="scene-node-label" id="scene-node-label">
+            Survolez une arête lumineuse pour voir son entrée, cliquez pour ouvrir la fiche.
+          </div>
+        </div>
+        <div class="scene-overlay-bottom">
+          <div class="scene-hint" data-i18n-scene-hint>
+            Rotation lente du tesseract 4D projeté en 3D. Certaines arêtes sont activées et reliées aux
+            entrées du projet (présentation, épistémologie, typologie, BDD, Cosma, etc.).
+          </div>
+          <button class="scene-cta" id="random-entry-btn" type="button" data-i18n-random-entry>
+            Tirage hyperstitionnel
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <aside id="card-container" aria-live="polite" aria-label="Fiche de l’entrée sélectionnée">
+      <!-- fiche injectée en JS -->
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <span>
+      Projet HyperION · Olivier Le Deuff · 2025–2030 · Licence CC BY
+    </span>
+    <span>
+      Contact : <a href="mailto:oledeuff@gmail.com">oledeuff@gmail.com</a>
+    </span>
+  </footer>
+</div>
+
+<script type="module">
+  import * as THREE from "https://unpkg.com/three@0.161.0/build/three.module.js";
+
+  let currentLang = "fr";
+
+  const entryPalette = {
+    presentation: "#1db6c3",
+    chercheur: "#76CDCD",
+    epistemologie: "#F9968B",
+    typologie: "#F27438",
+    bdd: "#26474E",
+    carnet: "#FFBE8A",
+    github: "#24292e",
+    evenements: "#10b981",
+    publications: "#2dd4bf",
+    cosma: "#1e3a8a",
+    futurologie: "rgba(248, 250, 252, 0.75)"
+  };
+
+  const entries = [
+    {
+      id: "presentation",
+      key: "presentation",
+      icon: "📘",
+      color: entryPalette.presentation,
+      tag: { fr: "Présentation", en: "Overview" },
+      title: {
+        fr: "Présentation du projet",
+        en: "Project overview"
+      },
+      desc: {
+        fr: "Contexte, objectifs scientifiques et inscription du projet HyperION dans l’IUF.",
+        en: "Context, scientific goals and how HyperION fits within the IUF framework."
+      },
+      url: "#presentation"
+    },
+    {
+      id: "chercheur",
+      key: "chercheur",
+      icon: "👤",
+      color: entryPalette.chercheur,
+      tag: { fr: "Chercheur", en: "PI" },
+      title: {
+        fr: "Chercheur du projet",
+        en: "Project researcher"
+      },
+      desc: {
+        fr: "Olivier Le Deuff, professeur en sciences de l'information et de la communication. Université Bordeaux Montaigne.",
+        en: "Bio, disciplinary background and previous work related to hyperinvestigation."
+      },
+      url: "https://www.iufrance.fr/les-membres-de-liuf/membre/2840-olivier-le-deuff.html"
+    },
+    {
+      id: "epistemologie",
+      key: "epistemologie",
+      icon: "📐",
+      color: entryPalette.epistemologie,
+      tag: { fr: "Cadre", en: "Framework" },
+      title: {
+        fr: "Épistémologie",
+        en: "Epistemology"
+      },
+      desc: {
+        fr: "Cadre conceptuel, héritages documentaires et positionnement face aux discours sur l’IA et les données.",
+        en: "Conceptual framework, documentary heritage and stance towards AI- and data-centric narratives."
+      },
+      url: "#epistemologie"
+    },
+    {
+      id: "typologie",
+      key: "typologie",
+      icon: "🕵️",
+      color: entryPalette.typologie,
+      tag: { fr: "Typologie", en: "Typology" },
+      title: {
+        fr: "Typologie des hyperinvestigations",
+        en: "Typology of hyperinvestigations"
+      },
+      desc: {
+        fr: "Catégorisation des enquêtes hyperdocumentées : acteurs, méthodes, formes de preuve.",
+        en: "A typology of hyperdocumented investigations: actors, methods and forms of evidence."
+      },
+      url: "#typologie"
+    },
+    {
+      id: "bdd",
+      key: "bdd",
+      icon: "🗂️",
+      color: entryPalette.bdd,
+      tag: { fr: "Base de données", en: "Database" },
+      title: {
+        fr: "BDD des hyperinvestigations",
+        en: "Hyperinvestigations database"
+      },
+      desc: {
+        fr: "Base de données structurée des cas étudiés, interrogeable et documentée.",
+        en: "Structured, queryable database of investigated cases with rich documentation."
+      },
+      url: "#bdd-hyperinvestigations"
+    },
+    {
+      id: "carnet",
+      key: "carnet",
+      icon: "📓",
+      color: entryPalette.carnet,
+      tag: { fr: "Carnet", en: "Notebook" },
+      title: {
+        fr: "Carnet du projet",
+        en: "Project logbook"
+      },
+      desc: {
+        fr: "Carnet en ligne retraçant les avancées, terrains, doutes et bifurcations du projet.",
+        en: "Online logbook documenting progress, fieldwork, doubts and bifurcations."
+      },
+      url: "#carnet"
+    },
+    {
+      id: "github",
+      key: "github",
+      icon: "",
+      color: entryPalette.github,
+      tag: { fr: "Code & outils", en: "Code & tools" },
+      title: {
+        fr: "Espace GitHub",
+        en: "GitHub space"
+      },
+      desc: {
+        fr: "Dépôts, scripts, gabarits Cosma et ressources logicielles du projet.",
+        en: "Repositories, scripts, Cosma templates and software resources."
+      },
+      url: "https://github.com/oledeuff/Hyperion"
+    },
+    {
+      id: "evenements",
+      key: "evenements",
+      icon: "🗓️",
+      color: entryPalette.evenements,
+      tag: { fr: "Agenda", en: "Events" },
+      title: {
+        fr: "Évènements",
+        en: "Events"
+      },
+      desc: {
+        fr: "Journées d’étude, ateliers Cosma, interventions publiques et colloques liés à HyperION.",
+        en: "Workshops, Cosma trainings, public talks and conferences related to HyperION."
+      },
+      url: "#evenements"
+    },
+    {
+      id: "publications",
+      key: "publications",
+      icon: "📄",
+      color: entryPalette.publications,
+      tag: { fr: "Publications", en: "Publications" },
+      title: {
+        fr: "Publications",
+        en: "Publications"
+      },
+      desc: {
+        fr: "Articles, chapitres, communications et supports de cours issus du projet.",
+        en: "Articles, chapters, talks and teaching materials stemming from the project."
+      },
+      url: "#publications"
+    },
+    {
+      id: "cosma",
+      key: "cosma",
+      icon: "🕸️",
+      color: entryPalette.cosma,
+      tag: { fr: "Cosma Skritch", en: "Cosma Skritch" },
+      title: {
+        fr: "Version Skritch de Cosma",
+        en: "Cosma Skritch version"
+      },
+      desc: {
+        fr: "Version thématisée de Cosma pour l’hyperinvestigation et la documentation des preuves.",
+        en: "Hyperinvestigation-oriented Cosma setup for documenting and exploring evidence."
+      },
+      url: "#cosma-skritch"
+    },
+    {
+      id: "futurologie",
+      key: "futurologie",
+      icon: "✨",
+      color: entryPalette.futurologie,
+      tag: { fr: "Futurologie", en: "Futurology" },
+      title: {
+        fr: "Futurologie",
+        en: "Futurology"
+      },
+      desc: {
+        fr: "Scénarios, imaginaires et hypothèses futures autour de l’hyperinvestigation.",
+        en: "Scenarios, imaginaries and future hypotheses around hyperinvestigation."
+      },
+      url: "#futurologie"
+    }
+  ];
+
+  const entriesById = {};
+  entries.forEach(e => { entriesById[e.id] = e; });
+
+  const navEl = document.getElementById("main-nav");
+
+  function buildNav() {
+    navEl.innerHTML = "";
+    entries.forEach(entry => {
+      const btn = document.createElement("button");
+      btn.className = "nav-link";
+      btn.type = "button";
+      btn.dataset.entryId = entry.id;
+      btn.textContent = entry.title[currentLang];
+      btn.addEventListener("click", () => {
+        showEntryCard(entry.id);
+        setActiveNav(entry.id);
+        navEl.classList.remove("is-open");
+      });
+      navEl.appendChild(btn);
+    });
+  }
+
+  function setActiveNav(entryId) {
+    navEl.querySelectorAll(".nav-link").forEach(btn => {
+      btn.classList.toggle("is-active", btn.dataset.entryId === entryId);
+    });
+  }
+
+  const cardContainer = document.getElementById("card-container");
+
+  function showEntryCard(entryId) {
+    const entry = entriesById[entryId];
+    if (!entry) return;
+    const lang = currentLang;
+    const color = entry.color || "#1db6c3";
+
+    const card = document.createElement("article");
+    card.className = "entry-card";
+    card.dataset.color = "true";
+    card.style.setProperty("--entry-color", color);
+
+    card.innerHTML = `
+      <div class="entry-card-header">
+        <div class="entry-icon" aria-hidden="true">${entry.icon}</div>
+        <div class="entry-title-block">
+          <div class="entry-title">${entry.title[lang]}</div>
+          <div class="entry-tag">${entry.tag[lang]}</div>
+        </div>
+      </div>
+      <p class="entry-desc">${entry.desc[lang]}</p>
+      <div class="entry-actions">
+        <a class="entry-link" href="${entry.url}" target="${entry.url.startsWith('http') ? '_blank' : '_self'}" rel="noreferrer">
+          <span>${lang === "fr" ? "Accéder" : "Open"}</span>
+          <span>↗</span>
+        </a>
+        <div class="entry-meta">
+          HyperION · ${lang === "fr" ? "entrée thématique" : "thematic entry"}
+        </div>
+      </div>
+    `;
+
+    cardContainer.innerHTML = "";
+    cardContainer.appendChild(card);
+  }
+
+  const subtitleEl = document.querySelector("[data-i18n-subtitle]");
+  const pillEl = document.querySelector("[data-i18n-pill]");
+  const sceneSubtitleEl = document.querySelector("[data-i18n-scene-subtitle]");
+  const sceneHintEl = document.querySelector("[data-i18n-scene-hint]");
+  const randomBtnEl = document.getElementById("random-entry-btn");
+  const langLabelFr = document.querySelector("[data-lang-label-fr]");
+  const langLabelEn = document.querySelector("[data-lang-label-en]");
+
+  function applyLang() {
+    if (currentLang === "fr") {
+      subtitleEl.textContent = "Méthodes et technologies de l’hyperinvestigation";
+      pillEl.textContent = "Projet de recherche IUF · Hyperdocumentation & hyperinvestigation";
+      sceneSubtitleEl.textContent = "Naviguez dans l’hypercube : chaque arête active ouvre une fiche du projet HyperION.";
+      sceneHintEl.textContent = "Rotation lente du tesseract 4D projeté en 3D. Certaines arêtes sont activées et reliées aux entrées du projet (présentation, épistémologie, typologie, BDD, Cosma, etc.).";
+      randomBtnEl.textContent = "Entrez dans un axe du projet";
+      langLabelFr.classList.add("is-active");
+      langLabelEn.classList.remove("is-active");
+    } else {
+      subtitleEl.textContent = "Methods and technologies of hyperinvestigation";
+      pillEl.textContent = "IUF research project · Hyperdocumentation & hyperinvestigation";
+      sceneSubtitleEl.textContent = "Navigate the hypercube: each active edge opens a HyperION entry card.";
+      sceneHintEl.textContent = "Slow rotation of a 4D tesseract projected in 3D. Selected edges are activated and linked to project entries (overview, epistemology, typology, database, Cosma, etc.).";
+      randomBtnEl.textContent = "Enter inside a page of the project";
+      langLabelFr.classList.remove("is-active");
+      langLabelEn.classList.add("is-active");
+    }
+    buildNav();
+  }
+
+  document.getElementById("lang-toggle").addEventListener("click", () => {
+    currentLang = currentLang === "fr" ? "en" : "fr";
+    applyLang();
+  });
+
+  const themeToggle = document.getElementById("theme-toggle");
+  function getCurrentTheme() {
+    return document.documentElement.getAttribute("data-theme") || "dark";
+  }
+  function setTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+  themeToggle.addEventListener("click", () => {
+    const next = getCurrentTheme() === "dark" ? "light" : "dark";
+    setTheme(next);
+  });
+
+  const menuToggle = document.getElementById("menu-toggle");
+  menuToggle.addEventListener("click", () => {
+    navEl.classList.toggle("is-open");
+  });
+
+  // --- Three.js hypercube ---------------------------------------------------
+  const container = document.getElementById("scene-container");
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x050509);
+
+  const camera = new THREE.PerspectiveCamera(
+    45,
+    container.clientWidth / container.clientHeight,
+    0.1,
+    100
+  );
+  camera.position.set(0, 0, 8);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(window.devicePixelRatio || 1);
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.appendChild(renderer.domElement);
+
+  const ambient = new THREE.AmbientLight(0xffffff, 0.45);
+  scene.add(ambient);
+  const pointLight = new THREE.PointLight(0xffffff, 1.0);
+  pointLight.position.set(6, 6, 10);
+  scene.add(pointLight);
+
+  const tesseractGroup = new THREE.Group();
+  scene.add(tesseractGroup);
+
+  const vertices4D = [];
+  const vertexMeshes = [];
+  const sphereGeometry = new THREE.SphereGeometry(0.1, 20, 20);
+  const vertexMaterial = new THREE.MeshStandardMaterial({
+    color: 0x68e0cf,
+    emissive: 0x101032,
+    metalness: 0.35,
+    roughness: 0.45
+  });
+
+  let vIndex = 0;
+  [-1, 1].forEach(sx => {
+    [-1, 1].forEach(sy => {
+      [-1, 1].forEach(sz => {
+        [-1, 1].forEach(sw => {
+          vertices4D.push({ x: sx, y: sy, z: sz, w: sw });
+          const mesh = new THREE.Mesh(sphereGeometry, vertexMaterial.clone());
+          mesh.userData.vertexIndex = vIndex++;
+          tesseractGroup.add(mesh);
+          vertexMeshes.push(mesh);
+        });
+      });
+    });
+  });
+
+  const edges = [];
+  for (let i = 0; i < vertices4D.length; i++) {
+    for (let j = i + 1; j < vertices4D.length; j++) {
+      const a = vertices4D[i];
+      const b = vertices4D[j];
+      let diff = 0;
+      if (a.x !== b.x) diff++;
+      if (a.y !== b.y) diff++;
+      if (a.z !== b.z) diff++;
+      if (a.w !== b.w) diff++;
+      if (diff === 1) edges.push([i, j]);
+    }
+  }
+
+  const edgePositions = new Float32Array(edges.length * 2 * 3);
+  const edgeGeometry = new THREE.BufferGeometry();
+  const edgeAttribute = new THREE.BufferAttribute(edgePositions, 3);
+  edgeGeometry.setAttribute("position", edgeAttribute);
+  const edgeMaterial = new THREE.LineBasicMaterial({
+    color: 0x3b3b66,
+    transparent: true,
+    opacity: 0.9
+  });
+  const edgeLines = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+  tesseractGroup.add(edgeLines);
+
+  const activeEdgeMapping = {};
+  edges.forEach((edge, index) => {
+    if (index < entries.length) {
+      activeEdgeMapping[index] = entries[index].id;
+    }
+  });
+  const futuroEdgeIndex = Object.keys(activeEdgeMapping).length - 1;
+
+  const highlightGeometry = new THREE.BufferGeometry().setFromPoints([
+    new THREE.Vector3(), new THREE.Vector3()
+  ]);
+  const highlightMaterial = new THREE.LineBasicMaterial({
+    color: 0x1db6c3,
+    linewidth: 3,
+    transparent: true,
+    opacity: 1.0
+  });
+  const highlightLine = new THREE.Line(highlightGeometry, highlightMaterial);
+  highlightLine.visible = false;
+  tesseractGroup.add(highlightLine);
+
+  const raycaster = new THREE.Raycaster();
+  raycaster.params.Line = { threshold: 0.3 };
+  const pointer = new THREE.Vector2();
+
+  let hoveredEdgeIndex = null;
+  let lastHighlightedEdgeIndex = null;
+  const baseVertexColor = new THREE.Color(0x68e0cf);
+  const baseEmissive = new THREE.Color(0x101032);
+  const nodeLabelEl = document.getElementById("scene-node-label");
+
+  function updatePointer(event) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  }
+
+  container.addEventListener("pointermove", (event) => {
+    updatePointer(event);
+  });
+
+  container.addEventListener("click", () => {
+    if (hoveredEdgeIndex == null) return;
+    const entryId = activeEdgeMapping[hoveredEdgeIndex];
+    if (!entryId) return;
+
+    if (hoveredEdgeIndex == futuroEdgeIndex || entryId === "futurologie") {
+      const randomEntry = entries[Math.floor(Math.random() * entries.length)];
+      showEntryCard(randomEntry.id);
+      setActiveNav(randomEntry.id);
+    } else {
+      showEntryCard(entryId);
+      setActiveNav(entryId);
+    }
+  });
+
+  randomBtnEl.addEventListener("click", () => {
+    const randomEntry = entries[Math.floor(Math.random() * entries.length)];
+    showEntryCard(randomEntry.id);
+    setActiveNav(randomEntry.id);
+  });
+
+  let rotationScale = 0.5;
+  const start = performance.now();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = (performance.now() - start) / 1000;
+
+    const angleA = t * 0.25 * rotationScale;
+    const angleB = t * 0.42 * rotationScale;
+    const cosA = Math.cos(angleA), sinA = Math.sin(angleA);
+    const cosB = Math.cos(angleB), sinB = Math.sin(angleB);
+    const wDist = 4;
+
+    for (let i = 0; i < vertices4D.length; i++) {
+      const v = vertices4D[i];
+      const x1 = v.x * cosA - v.y * sinA;
+      const y1 = v.x * sinA + v.y * cosA;
+      const z1 = v.z * cosB - v.w * sinB;
+      const w1 = v.z * sinB + v.w * cosB;
+      const persp = wDist / (wDist - w1);
+      const px = x1 * persp;
+      const py = y1 * persp;
+      const pz = z1 * persp;
+      const mesh = vertexMeshes[i];
+      mesh.position.set(px, py, pz);
+    }
+
+    let ptr = 0;
+    for (let e = 0; e < edges.length; e++) {
+      const pair = edges[e];
+      const aPos = vertexMeshes[pair[0]].position;
+      const bPos = vertexMeshes[pair[1]].position;
+
+      edgePositions[ptr++] = aPos.x;
+      edgePositions[ptr++] = aPos.y;
+      edgePositions[ptr++] = aPos.z;
+
+      edgePositions[ptr++] = bPos.x;
+      edgePositions[ptr++] = bPos.y;
+      edgePositions[ptr++] = bPos.z;
+    }
+    edgeAttribute.needsUpdate = true;
+
+    raycaster.setFromCamera(pointer, camera);
+    const intersects = raycaster.intersectObject(edgeLines, false);
+
+    if (intersects.length > 0) {
+      const intersect = intersects[0];
+      const segmentIndex = Math.floor(intersect.index / 2);
+
+      if (hoveredEdgeIndex !== segmentIndex) {
+        if (lastHighlightedEdgeIndex != null && lastHighlightedEdgeIndex !== segmentIndex) {
+          const prevEdge = edges[lastHighlightedEdgeIndex];
+          [prevEdge[0], prevEdge[1]].forEach(idx => {
+            const mat = vertexMeshes[idx].material;
+            mat.color.copy(baseVertexColor);
+            mat.emissive.copy(baseEmissive);
+          });
+        }
+
+        hoveredEdgeIndex = segmentIndex;
+        lastHighlightedEdgeIndex = segmentIndex;
+
+        const entryId = activeEdgeMapping[segmentIndex];
+        if (entryId) {
+          const entry = entriesById[entryId];
+
+          const edgePair = edges[segmentIndex];
+          const col = new THREE.Color(entry.color || 0x1db6c3);
+          [edgePair[0], edgePair[1]].forEach(idx => {
+            const mat = vertexMeshes[idx].material;
+            mat.color.copy(col);
+            mat.emissive.copy(col).multiplyScalar(0.45);
+          });
+
+          const aIndex = edgePair[0];
+          const bIndex = edgePair[1];
+          const aPos = vertexMeshes[aIndex].position;
+          const bPos = vertexMeshes[bIndex].position;
+
+          const positions = highlightGeometry.attributes.position.array;
+          positions[0] = aPos.x;
+          positions[1] = aPos.y;
+          positions[2] = aPos.z;
+          positions[3] = bPos.x;
+          positions[4] = bPos.y;
+          positions[5] = bPos.z;
+          highlightGeometry.attributes.position.needsUpdate = true;
+
+          highlightMaterial.color.set(entry.color || 0x1db6c3);
+          highlightMaterial.opacity = 1.0;
+          highlightLine.visible = true;
+
+          nodeLabelEl.textContent =
+            (currentLang === "fr"
+              ? "Arête active : "
+              : "Active edge: ") + entry.title[currentLang];
+
+          rotationScale = 0.25;
+        } else {
+          highlightLine.visible = false;
+          nodeLabelEl.textContent = currentLang === "fr"
+            ? "Survolez une arête lumineuse pour voir son entrée, cliquez pour ouvrir la fiche."
+            : "Hover an active edge to see its entry, click to open the card.";
+          rotationScale = 0.5;
+        }
+      }
+    } else {
+      if (lastHighlightedEdgeIndex != null) {
+        const prevEdge = edges[lastHighlightedEdgeIndex];
+        [prevEdge[0], prevEdge[1]].forEach(idx => {
+          const mat = vertexMeshes[idx].material;
+          mat.color.copy(baseVertexColor);
+          mat.emissive.copy(baseEmissive);
+        });
+      }
+      hoveredEdgeIndex = null;
+      lastHighlightedEdgeIndex = null;
+      highlightLine.visible = false;
+      nodeLabelEl.textContent = currentLang === "fr"
+        ? "Survolez une arête lumineuse pour voir son entrée, cliquez pour ouvrir la fiche."
+        : "Hover an active edge to see its entry, click to open the card.";
+      rotationScale = 0.3;
+    }
+
+    tesseractGroup.rotation.y += 0.0025 * rotationScale;
+    tesseractGroup.rotation.x += 0.0012 * rotationScale;
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  function onResize() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+
+  window.addEventListener("resize", onResize);
+
+  applyLang();
+  showEntryCard("presentation");
+  setActiveNav("presentation");
+</script>
+</body>
+</html>
