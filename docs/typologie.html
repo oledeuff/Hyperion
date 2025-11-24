@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>HyperION · Typologie des hyperinvestigations / Typology</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="favicon-hyperion.svg" />
+  <style>
+    /* même CSS que les autres pages */
+    :root {
+      --bg: #020617;
+      --bg-soft: #050816;
+      --fg: #f9fafb;
+      --muted: #9ca3af;
+      --border-soft: rgba(148, 163, 184, 0.45);
+      --accent: #1db6c3;
+      --accent-soft: #76CDCD;
+      --accent-warm: #F9968B;
+      --glass-bg: rgba(15, 23, 42, 0.78);
+      --glass-border: rgba(148, 163, 184, 0.6);
+      --shadow-soft: 0 22px 40px rgba(15, 23, 42, 0.7);
+      --header-height: 64px;
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f5f7;
+      --bg-soft: #e5e7eb;
+      --fg: #020617;
+      --muted: #6b7280;
+      --border-soft: rgba(148, 163, 184, 0.35);
+      --glass-bg: rgba(255, 255, 255, 0.9);
+      --glass-border: rgba(148, 163, 184, 0.3);
+      --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0b1220 0, var(--bg) 45%, #000 100%);
+      color: var(--fg);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header.topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 18px;
+      border-bottom: 1px solid var(--border-soft);
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.75), transparent);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top left, #3b82f6, #1db6c3, #F9968B);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.8);
+      overflow: hidden;
+    }
+
+    .brand-logo-inner {
+      width: 70%;
+      height: 70%;
+      position: relative;
+    }
+
+    .brand-logo-inner::before,
+    .brand-logo-inner::after {
+      content: "";
+      position: absolute;
+      border-radius: 4px;
+      border: 2px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .brand-logo-inner::before {
+      inset: 5px 9px 13px 5px;
+    }
+
+    .brand-logo-inner::after {
+      inset: 11px 5px 5px 9px;
+      opacity: 0.9;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .brand-subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .pill-toggle,
+    .icon-button {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.6));
+      color: var(--fg);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      height: 30px;
+    }
+
+    .pill-toggle span { opacity: 0.5; }
+    .pill-toggle span.is-active { opacity: 1; font-weight: 600; }
+
+    .icon-button {
+      width: 30px;
+      justify-content: center;
+      padding-inline: 0;
+    }
+
+    .icon-button svg { width: 14px; height: 14px; }
+
+    .menu-toggle {
+      display: inline-flex;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--fg);
+      width: 30px;
+      height: 30px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .main-nav {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(var(--header-height) - 4px);
+      flex-direction: column;
+      align-items: flex-end;
+      padding: 8px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow-soft);
+      min-width: 220px;
+    }
+
+    .main-nav.is-open { display: flex; }
+
+    .nav-link {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 6px 12px;
+      font-size: 0.74rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      text-align: right;
+      width: 100%;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      border-color: rgba(148, 163, 184, 0.5);
+      color: var(--fg);
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .nav-link.is-active {
+      border-color: var(--accent);
+      color: var(--fg);
+      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.6), rgba(15, 23, 42, 0.5));
+    }
+
+    main {
+      flex: 1;
+      padding: 12px 16px 18px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page-main {
+      width: 100%;
+      max-width: 1240px;
+      display: grid;
+      grid-template-columns: minmax(0, 3.2fr) minmax(260px, 1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .page-article {
+      border-radius: 20px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 20px 20px;
+      backdrop-filter: blur(18px);
+    }
+
+    .page-aside {
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px;
+      color: var(--fg);
+      position: sticky;
+      top: calc(var(--header-height) + 10px);
+      align-self: flex-start;
+    }
+
+    .page-aside-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin: 0 0 8px;
+    }
+
+    .page-aside-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .page-aside-tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(29, 182, 195, 0.9);
+    }
+
+    .page-aside-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 12px 0 10px;
+      font-size: 0.78rem;
+    }
+
+    .page-aside-list li { margin-bottom: 6px; }
+
+    .page-aside-list a {
+      color: var(--accent-soft);
+      text-decoration: none;
+    }
+
+    .page-aside-list a:hover { text-decoration: underline; }
+
+    .page-aside-meta {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .page-article h1 {
+      font-size: 1.4rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+
+    .page-article h2 {
+      font-size: 1.1rem;
+      margin: 18px 0 6px;
+    }
+
+    .page-article h3 {
+      font-size: 0.98rem;
+      margin: 14px 0 4px;
+    }
+
+    .page-article p {
+      font-size: 0.86rem;
+      line-height: 1.6;
+      margin: 0 0 8px;
+    }
+
+    .page-article ul {
+      margin: 4px 0 8px 1.2rem;
+      padding-left: 0;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    .page-article li { margin-bottom: 4px; }
+
+    .page-article strong { font-weight: 600; }
+    .page-article em { font-style: italic; }
+
+    .page-article a {
+      color: var(--accent-soft);
+      text-decoration: none;
+    }
+
+    .page-article a:hover { text-decoration: underline; }
+
+    .hero-meta-line {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .content-note {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    figure.hero-figure {
+      margin: 10px 0 12px;
+      text-align: center;
+    }
+
+    figure.hero-figure figcaption {
+      margin-top: 6px;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .hyperion-logo-light {
+      max-width: 220px;
+      width: 100%;
+    }
+    .hyperion-logo-light .orbit {
+      transform-origin: 50% 50%;
+      animation: orbit-spin 36s linear infinite;
+    }
+    @keyframes orbit-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .biblio-list {
+      list-style: none;
+      padding-left: 0;
+      font-size: 0.83rem;
+    }
+
+    .biblio-list li { margin-bottom: 6px; }
+
+    .lang-block { display: none; }
+    .lang-block.is-active { display: grid; }
+
+    footer.site-footer {
+      border-top: 1px solid var(--border-soft);
+      padding: 8px 18px 12px;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    footer.site-footer a {
+      color: var(--accent-soft);
+      text-decoration: none;
+    }
+
+    footer.site-footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 960px) {
+      main { padding-inline: 10px; }
+      .page-main { grid-template-columns: minmax(0, 1fr); }
+      .page-aside { position: static; margin-top: 6px; }
+    }
+
+    @media (max-width: 640px) {
+      header.topbar { padding-inline: 12px; }
+      .brand-subtitle { display: none; }
+      .page-article { padding-inline: 14px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo">
+        <div class="brand-logo-inner"></div>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">HyperION</span>
+        <span class="brand-subtitle" data-i18n-subtitle>
+          Méthodes et technologies de l’hyperinvestigation
+        </span>
+      </div>
+    </div>
+    <div class="topbar-controls">
+      <button class="pill-toggle" id="lang-toggle" type="button" aria-label="Basculer la langue">
+        <span data-lang-label-fr class="is-active">FR</span>
+        <span>/</span>
+        <span data-lang-label-en>EN</span>
+      </button>
+      <button class="icon-button" id="theme-toggle" type="button" aria-label="Basculer thème">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M12 3.1a1 1 0 0 1 1 1v1.3a1 1 0 1 1-2 0V4.1a1 1 0 0 1 1-1Zm6.36 3.05a1 1 0 0 1 0 1.42l-.92.92a1 1 0 1 1-1.42-1.41l.92-.93a1 1 0 0 1 1.42 0ZM12 7.1a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm8 4.9a1 1 0 0 1 1 1v.3a1 1 0 1 1-2 0v-.3a1 1 0 0 1 1-1ZM6.34 7.57a1 1 0 0 1-1.41 0l-.93-.92A1 1 0 0 1 5.43 5.2l.92.93a1 1 0 0 1 0 1.42ZM4 12a1 1 0 0 1 1 1v.3a1 1 0 1 1-2 0V13a1 1 0 0 1 1-1Zm2.34 5.66a1 1 0 0 1 1.42 0l.92.93a1 1 0 0 1-1.41 1.41l-.93-.92a1 1 0 0 1 0-1.42Zm9.9 0a1 1 0 0 1 0 1.42l-.93.92a1 1 0 1 1-1.41-1.41l.92-.93a1 1 0 0 1 1.42 0Z"/>
+        </svg>
+      </button>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Afficher le menu">
+        ☰
+      </button>
+      <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
+        <a href="index.html" class="nav-link">Hypercube</a>
+        <a href="presentation.html" class="nav-link">Présentation</a>
+        <a href="epistemologie.html" class="nav-link">Épistémologie</a>
+        <a href="typologie.html" class="nav-link is-active">Typologie</a>
+        <a href="#" class="nav-link">BDD</a>
+        <a href="#" class="nav-link">Carnet</a>
+        <a href="#" class="nav-link">GitHub</a>
+        <a href="#" class="nav-link">Évènements</a>
+        <a href="#" class="nav-link">Publications</a>
+        <a href="#" class="nav-link">Cosma Skritch</a>
+        <a href="#" class="nav-link">Futurologie</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- FR -->
+    <div class="page-main lang-block is-active" data-lang="fr">
+      <article class="page-article">
+        <div class="hero-meta-line">
+          TYPOLOGIE &amp; MÉTHODOLOGIES DE L’HYPERINVESTIGATION
+        </div>
+        <h1>Typologie des hyperinvestigations et méthodologies OSINT</h1>
+        <div class="content-note">
+          Version principale en français · version anglaise disponible via le sélecteur FR/EN
+        </div>
+
+        <figure class="hero-figure">
+          <svg class="hyperion-logo-light" viewBox="0 0 200 200" role="img" aria-label="Logo HyperION typologie">
+            <defs>
+              <linearGradient id="hyperionGrad-typo-fr" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1db6c3" />
+                <stop offset="50%" stop-color="#76CDCD" />
+                <stop offset="100%" stop-color="#F9968B" />
+              </linearGradient>
+              <radialGradient id="haloGrad-typo-fr" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(148,163,184,0.5)" />
+                <stop offset="100%" stop-color="rgba(15,23,42,0)" />
+              </radialGradient>
+            </defs>
+
+            <circle cx="100" cy="100" r="84" fill="url(#haloGrad-typo-fr)" />
+            <circle cx="100" cy="100" r="88" fill="none"
+                    stroke="rgba(148,163,184,0.4)" stroke-width="1.4" />
+
+            <g class="orbit" stroke="url(#hyperionGrad-typo-fr)" stroke-width="2" fill="none">
+              <rect x="55" y="55" width="60" height="60" rx="6" />
+              <rect x="90" y="70" width="60" height="60" rx="6" />
+              <line x1="55"  y1="55"  x2="90"  y2="70" />
+              <line x1="115" y1="55"  x2="150" y2="70" />
+              <line x1="55"  y1="115" x2="90"  y2="130" />
+              <line x1="115" y1="115" x2="150" y2="130" />
+            </g>
+
+            <g fill="#f9fafb">
+              <circle cx="55"  cy="55"  r="3" />
+              <circle cx="115" cy="55"  r="3" />
+              <circle cx="55"  cy="115" r="3" />
+              <circle cx="115" cy="115" r="3" />
+              <circle cx="90"  cy="70"  r="3" />
+              <circle cx="150" cy="70"  r="3" />
+              <circle cx="90"  cy="130" r="3" />
+              <circle cx="150" cy="130" r="3" />
+            </g>
+
+            <g transform="translate(100 100)">
+              <rect x="-20" y="-9" width="40" height="18" rx="9"
+                    fill="rgba(15,23,42,0.85)"
+                    stroke="rgba(148,163,184,0.6)" stroke-width="0.8" />
+              <text x="0" y="4" text-anchor="middle"
+                    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
+                    font-size="7" letter-spacing="2" fill="#f9fafb">
+                H·ION
+              </text>
+            </g>
+          </svg>
+          <figcaption>
+            HyperION – Variante “light” de l’hypercube, vue typologique.
+          </figcaption>
+        </figure>
+
+        <h2 id="corpus-methodes-fr">1. Corpus d’hyperinvestigations et méthodes OSINT</h2>
+        <p>
+          Une composante centrale d’HyperION repose sur la constitution d’un corpus d’enquêtes pouvant être qualifiées
+          d’<strong>hyperinvestigations</strong> : enquêtes OSINT, investigations visuelles, projets hybrides portés
+          par des journalistes, des ONG ou des collectifs spécialisés.
+        </p>
+        <p>
+          Pour chaque cas, le projet analyse :
+        </p>
+        <ul>
+          <li>les méthodes utilisées pour collecter, vérifier et recouper des traces numériques ;</li>
+          <li>les outils et plateformes mobilisés, des opérateurs de recherche simples aux dispositifs recourant à l’IA ;</li>
+          <li>les structures narratives qui transforment ces traces ouvertes en récits d’enquête cohérents.</li>
+        </ul>
+        <p>
+          Ce travail de corpus s’appuie sur les dynamiques déjà engagées avec l’<em>observatoire de l’OSINT</em>
+          (Osintoscope) et avec MatrioscIA, consacré aux effets des technologies d’IA sur les méthodologies OSINT.
+        </p>
+
+        <h2 id="debats-osint-fr">2. Débats autour de l’OSINT et périmètre de l’hyperinvestigation</h2>
+        <p>
+          Le terme <strong>OSINT</strong> fait l’objet de débats croissants. Certains acteurs souhaitent marquer une
+          prise de distance avec les secteurs du renseignement et privilégient des expressions comme
+          <em>open source investigations</em> pour souligner les pratiques issues de la société civile et du
+          journalisme.
+        </p>
+        <p>
+          HyperION prend acte de ces débats, tout en se concentrant sur les continuités méthodologiques : dans bien
+          des cas, des techniques similaires de recherche, vérification et recoupement d’informations en ligne sont
+          à l’œuvre, quel que soit le label employé.
+        </p>
+        <p>
+          Le projet considère ainsi les méthodes liées à l’OSINT comme des formes d’hyperinvestigation appuyées sur
+          l’<strong>hyperdocumentation</strong> :
+        </p>
+        <ul>
+          <li>les enquêtes déplacent l’attention d’événements isolés vers des régimes documentaires structurés ;</li>
+          <li>
+            les documents jouent à la fois le rôle de preuves « à l’appui d’un fait » et de contrepoids à la fugacité
+            de l’actualité, dans le prolongement de la notion d’<em>anti-évènement</em> chez Escarpit ;
+          </li>
+          <li>
+            les configurations hyperdocumentées qui en résultent contribuent à faire émerger des <strong>lieux de
+            mémoire</strong> journalistiques.
+          </li>
+        </ul>
+
+        <h2 id="terrains-sites-fr">3. Terrains stratégiques et travail de terrain</h2>
+        <p>
+          La typologie est fondée sur un travail de terrain mené auprès d’organisations emblématiques de
+          l’hyperinvestigation : Bellingcat, Forensic Architecture, Centre for Information Resilience, Tactical Tech,
+          entre autres.
+        </p>
+        <p>
+          HyperION prévoit des <strong>périodes d’immersion</strong> au sein de ces structures, ainsi que des
+          entretiens avec des enquêteurs dont les travaux constituent des cas de référence. Ces rencontres qualitatives
+          sont complétées par des invitations et collaborations, notamment avec l’équipe de l’observatoire de l’OSINT
+          et avec des journalistes bordelais.
+        </p>
+        <p>
+          Des stagiaires et étudiants sont associés à la collecte et à l’analyse des données, participant à la fois
+          aux objectifs de recherche et de formation (mémoires de master, projets de thèse, préparation d’un éventuel
+          projet ERC).
+        </p>
+
+        <h2 id="journalisme-hyperdocumente-fr">4. Journalisme hyperdocumenté</h2>
+        <p>
+          Le <strong>journalisme hyperdocumenté</strong> constitue l’une des formes d’hyperinvestigation qu’HyperION
+          cherche à décrire et théoriser. En prolongement de travaux antérieurs, l’attention porte sur la manière dont
+          les articles :
+        </p>
+        <ul>
+          <li>
+            exposent leurs sources et documents au sein même du texte (documents intégrés, visualisations de données,
+            frises et cartes interactives) ;
+          </li>
+          <li>
+            s’appuient sur des pratiques de recherche distribuées, où les publics peuvent parfois vérifier ou prolonger
+            l’enquête ;
+          </li>
+          <li>
+            contribuent à une documentation de long terme d’évènements, notamment en matière de violences policières
+            ou de crimes de guerre.
+          </li>
+        </ul>
+        <p>
+          L’enquête du <em>New York Times</em> sur le massacre de Boutcha est un exemple emblématique : elle illustre
+          la manière dont une investigation journalistique peut dépasser l’événement immédiat et s’inscrire dans une
+          infrastructure mémorielle et probatoire plus large.
+        </p>
+
+        <h2 id="vers-typologie-fr">5. Vers une typologie des hyperinvestigations</h2>
+        <p>
+          À partir du corpus et des terrains étudiés, HyperION vise à formaliser une
+          <strong>typologie des hyperinvestigations</strong> qui permette :
+        </p>
+        <ul>
+          <li>
+            de distinguer différentes <strong>configurations d’acteurs</strong> (grands médias, collectifs indépendants,
+            ONG, services de renseignement, communautés en ligne, etc.) ;
+          </li>
+          <li>
+            de décrire des <strong>configurations documentaires</strong> (types de sources, assemblages de traces,
+            degrés d’ouverture et de reproductibilité) ;
+          </li>
+          <li>
+            d’identifier des <strong>formes narratives caractéristiques</strong> (récits linéaires, cartes interactives,
+            reconstructions 3D, dossiers, bases de données et archives) ;
+          </li>
+          <li>
+            de cartographier les <strong>enjeux éthiques et politiques</strong> associés (visibilité des victimes,
+            risques de doxing, usages des données personnelles, transparence des méthodes, admissibilité des preuves).
+          </li>
+        </ul>
+        <p>
+          Cette typologie alimentera une base de données dédiée ainsi que les instruments logiciels développés dans le
+          projet (Cosma, Cosma Skritch, interfaces de cartographie). Elle est conçue pour être utile à la recherche, à
+          l’enseignement et à la médiation publique des méthodes d’enquête.
+        </p>
+
+        <h2 id="biblio-typologie-fr">6. Références sélectionnées</h2>
+        <ul class="biblio-list">
+          <li>Le Deuff, O. (2021b). L’OSINT comme prisme hyperdocumentaire. <em>I2D</em>, 1, 56–62.</li>
+          <li>Roumanos, R., &amp; Le Deuff, O. (2021a). L’enquête OSINT. <em>Revue Intelligibilité du numérique</em>, 2.</li>
+          <li>Roumanos, R., &amp; Le Deuff, O. (2021b). S’extraire de l’immédiateté de l’événement. <em>Communication</em>, 38(1).</li>
+          <li>Mor, N., &amp; Reich, Z. (2018). From “trust me” to “show me” journalism. <em>Journalism Practice</em>, 12(9).</li>
+          <li>Escarpit, R. (1976). <em>Théorie générale de l’information et de la communication.</em> Hachette.</li>
+        </ul>
+      </article>
+
+      <aside class="page-aside">
+        <h2 class="page-aside-title">HyperION · Typologie</h2>
+        <div class="page-aside-tag">
+          <span class="page-aside-tag-dot"></span>
+          <span>Typologie des enquêtes</span>
+        </div>
+        <p style="font-size:0.8rem;">
+          Cette page décrit la manière dont HyperION construit une typologie des hyperinvestigations : corpus OSINT,
+          terrain auprès d’acteurs clés, journalisme hyperdocumenté et cartographie des enjeux éthiques.
+        </p>
+        <ul class="page-aside-list">
+          <li><a href="#corpus-methodes-fr">1. Corpus &amp; méthodes OSINT</a></li>
+          <li><a href="#debats-osint-fr">2. Débats sur l’OSINT</a></li>
+          <li><a href="#terrains-sites-fr">3. Terrains stratégiques</a></li>
+          <li><a href="#journalisme-hyperdocumente-fr">4. Journalisme hyperdocumenté</a></li>
+          <li><a href="#vers-typologie-fr">5. Vers une typologie</a></li>
+          <li><a href="#biblio-typologie-fr">6. Références</a></li>
+        </ul>
+        <div class="page-aside-meta">
+          Retour à l’entrée : <a href="index.html">Hypercube</a> ·
+          Voir aussi : <a href="presentation.html">Présentation</a>, <a href="epistemologie.html">Épistémologie</a>.
+        </div>
+      </aside>
+    </div>
+
+    <!-- EN -->
+    <div class="page-main lang-block" data-lang="en">
+      <article class="page-article">
+        <div class="hero-meta-line">
+          TYPOLOGY &amp; METHODOLOGIES OF HYPERINVESTIGATION
+        </div>
+        <h1>Typology of HyperInvestigations and OSINT Methodologies</h1>
+        <div class="content-note">
+          Main version in English · French version available via the FR/EN selector
+        </div>
+
+        <figure class="hero-figure">
+          <svg class="hyperion-logo-light" viewBox="0 0 200 200" role="img" aria-label="HyperION typology logo">
+            <defs>
+              <linearGradient id="hyperionGrad-typo-en" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1db6c3" />
+                <stop offset="50%" stop-color="#76CDCD" />
+                <stop offset="100%" stop-color="#F9968B" />
+              </linearGradient>
+              <radialGradient id="haloGrad-typo-en" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(148,163,184,0.5)" />
+                <stop offset="100%" stop-color="rgba(15,23,42,0)" />
+              </radialGradient>
+            </defs>
+
+            <circle cx="100" cy="100" r="84" fill="url(#haloGrad-typo-en)" />
+            <circle cx="100" cy="100" r="88" fill="none"
+                    stroke="rgba(148,163,184,0.4)" stroke-width="1.4" />
+
+            <g class="orbit" stroke="url(#hyperionGrad-typo-en)" stroke-width="2" fill="none">
+              <rect x="55" y="55" width="60" height="60" rx="6" />
+              <rect x="90" y="70" width="60" height="60" rx="6" />
+              <line x1="55"  y1="55"  x2="90"  y2="70" />
+              <line x1="115" y1="55"  x2="150" y2="70" />
+              <line x1="55"  y1="115" x2="90"  y2="130" />
+              <line x1="115" y1="115" x2="150" y2="130" />
+            </g>
+
+            <g fill="#f9fafb">
+              <circle cx="55"  cy="55"  r="3" />
+              <circle cx="115" cy="55"  r="3" />
+              <circle cx="55"  cy="115" r="3" />
+              <circle cx="115" cy="115" r="3" />
+              <circle cx="90"  cy="70"  r="3" />
+              <circle cx="150" cy="70"  r="3" />
+              <circle cx="90"  cy="130" r="3" />
+              <circle cx="150" cy="130" r="3" />
+            </g>
+
+            <g transform="translate(100 100)">
+              <rect x="-20" y="-9" width="40" height="18" rx="9"
+                    fill="rgba(15,23,42,0.85)"
+                    stroke="rgba(148,163,184,0.6)" stroke-width="0.8" />
+              <text x="0" y="4" text-anchor="middle"
+                    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
+                    font-size="7" letter-spacing="2" fill="#f9fafb">
+                H·ION
+              </text>
+            </g>
+          </svg>
+          <figcaption>
+            HyperION – Light tesseract logo, typological view.
+          </figcaption>
+        </figure>
+
+        <h2 id="corpus-methods-en">1. Corpus of hyperinvestigations and OSINT methods</h2>
+        <p>
+          A core component of HyperION is the construction of a corpus of investigations that can be described as
+          <strong>hyperinvestigations</strong>: OSINT-based inquiries, visual investigations and mixed-format projects
+          produced by journalists, NGOs and specialised collectives.
+        </p>
+        <p>
+          For each case, the project analyses:
+        </p>
+        <ul>
+          <li>the methods used to collect, verify and cross-reference digital traces;</li>
+          <li>the tools and platforms deployed (from simple search operators to advanced AI-assisted systems);</li>
+          <li>the narrative structures that transform open traces into coherent investigative stories.</li>
+        </ul>
+        <p>
+          This corpus work is informed by previous initiatives such as the OSINT Observatory (Osintoscope) and the
+          MatrioscIA project, which examines the impact of AI technologies on OSINT methodologies.
+        </p>
+
+        <h2 id="osint-debates-en">2. Debates around OSINT and the scope of hyperinvestigation</h2>
+        <p>
+          The term <strong>OSINT</strong> is increasingly debated. Some actors prefer to distance themselves from the
+          intelligence and security sectors, and advocate expressions such as “open source investigations” to highlight
+          civil society and journalistic practices.
+        </p>
+        <p>
+          HyperION acknowledges these debates but focuses on methodological continuities: in many cases, similar
+          techniques of online information retrieval, verification and cross-referencing are at work, regardless of the
+          label used.
+        </p>
+        <p>
+          The project therefore treats OSINT-related methods as forms of hyperinvestigation that rely on
+          <strong>hyperdocumentation</strong>:
+        </p>
+        <ul>
+          <li>investigations move from isolated events to structured documentary regimes;</li>
+          <li>
+            documents serve both as evidence “in support of a fact” and as elements that resist the fleeting nature of
+            news events, aligning with Escarpit’s notion of the “anti-event”;
+          </li>
+          <li>
+            the resulting hyperdocumented configurations create potential sites of memory.
+          </li>
+        </ul>
+
+        <h2 id="fields-sites-en">3. Strategic sites and fieldwork</h2>
+        <p>
+          The typology is grounded in fieldwork conducted with organisations that are emblematic of hyperinvestigation:
+          Bellingcat, Forensic Architecture, the Centre for Information Resilience, Tactical Tech and others.
+        </p>
+        <p>
+          HyperION includes <strong>immersion periods</strong> within these structures, as well as interviews with
+          investigators whose work has become reference cases. These qualitative encounters are complemented by visits,
+          invitations and collaborations, including with the OSINT Observatory team and journalists in Bordeaux.
+        </p>
+        <p>
+          Interns and students are involved in data collection and analysis, contributing to both research and training
+          objectives (Master’s theses, future PhD projects, possible ERC follow-up).
+        </p>
+
+        <h2 id="hyperdocumented-journalism-en-typo">4. Hyperdocumented journalism</h2>
+        <p>
+          Hyperdocumented journalism is one of the key forms of hyperinvestigation that HyperION seeks to describe and
+          theorise. Building on earlier work, the project focuses on how journalistic pieces:
+        </p>
+        <ul>
+          <li>
+            expose their sources and documents within the article itself (embedded documents, data visualisations,
+            interactive timelines);
+          </li>
+          <li>
+            rely on distributed research practices where audiences can sometimes re-check or extend the investigation;
+          </li>
+          <li>
+            contribute to long-term documentation of events, particularly in cases of police violence or war crimes.
+          </li>
+        </ul>
+        <p>
+          The <em>New York Times</em> investigation into the Bucha massacre is one example: it illustrates how
+          investigative reporting can transcend the immediate event and become part of a broader memorial and
+          evidential infrastructure.
+        </p>
+
+        <h2 id="towards-typology-en">5. Towards a typology of hyperinvestigations</h2>
+        <p>
+          Drawing on this corpus and fieldwork, HyperION aims to formalise a <strong>typology of hyperinvestigations</strong>
+          that will:
+        </p>
+        <ul>
+          <li>
+            distinguish different <strong>actor configurations</strong> (major media outlets, independent collectives,
+            NGOs, intelligence services, online communities, etc.);
+          </li>
+          <li>
+            describe <strong>documentary configurations</strong> (types of sources, assemblages of traces, degrees of
+            openness and reproducibility);
+          </li>
+          <li>
+            identify characteristic <strong>narrative forms</strong> (linear investigations, interactive maps, 3D
+            reconstructions, dossiers, databases and archives);
+          </li>
+          <li>
+            map associated <strong>ethical and political issues</strong> (visibility of victims, risks of doxing, use of
+            personal data, transparency of methods, admissibility of evidence).
+          </li>
+        </ul>
+        <p>
+          This typology will feed into a dedicated database and into the software instruments developed by the project
+          (Cosma, Cosma Skritch, mapping interfaces), and is designed to be useful for research, teaching and public
+          mediation of investigative methods.
+        </p>
+
+        <h2 id="references-typology-en">6. Selected references</h2>
+        <ul class="biblio-list">
+          <li>Le Deuff, O. (2021b). Open Source Intelligence (OSINT) as a hyperdocumentary prism. <em>I2D</em>, 1, 56–62.</li>
+          <li>Roumanos, R., &amp; Le Deuff, O. (2021a). The OSINT investigation. <em>Revue Intelligibilité du numérique</em>, 2.</li>
+          <li>Roumanos, R., &amp; Le Deuff, O. (2021b). Escaping the immediacy of the event. <em>Communication</em>, 38(1).</li>
+          <li>Mor, N., &amp; Reich, Z. (2018). From “trust me” to “show me” journalism. <em>Journalism Practice</em>, 12(9).</li>
+          <li>Escarpit, R. (1976). <em>Théorie générale de l’information et de la communication.</em> Hachette.</li>
+        </ul>
+      </article>
+
+      <aside class="page-aside">
+        <h2 class="page-aside-title">HyperION · Typology</h2>
+        <div class="page-aside-tag">
+          <span class="page-aside-tag-dot"></span>
+          <span>Typology of investigations</span>
+        </div>
+        <p style="font-size:0.8rem;">
+          This page describes how HyperION builds a typology of hyperinvestigations: OSINT corpus, fieldwork with key
+          actors, hyperdocumented journalism and the mapping of ethical issues.
+        </p>
+        <ul class="page-aside-list">
+          <li><a href="#corpus-methods-en">1. Corpus &amp; OSINT methods</a></li>
+          <li><a href="#osint-debates-en">2. OSINT debates</a></li>
+          <li><a href="#fields-sites-en">3. Strategic sites</a></li>
+          <li><a href="#hyperdocumented-journalism-en-typo">4. Hyperdocumented journalism</a></li>
+          <li><a href="#towards-typology-en">5. Towards a typology</a></li>
+          <li><a href="#references-typology-en">6. References</a></li>
+        </ul>
+        <div class="page-aside-meta">
+          Back to entry: <a href="index.html">Hypercube</a> ·
+          See also: <a href="presentation.html">Project overview</a>, <a href="epistemologie.html">Epistemology</a>.
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>
+      Projet HyperION · Olivier Le Deuff · 2025–2030 · Licence CC BY
+    </span>
+    <span>
+      Contact : <a href="mailto:oledeuff@gmail.com">oledeuff@gmail.com</a>
+    </span>
+  </footer>
+</div>
+
+<script>
+  // Thème
+  const themeToggle = document.getElementById("theme-toggle");
+  function getCurrentTheme() {
+    return document.documentElement.getAttribute("data-theme") || "dark";
+  }
+  function setTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+  themeToggle.addEventListener("click", () => {
+    const next = getCurrentTheme() === "dark" ? "light" : "dark";
+    setTheme(next);
+  });
+
+  // Menu burger
+  const menuToggle = document.getElementById("menu-toggle");
+  const navEl = document.getElementById("main-nav");
+  menuToggle.addEventListener("click", () => {
+    navEl.classList.toggle("is-open");
+  });
+
+  // FR / EN
+  let currentLang = "fr";
+  const langToggle = document.getElementById("lang-toggle");
+  const langLabelFr = document.querySelector("[data-lang-label-fr]");
+  const langLabelEn = document.querySelector("[data-lang-label-en]");
+  const langBlocks = document.querySelectorAll(".lang-block");
+  const subtitleEl = document.querySelector("[data-i18n-subtitle]");
+
+  function applyLang() {
+    document.documentElement.setAttribute("lang", currentLang);
+
+    if (currentLang === "fr") {
+      langLabelFr.classList.add("is-active");
+      langLabelEn.classList.remove("is-active");
+      if (subtitleEl) {
+        subtitleEl.textContent = "Méthodes et technologies de l’hyperinvestigation";
+      }
+    } else {
+      langLabelFr.classList.remove("is-active");
+      langLabelEn.classList.add("is-active");
+      if (subtitleEl) {
+        subtitleEl.textContent = "Methods and technologies of hyperinvestigation";
+      }
+    }
+
+    langBlocks.forEach(block => {
+      if (block.getAttribute("data-lang") === currentLang) {
+        block.classList.add("is-active");
+      } else {
+        block.classList.remove("is-active");
+      }
+    });
+  }
+
+  langToggle.addEventListener("click", () => {
+    currentLang = currentLang === "fr" ? "en" : "fr";
+    applyLang();
+  });
+
+  applyLang();
+</script>
+</body>
+</html>

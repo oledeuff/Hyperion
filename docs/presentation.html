@@ -2,7 +2,7 @@
 <html lang="fr" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <title>HyperION · Présentation du projet</title>
+  <title>HyperION · Présentation du projet / Project overview</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/svg+xml" href="favicon-hyperion.svg" />
   <style>
@@ -13,7 +13,7 @@
       --muted: #9ca3af;
       --border-soft: rgba(148, 163, 184, 0.45);
       --accent: #1db6c3;
-      --accent-soft: #76cdcd;
+      --accent-soft: #76CDCD;
       --accent-warm: #F9968B;
       --glass-bg: rgba(15, 23, 42, 0.78);
       --glass-border: rgba(148, 163, 184, 0.6);
@@ -57,7 +57,7 @@
       min-height: 100vh;
     }
 
-    /* HEADER / TOPBAR – repris de la page principale */
+    /* HEADER / TOPBAR */
 
     header.topbar {
       position: sticky;
@@ -240,7 +240,7 @@
       background: radial-gradient(circle at top, rgba(37, 99, 235, 0.6), rgba(15, 23, 42, 0.5));
     }
 
-    /* LAYOUT DE LA PAGE DE PRÉSENTATION */
+    /* LAYOUT */
 
     main {
       flex: 1;
@@ -334,7 +334,7 @@
       margin-top: 8px;
     }
 
-    /* TYPO CONTENU ARTICLE */
+    /* TYPO CONTENU */
 
     .page-article h1 {
       font-size: 1.4rem;
@@ -374,6 +374,10 @@
       font-weight: 600;
     }
 
+    .page-article em {
+      font-style: italic;
+    }
+
     .page-article a {
       color: var(--accent-soft);
       text-decoration: none;
@@ -404,17 +408,25 @@
       text-align: center;
     }
 
-    figure.hero-figure img {
-      max-width: 100%;
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.8);
-    }
-
     figure.hero-figure figcaption {
       margin-top: 6px;
       font-size: 0.72rem;
       color: var(--muted);
+    }
+
+    /* Logo tesseract light */
+
+    .hyperion-logo-light {
+      max-width: 220px;
+      width: 100%;
+    }
+    .hyperion-logo-light .orbit {
+      transform-origin: 50% 50%;
+      animation: orbit-spin 36s linear infinite;
+    }
+    @keyframes orbit-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     .biblio-list {
@@ -425,6 +437,16 @@
 
     .biblio-list li {
       margin-bottom: 6px;
+    }
+
+    /* LANG BLOCKS */
+
+    .lang-block {
+      display: none;
+    }
+
+    .lang-block.is-active {
+      display: grid;
     }
 
     /* FOOTER */
@@ -509,10 +531,10 @@
         ☰
       </button>
       <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
-        <a href="hyperion-site-v3.html" class="nav-link">Hypercube</a>
-        <a href="presentation.html" class="nav-link is-active">Présentation du projet</a>
-        <a href="#" class="nav-link">Épistémologie</a>
-        <a href="#" class="nav-link">Typologie</a>
+        <a href="index.html" class="nav-link">Hypercube</a>
+        <a href="presentation.html" class="nav-link is-active">Présentation</a>
+        <a href="epistemologie.html" class="nav-link">Épistémologie</a>
+        <a href="typologie.html" class="nav-link">Typologie</a>
         <a href="#" class="nav-link">BDD</a>
         <a href="#" class="nav-link">Carnet</a>
         <a href="#" class="nav-link">GitHub</a>
@@ -525,499 +547,529 @@
   </header>
 
   <main>
-    <div class="page-main">
+    <!-- Bloc FR -->
+    <div class="page-main lang-block is-active" data-lang="fr">
       <article class="page-article">
         <div class="hero-meta-line">
-          PROJET DE RECHERCHE IUF 2025–2030
+          PROJET DE RECHERCHE IUF 2025–2030 · HYPERION
         </div>
         <h1>HyperION : de l’hyperdocumentation à l’HYPERInvestigatON</h1>
-        <div class="content-note" data-i18n-content-note>
-          Version principale en français · traduction anglaise en préparation
+        <div class="content-note">
+          Version principale en français · version anglaise disponible via le sélecteur FR/EN
         </div>
 
         <figure class="hero-figure">
-          <img src="./hyperion.png" alt="HyperION – Hypercube / Tesseract visuel du projet" />
+          <svg class="hyperion-logo-light" viewBox="0 0 200 200" role="img" aria-label="Logo HyperION inspiré du tesseract">
+            <defs>
+              <linearGradient id="hyperionGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1db6c3" />
+                <stop offset="50%" stop-color="#76CDCD" />
+                <stop offset="100%" stop-color="#F9968B" />
+              </linearGradient>
+              <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(148,163,184,0.5)" />
+                <stop offset="100%" stop-color="rgba(15,23,42,0)" />
+              </radialGradient>
+            </defs>
+
+            <circle cx="100" cy="100" r="84" fill="url(#haloGrad)" />
+            <circle cx="100" cy="100" r="88" fill="none"
+                    stroke="rgba(148,163,184,0.4)" stroke-width="1.4" />
+
+            <g class="orbit" stroke="url(#hyperionGrad)" stroke-width="2" fill="none">
+              <rect x="55" y="55" width="60" height="60" rx="6" />
+              <rect x="90" y="70" width="60" height="60" rx="6" />
+              <line x1="55"  y1="55"  x2="90"  y2="70" />
+              <line x1="115" y1="55"  x2="150" y2="70" />
+              <line x1="55"  y1="115" x2="90"  y2="130" />
+              <line x1="115" y1="115" x2="150" y2="130" />
+            </g>
+
+            <g fill="#f9fafb">
+              <circle cx="55"  cy="55"  r="3" />
+              <circle cx="115" cy="55"  r="3" />
+              <circle cx="55"  cy="115" r="3" />
+              <circle cx="115" cy="115" r="3" />
+              <circle cx="90"  cy="70"  r="3" />
+              <circle cx="150" cy="70"  r="3" />
+              <circle cx="90"  cy="130" r="3" />
+              <circle cx="150" cy="130" r="3" />
+            </g>
+
+            <g transform="translate(100 100)">
+              <rect x="-20" y="-9" width="40" height="18" rx="9"
+                    fill="rgba(15,23,42,0.85)"
+                    stroke="rgba(148,163,184,0.6)" stroke-width="0.8" />
+              <text x="0" y="4" text-anchor="middle"
+                    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
+                    font-size="7" letter-spacing="2" fill="#f9fafb">
+                H·ION
+              </text>
+            </g>
+          </svg>
           <figcaption>
-            HyperION – Hyperdocumentation & hyperinvestigation.
+            HyperION – Variante “light” de l’hypercube, identité visuelle du projet.
           </figcaption>
         </figure>
 
         <p>
-          Le projet HyperION explore les méthodes et technologies de l'hyperinvestigation,
-          un concept qui allie investigation en ligne et l’ingénierie logicielle et documentaire
-          mobilisée.
+          Le projet HyperION explore les méthodes et technologies de l’hyperinvestigation, un concept qui allie
+          investigation en ligne et ingénierie logicielle et documentaire. L’approche épistémologique repose sur un
+          travail conceptuel articulant hyperinvestigation et hyperdocumentation, concept formulé par Paul Otlet en 1934
+          et revisité dans nos travaux récents.
         </p>
         <p>
-          L’approche épistémologique d’HyperION repose sur un travail conceptuel qui articule
-          le concept d’hyperinvestigation avec celui d’hyperdocumentation. Nous avons cherché
-          à montrer l’acuité actuelle de ce concept créé par Paul Otlet en 1934 dans notre ouvrage
-          éponyme publié en 2021 (Le Deuff, 2021). Notre approche se situe au sein des sciences de
-          l’information et de la communication et opère une démarcation par rapport aux discours
-          dominants en matière numérique et médiatique qui privilégient les effets de mode successifs
-          autour de la société de l’information, de l’ère du numérique, des big data ou de l’intelligence
-          artificielle. Nous avons au contraire montré la pertinence du concept de document et la
-          nécessité de l’articuler avec les travaux en matière de recherche d’information et d’évaluation
-          de l’information.
+          Notre démarche se situe au sein des sciences de l’information et de la communication et se démarque des
+          discours dominants en matière numérique et médiatique qui privilégient les effets de mode successifs autour
+          de la société de l’information, de l’ère du numérique, des big data ou de l’intelligence artificielle. Nous
+          mettons au contraire en avant la pertinence du concept de document et la nécessité de l’articuler avec les
+          travaux sur la recherche et l’évaluation de l’information.
         </p>
         <p>
-          L’hyperinvestigation renvoie aux méthodes et nouvelles formes d’investigation qui s’appuient
-          sur des outils numériques, notamment ceux de l’OSINT (Open Source Intelligence) que d’aucuns
-          préfèrent également qualifier d’investigations en ligne ou d’investigations audiovisuelles.
-          Nous choisissons à dessein de les regrouper sous le terme d’hyperinvestigation pour des raisons
-          conceptuelles et épistémologiques.
+          L’hyperinvestigation renvoie aux méthodes et nouvelles formes d’investigation qui s’appuient sur des outils
+          numériques, notamment ceux de l’OSINT (Open Source Intelligence), parfois qualifiée d’investigation en ligne
+          ou d’investigation audiovisuelle. Nous choisissons de les regrouper sous le terme d’hyperinvestigation pour
+          des raisons conceptuelles et épistémologiques.
         </p>
         <p>
-          Ces réalisations reposent sur des méthodologies et technologies de recherche et de traitement
-          de l’information qui permettent d’opérer des déductions, des reconstitutions, des constructions
-          narratives que nous souhaitons étudier. Le concept d’hyperinvestigation permet de regrouper
-          dans un même cadre des enquêtes, des méthodes et des technologies, y compris celles qui mobilisent
-          de l’IA, tout en étudiant les documents produits et en conservant la pertinence de la théorie des
-          documents, en particulier dans des contextes liés à la qualité de l’information.
+          Ces réalisations reposent sur des méthodologies et technologies de recherche et de traitement de l’information
+          qui permettent d’opérer des déductions, des reconstitutions et des constructions narratives que nous
+          souhaitons étudier. Le concept d’hyperinvestigation permet de regrouper dans un même cadre des enquêtes, des
+          méthodes et des technologies, y compris celles qui mobilisent de l’IA, tout en étudiant les documents
+          produits et en conservant la pertinence de la théorie des documents.
         </p>
         <p>
-          Le projet s’inscrit dans le prolongement de projets précédents, notamment celui d’observatoire
-          de l’OSINT ou Osintoscope que nous avons monté grâce à un soutien d’amorçage de notre université
-          (PSE 2024), complété par un projet de recherche financé par l’IHEMI (Institut des hautes études du
-          ministère de l’Intérieur) intitulé MatrioscIA (MATRIce OSint pour les Cas d'usage de l'IA, 2024–2025)
-          dont le but est d’étudier les évolutions des méthodologies OSINT en lien avec le développement des
-          technologies de l’IA. L’OSINT désigne de façon générale les méthodes, outils et analyses qui se basent
-          sur des informations directement accessibles en ligne (Le Deuff, 2021a). Différents acteurs utilisent
-          et mobilisent l’OSINT dans leur domaine professionnel ou à titre amateur. La popularité croissante de
-          ces méthodes et outils nécessite une étude approfondie pour comprendre les tendances, enjeux et risques
-          associés.
-        </p>
-        <p>
-          Le titre du projet HyperION est une référence à l’ouvrage éponyme de Dan Simmons qui décrit en 1989 une
-          infosphère (datasphere en anglais) qui pourrait s’apparenter à notre web actuel. L’ouvrage est lui-même
-          une référence au poème de John Keats qui décrit la volonté des Titans de prendre leur revanche. Hyperion
-          renvoie donc à des formes de quêtes complexes, entre utopie et poésie. Ce choix rentre en adéquation avec
-          le concept d’hyperdocumentation dont la logique chez Paul Otlet repose également sur des logiques
-          « titanesques » (Le Deuff, 2021b) que vient rappeler l’œuvre symboliste
-          <em>Prométhée</em> de Jean Deville qui fut accrochée longtemps au Palais Mondial de Bruxelles, lieu du
-          Mundaneum de Paul Otlet.
+          Le titre du projet HyperION fait explicitement référence au roman de Dan Simmons qui décrit, dès 1989, une
+          infosphère (datasphere en anglais) pouvant s’apparenter à notre web actuel, ainsi qu’au poème de John Keats.
+          Hyperion renvoie à des formes de quêtes complexes, entre utopie et poésie, en adéquation avec la logique
+          « titanesque » de l’hyperdocumentation chez Paul Otlet.
         </p>
 
-        <h2 id="articuler-hyperdocumentation-hyperinvestigation">1. Articuler hyperdocumentation et hyperinvestigation</h2>
+        <h2 id="articuler-hyperdoc-hyperinvestigation">1. Articuler hyperdocumentation et hyperinvestigation</h2>
         <p>
           Alors que les discours dominants tendent à se centrer sur les données et l’IA, notre proposition est de
-          considérer que les formes documentaires demeurent importantes tant dans la collecte que dans la production
-          en ce qui concerne les enquêtes de type journalistique. L’hyperinvestigation s’appuie ainsi sur les formes
-          de l’hyperdocumentation.
+          considérer que les formes documentaires demeurent importantes tant dans la collecte que dans la production en
+          ce qui concerne les enquêtes de type journalistique. L’hyperinvestigation s’appuie ainsi sur les formes de
+          l’hyperdocumentation.
         </p>
         <p>
-          Si Paul Otlet définissait l’hyper-documentation comme une forme d’état ultime de la documentation où tout
-          serait potentiellement documenté, notamment l’ensemble des sens humains (Otlet, 1934, Le Deuff, Perret, 2020),
-          nous avons montré que le concept pouvait se concrétiser au sein des environnements numériques actuels
-          (Le Deuff, 2021). À cet effet, nous avons choisi de retirer le trait d’union pour montrer l’acuité
-          contemporaine du concept tant les actions de documentation s’accroissent dans le contexte des nouvelles
-          formes d’investigation contemporaine qu’elles soient menées par des journalistes, des ONG, des services de
-          renseignements ou d’intelligence économique de type <em>due diligence</em>.
+          Si Paul Otlet définissait l’hyper-documentation comme un état ultime de la documentation où tout serait
+          potentiellement documenté, y compris l’ensemble des sens humains (Otlet, 1934), nous avons montré que le
+          concept pouvait se concrétiser dans les environnements numériques actuels (Le Deuff, 2021). Nous retirons le
+          trait d’union pour souligner l’acuité contemporaine d’un concept qui accompagne la croissance des actions de
+          documentation, notamment dans les nouvelles formes d’investigation menées par des journalistes, des ONG, des
+          services de renseignement ou d’intelligence économique.
         </p>
         <p>
-          Il convient à cet effet de mieux saisir les sens que l’on peut donner au préfixe <em>hyper</em> qui doit
-          être compris à plusieurs titres. Le préfixe « hyper » indique une extension des possibilités de traitement
-          des documents et une augmentation des facultés analytiques. L'hyperdocumentation augmente les formats
-          documentaires pris en compte, en cherchant à documenter une diversité d'activités et de types de documents,
-          comme les moteurs de recherche qui indexent divers formats au-delà des pages HTML, pour couvrir un maximum
-          d'actions et d'événements. Il n’y a donc pas de disparition des documents au profit d’un monde où tout ne
-          serait plus que données, mais de nouvelles configurations qui permettent d’envisager des formes innovantes.
+          Le préfixe <em>hyper</em> doit être compris à plusieurs titres. Il renvoie à une extension des possibilités
+          de traitement des documents et à une augmentation des facultés analytiques. L’hyperdocumentation élargit les
+          formats documentaires pris en compte et cherche à documenter une diversité d’activités et de types de
+          documents, comme le font les moteurs de recherche qui indexent des formats variés au-delà des pages HTML.
         </p>
         <p>
           En matière d’hyperinvestigation, le préfixe hyper marque à la fois l’augmentation des méthodes et des
-          potentialités d’enquête en ligne ainsi que les nouvelles formes produites qui se composent d’une diversité
-          de documents multimédias.
+          potentialités d’enquête en ligne et les nouvelles formes produites, composées d’une diversité de documents
+          multimédias. Il ne s’agit pas d’une disparition des documents au profit des seules données, mais de nouvelles
+          configurations documentaires.
         </p>
+
+        <h2 id="double-tradition">2. Associer deux traditions scientifiques</h2>
         <p>
-          Au sein des sciences de l’information et de la communication, cette articulation entre hyperdocumentation
-          et hyperinvestigation revient à associer plus étroitement deux traditions scientifiques différentes :
+          Au sein des sciences de l’information et de la communication, articuler hyperdocumentation et
+          hyperinvestigation revient à associer deux traditions scientifiques :
         </p>
         <ul>
           <li>
-            Celle des sciences de l’information dont les racines sont celles des sciences bibliographiques et de la
-            documentation. Nous avons consacré plusieurs travaux à ces aspects depuis le début de notre carrière avec
-            notamment le projet ANR HyperOtlet (2017–2022) à propos de l’œuvre de Paul Otlet et plus particulièrement
-            du <em>Traité de Documentation</em>, livre fondateur de la documentation et souvent cité comme référence
-            de base dans l’histoire des sciences de l’information. Nous avons poursuivi ces travaux épistémologiques en
-            nous intéressant à d’autres théoriciens et théoriciennes, notamment Robert Pagès qui a été l’élève de
-            Suzanne Briet, l’autre grande théoricienne de référence du domaine. Ce travail s’est effectué dans le
-            cadre d’un projet franco-américain mené avec le spécialiste de l’histoire et de l’épistémologie des sciences
-            de l’information et de la documentation, Michael Buckland. D’une manière générale, ce sont l’ensemble des
-            travaux qui considèrent le document comme un concept clef et toujours actuel qui nous intéressent, notamment
-            avec les travaux de Ferraris en philosophie et le groupe de chercheurs qualifiés parfois de
-            « néo-documentalists » autour notamment du réseau DOCAM (Document Academy).
+            <strong>Une tradition documentaire et bibliographique</strong>, issue des sciences de l’information et de
+            la documentation. Nos travaux, dont le projet ANR HyperOtlet (2017–2022), ont porté sur l’œuvre de Paul
+            Otlet et sur le <em>Traité de documentation</em>, livre fondateur du domaine. Nous avons prolongé ces
+            recherches vers d’autres théoriciens comme Robert Pagès, dans le cadre d’un projet franco-américain mené
+            avec Michael Buckland, et vers des approches néo-documentalistes (DOCAM).
           </li>
           <li>
-            Celle des sciences des médias (<em>media studies</em>) et des études journalistiques. Nous nous sommes
-            intéressé à ces domaines de façon plus marginale, les étudiant notamment durant notre thèse sur la culture
-            de l’information, en particulier lorsqu’il s’agissait d’articuler les différentes conceptions du mot
-            information et les tensions qui en résultent en matière de formation, comme dans le cas présent avec
-            l’Éducation aux médias et à l’information. À la suite de ce travail, nous avions considéré qu’il fallait
-            concevoir le journalisme comme une ingénierie à laquelle il fallait former de façon plus précoce.
-            Récemment, en associant plus étroitement les traditions documentaires et journalistiques, nous avons
-            travaillé sur le domaine de l’OSINT. Le concept d’OSINT s’est développé dans les secteurs du renseignement
-            avant de s’étendre à celui de l’investigation en ligne menée par des acteurs du journalisme et des ONG,
-            notamment des acteurs spécialisés comme Bellingcat. Nous avons publié des articles dédiés en collaboration
-            avec Rayya Roumanos et produit un graphe en ligne sur les acteurs du domaine avec l’Osintosphère en 2021.
+            <strong>Une tradition des sciences des médias et du journalisme</strong>, mobilisée d’abord dans le cadre
+            de notre thèse sur la culture de l’information et l’Éducation aux médias et à l’information, puis plus
+            récemment à travers l’étude des pratiques OSINT et d’investigation en ligne, en collaboration avec Rayya
+            Roumanos.
           </li>
         </ul>
-
-        <h2 id="etudier-hyperinvestigation">2. Étudier l’hyperinvestigation</h2>
         <p>
-          Cette articulation conceptuelle entre hyperdocumentation et hyperinvestigation nous permet d’aborder les
-          questions informationnelles et médiatiques avec un angle nouveau afin de mieux saisir les nouvelles
-          pratiques journalistiques qui se développent à l’heure actuelle autour des méthodes d’investigations
-          visuelles et de type OSINT. Cette dimension s'inscrit dans les recherches récentes que nous avons menées
-          au cours des cinq dernières années, en explorant un domaine scientifique qui, jusqu'à présent, était
-          marginal dans nos travaux : le domaine médiatique, et plus précisément le journalisme d'investigation.
-        </p>
-        <p>
-          Nous proposons d’étudier l’hyperinvestigation au travers des trois axes suivants :
+          HyperION se situe au croisement de ces deux traditions, en considérant le journalisme comme une forme
+          d’ingénierie documentaire et en réinscrivant les pratiques d’investigation dans une histoire longue des
+          instruments de documentation.
         </p>
 
-        <h3 id="axe-21">2.1. Retracer et définir l’épistémologie de l’hyperinvestigation</h3>
+        <h2 id="etudier-hyperinvestigation">3. Étudier l’hyperinvestigation</h2>
         <p>
-          L’articulation entre hyperdocumentation et hyperinvestigation mérite un travail épistémologique qui consiste
-          à dépasser la période récente pour examiner des évolutions et des travaux précurseurs. Les connexions entre
-          les concepts d’information, de documentation et d’investigation seront ici l’objet d’un examen approfondi.
+          HyperION propose d’étudier l’hyperinvestigation à travers trois axes :
+        </p>
+        <ul>
+          <li>retracer et définir l’épistémologie de l’hyperinvestigation ;</li>
+          <li>étudier les méthodologies d’hyperinvestigation ;</li>
+          <li>montrer l’émergence d’un journalisme hyperdocumenté.</li>
+        </ul>
+
+        <h3 id="epistemo-hyperinvestigation">3.1. Retracer et définir l’épistémologie de l’hyperinvestigation</h3>
+        <p>
+          L’articulation entre hyperdocumentation et hyperinvestigation appelle un travail épistémologique qui dépasse
+          la période récente pour examiner les continuités et les travaux précurseurs. Nous nous intéressons
+          notamment aux travaux de Lodewyk Bendikson à la Huntington Library, pionnier de méthodes « forensiques »
+          reposant sur des techniques photographiques, les microfilms et l’utilisation des rayons infrarouges et
+          ultraviolets pour analyser des documents altérés (Buckland, 2012).
         </p>
         <p>
-          Nous avons identifié plusieurs pistes d’étude, notamment les travaux de Lodewyk Bendikson (1875–1953)
-          de la Huntington Library, à San Marino, en Californie, qui méritent une étude approfondie. Son travail
-          pionnier dans des méthodes qu’on pourrait qualifier de « forensiques » lui a permis de développer des
-          procédés documentaires photographiques basés sur des techniques de reproduction, de conservation et d'analyse
-          des documents (photostats, microcartes, microfilms). Son utilisation des rayons infrarouges, ultraviolets
-          et fluorescents pour l'analyse des documents endommagés et altérés a donné lieu à une première étude
-          (Buckland, 2012).
-        </p>
-        <p>
-          Nous souhaitons travailler sur cette piste avec notre collègue de Berkeley, Michael Buckland, avec qui
-          nous avons précédemment travaillé sur Robert Pagès lors d’un projet Fondation Berkeley-France (2021–2023).
-        </p>
-        <p>
-          Cette approche historique et épistémologique s’inscrit dans des démarches de type « archéologie des médias »
-          avec des approches par strates en montrant que le besoin d’identifier les évolutions et transformations d’un
-          document imprimé et les éventuelles falsifications débute bien avant les technologies informatiques. Nous
-          souhaitons poursuivre ici notre démonstration que les humanités numériques doivent être plutôt considérées
-          comme des humanités digitales et qu’elles s’inscrivent dans une histoire longue : celle des méthodes et
-          outils d’indexation et de repérage des informations et des savoirs (Le Deuff, 2017).
+          Cette approche s’inscrit dans une archéologie des médias qui montre que le besoin de repérer des
+          transformations et falsifications documentaires précède largement l’ère informatique. Elle s’articule avec
+          notre défense d’« humanités digitales » inscrites dans une histoire longue des méthodes d’indexation et de
+          repérage de l’information (Le Deuff, 2017).
         </p>
 
-        <h3 id="axe-22">2.2. Étudier les méthodologies de l’hyperinvestigation</h3>
+        <h3 id="methodologies-hyperinvestigation">3.2. Étudier les méthodologies de l’hyperinvestigation</h3>
         <p>
-          L’axe central du projet HyperION repose sur la constitution d’un corpus d’investigations de type OSINT et
-          d’enquêtes visuelles, l’analyse des méthodes et outils déployés ainsi que la construction du récit qui en
-          résulte. Ce travail s’accompagnera d’une série d’entretiens auprès des acteurs et auteurs de ces travaux.
+          L’axe central du projet repose sur la constitution d’un corpus d’enquêtes de type OSINT et d’investigations
+          visuelles, sur l’analyse des méthodes et outils déployés, ainsi que sur l’étude des récits qui en résultent.
+          Ce travail empirique s’accompagne d’entretiens avec les acteurs concernés (journalistes, ONG, collectifs
+          spécialisés).
         </p>
         <p>
-          Nous avons déjà identifié et interrogé une première série d’acteurs avec Rayya Roumanos pour la publication
-          du numéro spécial OSINT d’I2D dirigé avec Rayya Roumanos. Ce travail s’inscrit dans le prolongement du projet
-          d’observatoire de l’OSINT (Osintoscope) que nous avons monté en 2024 et qui a notamment pour but de développer
-          une typologie des méthodes OSINT avec une focale spécifique sur les investigations, notamment journalistiques
-          ou menées par des ONG. Cet axe prolongera également notre étude sur l’utilisation des technologies
-          d’intelligence artificielle dans ce type d’investigations, dans le cadre du projet MatrioscIA.
+          Nous nous inscrivons dans le prolongement de l’observatoire de l’OSINT (Osintoscope), qui vise à développer
+          une typologie des méthodes OSINT, et du projet MatrioscIA consacré aux usages des technologies d’IA dans ce
+          contexte. Le projet prend en compte les dimensions éthiques liées à la reconnaissance faciale, aux données
+          personnelles et à la transparence des méthodes.
         </p>
         <p>
-          Le projet HyperION contient également une dimension éthique en ce qui concerne les méthodes et technologies
-          déployées, à la fois en ce qui concerne l’utilisation de technologies d’intelligence artificielle qui font
-          débat comme la reconnaissance faciale, mais aussi quant aux positionnements sur l’utilisation de données
-          personnelles.
-        </p>
-        <p>
-          Le mot OSINT fait désormais également débat. Une approche tente de marquer une rupture avec le monde des
-          renseignements au profit d’une vision défendue par les ONG comme Bellingcat et des journalistes des cellules
-          d’investigation, notamment audiovisuelles. Des expressions comme <em>open source investigation</em> ou
-          <em>open source information for investigation</em> sont de plus en plus fréquemment employées pour montrer
-          cette démarcation. Cependant, des approches technologiques et méthodologiques proches, notamment en matière
-          de recherche d’information en ligne, sont constatables.
-        </p>
-        <p>
-          Quelle que soit au final l’expression retenue, notre proposition est de considérer les méthodes d’OSINT
-          comme des formes d’hyperinvestigation qui reposent sur des formes d’hyperdocumentation dans la mesure où
-          il s’agit de dépasser les cadres habituels de l’évènement pour s’inscrire dans des registres qui sont ceux
-          du document. Il faut comprendre le document au sens de « la preuve à l’appui d’un fait » (tradition
-          documentaire impulsée par Suzanne Briet, etc.), mais également en tant qu’anti-évènement (Escarpit, 1976),
-          ce qui inscrit l’hyperinvestigation dans des dimensions mémorielles tant il s’agit de dépasser la simple
-          narration d’un fait divers.
-        </p>
-        <p>
-          Cette partie du projet requiert des déplacements dans les lieux stratégiques de l’hyperinvestigation que
-          nous avons identifiés. Nous envisageons de nous rendre et de passer du temps en immersion avec les acteurs
-          de Bellingcat, de Forensic Architecture, du Centre for Information Resilience, de Tactical Tech, et de mener
-          des entretiens avec des acteurs dont les enquêtes constituent de bons exemples d’hyperinvestigation.
-        </p>
-        <p>
-          Ce travail réclame un temps conséquent pour nous permettre de rencontrer les acteurs identifiés. Nous
-          effectuerons ces déplacements soit seul, soit en compagnie de membres de l’observatoire de l’OSINT
-          (Rayya Roumanos, Ugo Verdi, Clément Borel, etc.). Nous prévoyons également d’inviter des acteurs et des
-          chercheurs du domaine du côté de Bordeaux Montaigne. Nous envisageons pour cela de déposer des projets de
-          recherche complémentaires pour mener à bien ce travail afin de bénéficier de séjours invités ainsi que
-          d’ingénierie complémentaire pour nous aider à réaliser des entretiens.
-        </p>
-        <p>
-          Le recrutement de stagiaires a également été budgété afin de faciliter le travail de collecte et de traitement
-          de données. Nous souhaitons également en profiter pour former des étudiants intéressés par cette thématique,
-          qui projetteraient de mener des recherches sur ces questions (master 2 ou thèse) et qui pourront être
-          recrutés par la suite dans le cadre de projets de plus grande ampleur comme un projet ERC.
+          Les débats actuels autour du terme OSINT et des expressions concurrentes (<em>open source investigations</em>)
+          sont intégrés, tout en considérant les continuités méthodologiques et documentaires à l’œuvre.
         </p>
 
-        <h3 id="axe-23">2.3. Montrer l’émergence d’un journalisme hyperdocumenté</h3>
+        <h3 id="journalisme-hyperdocumente">3.3. Montrer l’émergence d’un journalisme hyperdocumenté</h3>
         <p>
-          Nous avons proposé en 2021 avec Rayya Roumanos (Roumanos, Le Deuff 2021a et 2021b) d’étudier la perspective
-          d’un journalisme hyperdocumenté en rapprochant les enjeux journalistiques et l’hyperdocumentation dans le
-          contexte de l’OSINT. Le concept proposé par Mor et Reich (Mor et Reich, 2018), sans en référer néanmoins à
-          Paul Otlet, constatait l’augmentation de la pratique de rendre disponibles des sources au sein même de
-          l’article, avec des documents intégrés qu’il était possible de consulter. Cette pratique n’est qu’une des
-          facettes de ce que nous définissons comme un journalisme hyperdocumenté.
+          Nous avons proposé, avec Rayya Roumanos, le concept de <strong>journalisme hyperdocumenté</strong> pour
+          désigner des formes d’écriture journalistique où les sources sont rendues visibles au sein même des articles
+          (documents intégrés, visualisations, données ouvertes). Il s’agit d’une des formes d’hyperinvestigation.
         </p>
         <p>
-          Il faut comprendre le journalisme hyperdocumenté comme exemple d’hyperinvestigation dans un triple registre :
+          Le journalisme hyperdocumenté se caractérise par :
         </p>
         <ul>
           <li>
-            Le premier est celui de l’augmentation des potentialités techniques de l’investigation, du fait d’un accès
-            accru à une série de données en accès ouvert ou non, en utilisant des techniques simples de récupération
-            d’informations via des requêtes optimisées sur les moteurs de recherche (<em>google dorks</em>) jusqu’à
-            des formes plus complexes mobilisant par exemple l’IA et les reconnaissances de forme.
+            l’augmentation des potentialités techniques d’investigation (accès accru à des corpus de traces, usage
+            d’outils de repérage et de reconnaissance de formes, recours à l’IA) ;
           </li>
           <li>
-            Le second est celui de l’accroissement des territoires d’investigation dans la mesure où il s’agit
-            également d’aller enquêter sur des formes numériques complexes. Cela peut concerner par exemple les
-            systèmes algorithmiques. L’hyperinvestigation requiert alors un accroissement des compétences
-            informationnelles et numériques et plus particulièrement de la littératie des données et des algorithmes.
-            Le projet AlgoJ (2021–2024) que nous avons mené avec Rayya Roumanos s’inscrivait dans cette perspective,
-            et nous souhaitons la poursuivre.
+            l’accroissement des territoires d’enquête (systèmes algorithmiques, infrastructures numériques), ce qui
+            nécessite une littératie renforcée des données et des algorithmes ;
           </li>
           <li>
-            Le troisième est celui du dépassement de la logique de l’évènement pour s’inscrire dans des temporalités
-            plus longues et des portées plus ambitieuses, qui peuvent présenter une dimension mémorielle. Les travaux
-            que nous avons menés sur le massacre de Boutcha par l’armée russe montrent que l’investigation de l’équipe
-            du <em>New York Times</em> a cherché à dépasser le seul retour sur le tragique évènement pour envisager
-            une portée plus ambitieuse. L’évènement ainsi hyperdocumenté acquiert une nouvelle portée pour devenir
-            un lieu de mémoire journalistique.
+            le dépassement de la logique de l’événement pour s’inscrire dans des temporalités plus longues, pouvant
+            faire de certaines enquêtes des lieux de mémoire journalistique, comme l’illustre le travail sur le
+            massacre de Boutcha.
           </li>
         </ul>
 
-        <h2 id="ingenierie-technologique">3. Développer une ingénierie technologique de l’hyperinvestigation</h2>
+        <h2 id="ingenierie-technologique">4. Développer une ingénierie technologique de l’hyperinvestigation</h2>
         <p>
-          Les enjeux logiciels font pleinement partie du projet, autant dans sa partie observation des outils mobilisés
-          que dans la possibilité de produire des instruments dédiés.
+          Les enjeux logiciels sont pleinement intégrés au projet, à la fois pour observer les instruments existants
+          dans le champ de l’OSINT et de l’investigation journalistique, et pour produire de nouveaux dispositifs
+          pensés par et pour les chercheurs et praticiens.
+        </p>
+        <p>
+          Du côté de l’observation, il s’agit d’étudier les dispositifs qui permettent d’hyperdocumenter des événements
+          tels que des crimes de guerre ou des violences policières, à l’image des outils de Forensic Architecture.
+          Cette partie bénéficie des apports de MatrioscIA sur l’usage de l’IA dans les méthodes OSINT.
+        </p>
+        <p>
+          Du côté de la production, HyperION s’inscrit dans la continuité des projets HyperOtlet, Otletosphère,
+          Osintosphère et Cosma, qui articulent fiches et graphes pour soutenir des démarches qualitatives et
+          documentées.
         </p>
 
-        <h3 id="observer-produire">3.1. Observer et produire</h3>
+        <h3 id="cosma-skritch">4.1. Vers une version hyperinvestigation de Cosma : Cosma Skritch</h3>
         <p>
-          En ce qui concerne la partie observation, il s’agira d’étudier l’offre existante dans le domaine de l’OSINT
-          et de l’investigation journalistique, notamment celle qui consiste à « documenter » les évènements et les
-          faits. Nous nous intéresserons particulièrement aux dispositifs permettant d’« hyperdocumenter » les crimes
-          de guerre ou des violences. Le logiciel conçu par Forensic Architecture a permis par exemple de documenter
-          les violences policières aux États-Unis lors de Black Lives Matter. Le même type de dispositif est utilisé
-          pour recenser et localiser les crimes de guerre en Ukraine.
+          Un livrable central du projet est <strong>Cosma Skritch</strong>, une version dédiée de Cosma pour
+          l’hyperinvestigation. L’objectif est d’ajouter aux graphes existants la possibilité d’« épingler » des
+          documents consultables, de façon à rendre visibles et traçables les preuves mobilisées.
         </p>
         <p>
-          Nous prévoyons d’utiliser ce dispositif pour cartographier les exemples d’hyperinvestigation que nous
-          souhaitons étudier. Cette partie « observation » bénéficiera des résultats du projet MatrioscIA en ce qui
-          concerne l’utilisation de technologies d’intelligence artificielle dans les méthodes de type OSINT. Au vu
-          de la durée du projet, l’évolution des méthodes et outils s’appuyant sur les technologies de type IA fait
-          partie des éléments clefs à prendre en compte.
+          L’approche privilégie l’interprétation continue et la qualification explicite des liens plutôt que des
+          corrélations automatiques et opaques. Elle cherche à éviter les dérives conspirationnistes en distinguant
+          différents types de liens (alliance, opposition, neutralité, etc.) et en les fondant sur des documents
+          justifiés.
         </p>
         <p>
-          En ce qui concerne la partie « production », nous nous inscrivons dans la logique des digital humanities
-          dont un des buts est la production d’instruments pensés par les chercheurs et pour les chercheurs. Il s’agira
-          aussi d’envisager une innovation sociale afin que les instruments réalisés puissent être mis à disposition
-          sous licence open source à des acteurs de l’OSINT, du data journalisme, de l’investigation en ligne et de
-          l’éducation, etc.
-        </p>
-        <p>
-          Cette dimension logicielle s’inscrit dans la continuité de notre objectif épistémologique d’articuler la
-          fiche et le graphe. La fiche représente un élément basique et historique de la documentation avec une partie
-          métadonnées et une partie description, tandis que le graphe renvoie aux potentialités numériques et notamment
-          du web en sortant des limites des arborescences pour faciliter les liaisons entre éléments via les
-          possibilités hypertextuelles. Cette relation entre concept et logiciel fait partie de la philosophie de l’axe
-          E3D du laboratoire MICA, axe que je codirige depuis septembre 2023 avec Nathalie Pinède.
-        </p>
-        <p>
-          HyperION va pouvoir s’appuyer sur nos expériences et réalisations précédentes. Durant le projet HyperOtlet
-          (2017–2021), nous avions envisagé avec Bertrand Müller cette logique avec le logiciel OMEKA S qui avait
-          bénéficié d’une surcouche graphique dédiée. Durant ce même projet, nous avions également pu développer un
-          premier prototype logiciel avec l’Otletosphère dont le but était de représenter le réseau de Paul Otlet sous
-          forme de graphes et de fiches. Cette réalisation logicielle open source a permis par la suite d’autres
-          déclinaisons, avec notamment la réalisation d’une Osintosphère mentionnée précédemment.
-        </p>
-        <p>
-          Puis, à l’initiative de notre doctorant Arthur Perret, un nouveau logiciel est issu de l’Otletosphère pour
-          produire des graphes à partir de plusieurs types de documentation basée sur des fiches sous format markdown
-          ou des données sous forme de tableur. Ce logiciel est devenu par la suite Cosma (Perret et al., 2024) qui a
-          évolué progressivement pour être actuellement disponible sous licence open source et en ligne de commande.
+          À plus long terme, le projet envisage des déploiements en mode cloud, à l’image des outils du Knight Lab,
+          afin de rendre Cosma plus accessible aux journalistes, chercheurs, étudiants et acteurs de l’éducation, en
+          lien avec la TGIR Huma-Num et le projet Revue 3.0.
         </p>
 
-        <h3 id="cosma-hyperinvestigation">3.2. Développer une version Hyperinvestigation de Cosma</h3>
-        <p>
-          Dans le cadre d’HyperION, nous allons poursuivre le développement de Cosma afin d’envisager une version dédiée
-          à l’hyperinvestigation avec des fonctionnalités spécifiques. Cela donnera lieu à un livrable logiciel :
-          <strong>Cosma Skritch</strong>, le skritch étant une référence à un personnage d’<em>Hyperion</em> de
-          Dan Simmons. Le but est de parvenir à adjoindre à la dimension actuelle du graphe et des fiches la possibilité
-          d’ajouter des documents consultables. Esthétiquement, les documents seraient en quelque sorte « épinglés »
-          au sein du graphe.
-        </p>
-        <p>
-          Le principe de l’hyperinvestigation repose sur les possibilités d’association et de mise en relation. Si
-          depuis quelques années, les recherches ont privilégié l’automatisation des liens par des méthodes de
-          <em>scraping</em> et d’extraction de données via des API, couplées avec des visualisations via des logiciels
-          comme Gephi, notre approche favorise le qualitatif au quantitatif dans une approche documentaire. Les
-          approches automatisées via des API ont reposé sur des logiques de nature réputationnelle ou des méthodes
-          d’analyse des controverses. Leur intérêt repose sur des logiques interprétatives a posteriori pour comprendre
-          les <em>clusters</em> et <em>hubs</em> qui s’affichent sur la cartographie.
-        </p>
-        <p>
-          Notre approche documentaire intègre une analyse et une interprétation continue au fur et à mesure de la
-          constitution du graphe. Cela ne signifie pas que cette approche rejette des mécanismes qui permettraient
-          de mettre à jour des liens entre des entités, mais qu’elle cherche surtout à préciser et à sémantiser les
-          liens qui existent entre deux éléments.
-        </p>
-        <p>
-          Cette approche cherche donc à éviter deux obstacles :
-        </p>
-        <ul>
-          <li>
-            la mise en avant de liens improbables et peu étayés, mais qui peuvent produire des effets loupe qui
-            déforment la réalité ;
-          </li>
-          <li>
-            l'idée que tout peut être potentiellement lié, ce qui pourrait s’apparenter à une logique
-            conspirationniste. Notre approche propose cependant de considérer que les liens peuvent aussi bien être
-            des liens d'opposition que d'amitié, et qu'il est important de les représenter graphiquement de manière
-            différente. L'idéal documentaire consiste à justifier chaque lien et à en préciser la nature, en se basant
-            sur des faits documentés.
-          </li>
-        </ul>
-        <p>
-          Nous espérons ainsi que l’innovation logicielle puisse constituer une innovation sociale en matière de lutte
-          contre la désinformation. Une réflexion épistémologique, juridique et éthique accompagnera ce travail en ce
-          qui concerne le fait qu’un document puisse apporter une preuve.
-        </p>
-
-        <h3 id="acces-cosma">3.3. Offrir de nouvelles potentialités d’accès à l’instrument Cosma</h3>
-        <p>
-          Cette relation entre concept et logiciel, entre document et instrument s’inscrit dans des travaux précédents
-          et des exemples de succès en matière d’ingénierie logicielle qui nous semblent pertinents à suivre. Par
-          exemple, le Knight Lab offre des outils en ligne de visualisation de données qui sont fortement utiles à des
-          data journalistes, chercheurs, formateurs ou étudiants.
-        </p>
-        <p>
-          Le fait de faire reposer l’architecture logicielle en mode cloud hébergé libère les usages potentiels des
-          compétences et des temps nécessaires pour installer et s’approprier le logiciel, qui est pour le moment
-          en ligne de commande. Dans l’idéal, nous aimerions pouvoir héberger l’infrastructure technique du logiciel
-          directement sur le cloud pour en faire bénéficier un plus grand nombre d’usagers qui seraient dispensés
-          d’un certain nombre de compétences techniques liées à la ligne de commande.
-        </p>
-        <p>
-          Nous songeons à poursuivre le développement des enjeux logiciels dans ce cadre en lien avec la TGIR Huma-Num.
-          Un travail est d’ailleurs en cours pour envisager une liaison entre le logiciel d’écriture scientifique
-          Stylo et Cosma dans le cadre d’un projet piloté par Marcello Vitali-Rosati de l’Université de Montréal.
-          Le projet Revue 3.0 auquel nous participons vient d’être financé par le Canada pour sept ans et envisage
-          le renouvellement des dispositifs de types revues en ligne. L’articulation entre Stylo et Cosma fait partie
-          de ces pistes d’innovation.
-        </p>
-        <p>
-          Un séjour à Montréal est prévu pour faire avancer les travaux entre les équipes de Marcello Vitali-Rosati
-          de l’Université de Montréal dans la liaison entre le logiciel d’écriture d’article scientifique Stylo et
-          Cosma.
-        </p>
-        <p>
-          La partie logicielle du projet continuera d’être assurée sous la direction d’Arthur Perret, actuellement
-          maître de conférences à Lyon 3, avec Guillaume Brioudes comme développeur principal et le renfort de
-          Clément Borel. L’équipe a développé des habitudes de travail depuis plusieurs années, ce qui permet
-          d’assurer la réussite du développement du logiciel et ses réutilisations par des tiers.
-        </p>
-
-        <h3 id="biblio">4. Bibliographie des références citées dans le projet</h3>
+        <h2 id="biblio-fr">5. Bibliographie des références citées</h2>
         <ul class="biblio-list">
-          <li>
-            Briet, S. (1951). <em>Qu’est-ce que la documentation?</em> Éditions documentaires, industrielles et
-            techniques.
-          </li>
-          <li>
-            Buckland, M. K. (2012). Lodewyk Bendikson and photographic techniques in documentation, 1910–1943.
-            In T. Carbo &amp; T. B. Hahn (Éds.), <em>International perspectives on the history of information
-            science and technology worldwide</em> (pp. 99–106). Information Today.
-          </li>
-          <li>
-            Escarpit, R. (1976). <em>Théorie générale de l’information et de la communication.</em> Hachette Université.
-          </li>
-          <li>
-            Le Deuff, O. (2017). <em>Les humanités digitales.</em> Hermes Science Publishing Ltd.
-          </li>
-          <li>
-            Le Deuff, O. (2021). <em>Hyperdocumentation.</em> ISTE Editions.
-          </li>
-          <li>
-            Le Deuff, O. (2021b). L’Open source intelligence (OSINT) comme prisme hyperdocumentaire.
-            <em>I2D-Information, données &amp; documents</em>, 1, 56–62.
-          </li>
-          <li>
-            Le Deuff, O. (2021c). L’homme fluidique ou hyper-homme chez Paul Otlet (1868–1944).
-            Une perspective transhumaniste complexe. <em>Revue des Sciences Humaines</em>, 341,
-            <em>Transhumanisme et fictions posthumanistes</em>.
-          </li>
-          <li>
-            Le Deuff, O., &amp; Perret, A. (2019). Hyperdocumentation: Origin and evolution of a concept.
-            <em>Journal of Documentation</em>.
-          </li>
-          <li>
-            Le Deuff, O., &amp; Roumanos, R. (2021). Open source intelligence (OSINT): Retour aux sources.
-            <em>I2D-Information, données &amp; documents</em>, 1, 8–12.
-          </li>
-          <li>
-            Mor, N., &amp; Reich, Z. (2018). From « trust me » to « show me » journalism.
-            <em>Journalism Practice</em>, 12(9), 1091–1108. https://doi.org/10.1080/17512786.2017.1376593
-          </li>
-          <li>
-            Otlet, P. (1934). <em>Traité de documentation: Le livre sur le livre: Théorie et pratique.</em>
-            Éditions Mundaneum.
-          </li>
-          <li>
-            Perret, A., Brioudes, G., Borel, C., &amp; Le Deuff, O. (2024). Cosma (Version 2.4.1) [Logiciel].
-            Zenodo. https://doi.org/10.5281/zenodo.11544741
-          </li>
-          <li>
-            Roumanos, R., &amp; Le Deuff, O. (2021a). L’enquête OSINT. Des traces ouvertes au récit journalistique
-            fermé. <em>Revue Intelligibilité du numérique</em>, 2.
-            <a href="http://intelligibilite-numerique.numerev.com/numeros/n-2-2021/2621-enquete-osint-des-traces-ouvertes-au-recit-journalistique-ferme" target="_blank" rel="noreferrer">
-              Lien
-            </a>
-          </li>
-          <li>
-            Roumanos, R., &amp; Le Deuff, O. (2021b). S’extraire de l’immédiateté de l’événement ou la tentation d’un
-            « journalisme irréductible ». <em>Communication. Information médias théories pratiques</em>, 38(1).
-            https://doi.org/10.4000/communication.13925
-          </li>
+          <li>Briet, S. (1951). <em>Qu’est-ce que la documentation?</em> ÉDIT.</li>
+          <li>Buckland, M. K. (2012). Lodewyk Bendikson and photographic techniques in documentation, 1910–1943.</li>
+          <li>Escarpit, R. (1976). <em>Théorie générale de l’information et de la communication.</em> Hachette.</li>
+          <li>Le Deuff, O. (2017). <em>Les humanités digitales.</em> Hermes Science Publishing.</li>
+          <li>Le Deuff, O. (2021). <em>Hyperdocumentation.</em> ISTE Editions.</li>
+          <li>Le Deuff, O., &amp; Perret, A. (2019). Hyperdocumentation: Origin and evolution of a concept. <em>Journal of Documentation.</em></li>
+          <li>Le Deuff, O., &amp; Roumanos, R. (2021). Open source intelligence (OSINT): Retour aux sources. <em>I2D</em>.</li>
+          <li>Mor, N., &amp; Reich, Z. (2018). From « trust me » to « show me » journalism. <em>Journalism Practice</em>, 12(9).</li>
+          <li>Otlet, P. (1934). <em>Traité de documentation: Le livre sur le livre: Théorie et pratique.</em></li>
         </ul>
       </article>
 
       <aside class="page-aside">
-        <h2 class="page-aside-title">HyperION · synthèse</h2>
+        <h2 class="page-aside-title">HyperION · Présentation</h2>
         <div class="page-aside-tag">
           <span class="page-aside-tag-dot"></span>
           <span>Projet IUF 2025–2030</span>
         </div>
         <p style="font-size:0.8rem;">
-          De l’hyperdocumentation à l’hyperinvestigation : ancrer les nouvelles pratiques
-          d’investigation en ligne dans une histoire longue des formes documentaires et des
-          instruments numériques.
+          Présentation générale du projet HyperION : articulation entre hyperdocumentation et hyperinvestigation,
+          ancrage disciplinaire en SIC, axes épistémologiques, méthodologiques et logiciels.
         </p>
         <ul class="page-aside-list">
-          <li><a href="#articuler-hyperdocumentation-hyperinvestigation">1. Hyperdocumentation &amp; hyperinvestigation</a></li>
-          <li><a href="#etudier-hyperinvestigation">2. Étudier l’hyperinvestigation</a></li>
-          <li><a href="#axe-21">2.1 Épistémologie</a></li>
-          <li><a href="#axe-22">2.2 Méthodologies</a></li>
-          <li><a href="#axe-23">2.3 Journalisme hyperdocumenté</a></li>
-          <li><a href="#ingenierie-technologique">3. Ingénierie technologique</a></li>
-          <li><a href="#cosma-hyperinvestigation">3.2 Cosma Skritch</a></li>
-          <li><a href="#biblio">4. Bibliographie</a></li>
+          <li><a href="#articuler-hyperdoc-hyperinvestigation">1. Hyperdocumentation &amp; hyperinvestigation</a></li>
+          <li><a href="#double-tradition">2. Deux traditions scientifiques</a></li>
+          <li><a href="#etudier-hyperinvestigation">3. Étudier l’hyperinvestigation</a></li>
+          <li><a href="#ingenierie-technologique">4. Ingénierie technologique</a></li>
+          <li><a href="#biblio-fr">5. Bibliographie</a></li>
         </ul>
         <div class="page-aside-meta">
-          Page de présentation du projet HyperION. <br/>
-          Pour revenir à l’Hypercube d’entrée : <br/>
-          <a href="index.html">Portail Hypercube</a>.
+          Retour à l’entrée : <a href="index.html">Hypercube</a>.
+        </div>
+      </aside>
+    </div>
+
+    <!-- Bloc EN -->
+    <div class="page-main lang-block" data-lang="en">
+      <article class="page-article">
+        <div class="hero-meta-line">
+          IUF RESEARCH PROJECT 2025–2030 · HYPERION
+        </div>
+        <h1>HyperION: From Hyperdocumentation to HyperInvestigation</h1>
+        <div class="content-note">
+          Main overview in English · French version available via the FR/EN selector
+        </div>
+
+        <figure class="hero-figure">
+          <!-- même logo SVG -->
+          <svg class="hyperion-logo-light" viewBox="0 0 200 200" role="img" aria-label="HyperION tesseract-inspired logo">
+            <defs>
+              <linearGradient id="hyperionGrad-en" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1db6c3" />
+                <stop offset="50%" stop-color="#76CDCD" />
+                <stop offset="100%" stop-color="#F9968B" />
+              </linearGradient>
+              <radialGradient id="haloGrad-en" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(148,163,184,0.5)" />
+                <stop offset="100%" stop-color="rgba(15,23,42,0)" />
+              </radialGradient>
+            </defs>
+
+            <circle cx="100" cy="100" r="84" fill="url(#haloGrad-en)" />
+            <circle cx="100" cy="100" r="88" fill="none"
+                    stroke="rgba(148,163,184,0.4)" stroke-width="1.4" />
+
+            <g class="orbit" stroke="url(#hyperionGrad-en)" stroke-width="2" fill="none">
+              <rect x="55" y="55" width="60" height="60" rx="6" />
+              <rect x="90" y="70" width="60" height="60" rx="6" />
+              <line x1="55"  y1="55"  x2="90"  y2="70" />
+              <line x1="115" y1="55"  x2="150" y2="70" />
+              <line x1="55"  y1="115" x2="90"  y2="130" />
+              <line x1="115" y1="115" x2="150" y2="130" />
+            </g>
+
+            <g fill="#f9fafb">
+              <circle cx="55"  cy="55"  r="3" />
+              <circle cx="115" cy="55"  r="3" />
+              <circle cx="55"  cy="115" r="3" />
+              <circle cx="115" cy="115" r="3" />
+              <circle cx="90"  cy="70"  r="3" />
+              <circle cx="150" cy="70"  r="3" />
+              <circle cx="90"  cy="130" r="3" />
+              <circle cx="150" cy="130" r="3" />
+            </g>
+
+            <g transform="translate(100 100)">
+              <rect x="-20" y="-9" width="40" height="18" rx="9"
+                    fill="rgba(15,23,42,0.85)"
+                    stroke="rgba(148,163,184,0.6)" stroke-width="0.8" />
+              <text x="0" y="4" text-anchor="middle"
+                    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
+                    font-size="7" letter-spacing="2" fill="#f9fafb">
+                H·ION
+              </text>
+            </g>
+          </svg>
+          <figcaption>
+            HyperION – Light tesseract logo, visual identity of the project.
+          </figcaption>
+        </figure>
+
+        <h2 id="project-overview">1. Project overview</h2>
+        <p>
+          The HyperION project explores the methods and technologies of <strong>hyperinvestigation</strong>, understood
+          as the encounter between online investigation and software and document engineering. It is grounded in
+          information and communication sciences and proposes a different entry point than dominant narratives centred
+          on the “digital age”, big data or AI alone.
+        </p>
+        <p>
+          Conceptually, HyperION builds on <strong>hyperdocumentation</strong>, a notion introduced by Paul Otlet in
+          1934 and revisited in recent work. Rather than treating documents as obsolete in a world of pure “data”, the
+          project shows how documentary forms remain central to both the collection and production of investigations,
+          particularly in journalism and NGO work.
+        </p>
+        <p>
+          Hyperinvestigation designates new forms of inquiry that rely on digital tools – especially OSINT (Open Source
+          Intelligence), also referred to as online or audiovisual investigations. It encompasses methods, actors and
+          technologies, including those based on AI, while keeping the <strong>document</strong> and regimes of proof at
+          the core of the analysis.
+        </p>
+        <p>
+          HyperION extends previous projects such as the OSINT observatory <em>Osintoscope</em> and the MatrioscIA
+          project, which studies how AI is transforming OSINT practices and raises new ethical, technical and legal
+          questions about their use.
+        </p>
+        <p>
+          The name <strong>HyperION</strong> is a deliberate reference to Dan Simmons’ novel, itself inspired by John
+          Keats’ poem. It stages complex quests in a datasphere reminiscent of today’s web, which resonates with Paul
+          Otlet’s “titanic” documentary ambitions and the symbolic figure of Prometheus in Jean Delville’s painting.
+        </p>
+
+        <h2 id="combining-hyperdocumentation-hyperinvestigation">2. Combining hyperdocumentation and hyperinvestigation</h2>
+        <p>
+          While current debates often focus on data and AI, HyperION starts from the hypothesis that documentary forms
+          remain essential for understanding contemporary investigations. Hyperinvestigation is thus conceived as one of
+          the main expressions of hyperdocumentation in practice.
+        </p>
+        <p>
+          Hyperdocumentation refers to an extended state of documentation, potentially covering all dimensions of human
+          activity and perception. Today, this ambition becomes tangible through digital environments, search engines
+          and platforms that collect, index and recombine heterogeneous traces at scale.
+        </p>
+        <p>
+          The prefix “hyper” signals both an intensification of documentary practices and an extension of analytical
+          possibilities: more formats, more operations on documents, and more complex associations. In hyperinvestigation,
+          this results in an expansion of investigative methods, a diversification of multimedia evidence and new ways of
+          assembling narratives.
+        </p>
+        <p>
+          Epistemologically, connecting hyperdocumentation and hyperinvestigation means bringing together two scientific
+          traditions: documentation and bibliographic sciences on the one hand, media and journalism studies on the other.
+          HyperION explicitly works at this intersection.
+        </p>
+
+        <h2 id="study-hyperinvestigation">3. Studying hyperinvestigation</h2>
+        <p>
+          HyperION proposes to study hyperinvestigation along three main lines: the epistemology of hyperinvestigation,
+          the methodologies deployed in OSINT and visual inquiries, and the emergence of <strong>hyperdocumented
+          journalism</strong>.
+        </p>
+
+        <h3 id="epistemology-hyperinvestigation">3.1 Tracing the epistemology of hyperinvestigation</h3>
+        <p>
+          The link between documentation, information and investigation calls for a dedicated epistemological inquiry
+          that goes beyond recent digital developments. HyperION adopts a media-archaeological perspective, revisiting
+          earlier work on forensic document analysis, such as Lodewyk Bendikson’s techniques using photostats,
+          microfilms and infrared or ultraviolet imaging to examine damaged or altered documents.
+        </p>
+        <p>
+          This historical work, carried out in collaboration with Michael Buckland and building on previous research on
+          Robert Pagès, supports a longer view on digital humanities: they are understood as the latest phase in a long
+          history of tools and methods for indexing, retrieving and transforming knowledge.
+        </p>
+
+        <h3 id="methodologies-hyperinvestigation-en">3.2 Methodologies of hyperinvestigation</h3>
+        <p>
+          A central task of the project is to build a corpus of OSINT and visual investigations, analyse the methods and
+          tools used, and reconstruct the narrative strategies at play. This empirical work includes interviews with key
+          practitioners (investigative journalists, NGOs, specialist collectives).
+        </p>
+        <p>
+          The project engages with current debates around the term OSINT itself and neighbouring expressions such as
+          “open source investigation”. Beyond terminological differences, the project considers these practices as forms
+          of hyperinvestigation grounded in hyperdocumentation: investigations that move from events to documents, from
+          isolated incidents to structured regimes of proof and memory.
+        </p>
+
+        <h3 id="hyperdocumented-journalism-en">3.3 Hyperdocumented journalism</h3>
+        <p>
+          HyperION extends previous work on <strong>hyperdocumented journalism</strong>, where articles embed sources,
+          datasets and documents that can be explored directly by readers. This practice is seen as one expression of
+          hyperinvestigation, characterised by:
+        </p>
+        <ul>
+          <li>increased technical capacities for collecting and cross-checking heterogeneous digital traces;</li>
+          <li>extended investigative terrains, including complex digital infrastructures and algorithmic systems;</li>
+          <li>an ambition to go beyond breaking news and to construct <strong>journalistic sites of memory</strong>, such
+              as the investigations into the Bucha massacre.</li>
+        </ul>
+
+        <h2 id="technological-engineering">4. Technological engineering for hyperinvestigation</h2>
+        <p>
+          The software dimension is fully integrated into the project. HyperION both observes existing tools used in
+          OSINT and investigative journalism and develops new instruments designed “by and for” researchers and
+          practitioners.
+        </p>
+        <p>
+          On the observational side, the project analyses platforms that hyperdocument events such as war crimes or
+          police violence, including systems developed by Forensic Architecture. This work is connected to MatrioscIA,
+          which studies how AI-based tools are used in OSINT and what risks they pose.
+        </p>
+        <p>
+          On the production side, HyperION continues a line of work initiated with HyperOtlet, the Otletosphere and
+          Cosma: connecting <strong>index cards</strong> and <strong>graphs</strong> in order to support qualitative,
+          documented investigations rather than purely automated, reputation-based mappings.
+        </p>
+
+        <h3 id="cosma-skritch-en">4.1 Cosma Skritch and new interfaces</h3>
+        <p>
+          A key deliverable is <strong>Cosma Skritch</strong>, a dedicated version of Cosma for hyperinvestigation. The
+          aim is to attach documents directly to nodes and edges in investigative graphs, making the underlying evidence
+          visible and browsable.
+        </p>
+        <p>
+          The approach privileges continuous interpretation and explicit, well-typed links rather than opaque, automated
+          correlations. It also seeks to avoid conspiratorial readings, by making it clear that links can indicate
+          opposition as well as affinity and must be justified by documented facts.
+        </p>
+        <p>
+          In the longer term, the project explores cloud-based deployments, inspired by initiatives such as Knight Lab,
+          in order to lower technical barriers and make Cosma more accessible to journalists, researchers, students and
+          educators.
+        </p>
+
+        <h2 id="references-en">5. Selected references</h2>
+        <ul class="biblio-list">
+          <li>Briet, S. (1951). <em>Qu’est-ce que la documentation?</em> ÉDIT.</li>
+          <li>Buckland, M. K. (2012). Lodewyk Bendikson and photographic techniques in documentation, 1910–1943.</li>
+          <li>Escarpit, R. (1976). <em>Théorie générale de l’information et de la communication.</em> Hachette.</li>
+          <li>Le Deuff, O. (2017). <em>Les humanités digitales.</em> Hermes Science Publishing.</li>
+          <li>Le Deuff, O. (2021). <em>Hyperdocumentation.</em> ISTE Editions.</li>
+          <li>Le Deuff, O., &amp; Perret, A. (2019). Hyperdocumentation: Origin and evolution of a concept. <em>Journal of Documentation.</em></li>
+          <li>Mor, N., &amp; Reich, Z. (2018). From “trust me” to “show me” journalism. <em>Journalism Practice</em>, 12(9).</li>
+          <li>Otlet, P. (1934). <em>Traité de documentation: Le livre sur le livre: Théorie et pratique.</em></li>
+        </ul>
+      </article>
+
+      <aside class="page-aside">
+        <h2 class="page-aside-title">HyperION · Project overview</h2>
+        <div class="page-aside-tag">
+          <span class="page-aside-tag-dot"></span>
+          <span>Research project 2025–2030</span>
+        </div>
+        <p style="font-size:0.8rem;">
+          General overview of the HyperION project: connecting hyperdocumentation and hyperinvestigation, disciplinary
+          anchoring in information and communication sciences, epistemological, methodological and software components.
+        </p>
+        <ul class="page-aside-list">
+          <li><a href="#project-overview">1. Project overview</a></li>
+          <li><a href="#combining-hyperdocumentation-hyperinvestigation">2. Hyperdocumentation &amp; hyperinvestigation</a></li>
+          <li><a href="#study-hyperinvestigation">3. Studying hyperinvestigation</a></li>
+          <li><a href="#technological-engineering">4. Technological engineering</a></li>
+          <li><a href="#references-en">5. References</a></li>
+        </ul>
+        <div class="page-aside-meta">
+          Back to entry: <a href="index.html">Hypercube</a>.
         </div>
       </aside>
     </div>
@@ -1054,26 +1106,38 @@
     navEl.classList.toggle("is-open");
   });
 
-  // Langue (UI uniquement)
+  // Gestion FR / EN
   let currentLang = "fr";
-  const subtitleEl = document.querySelector("[data-i18n-subtitle]");
-  const contentNoteEl = document.querySelector("[data-i18n-content-note]");
+  const langToggle = document.getElementById("lang-toggle");
   const langLabelFr = document.querySelector("[data-lang-label-fr]");
   const langLabelEn = document.querySelector("[data-lang-label-en]");
-  const langToggle = document.getElementById("lang-toggle");
+  const langBlocks = document.querySelectorAll(".lang-block");
+  const subtitleEl = document.querySelector("[data-i18n-subtitle]");
 
   function applyLang() {
+    document.documentElement.setAttribute("lang", currentLang);
+
     if (currentLang === "fr") {
-      subtitleEl.textContent = "Méthodes et technologies de l’hyperinvestigation";
-      contentNoteEl.textContent = "Version principale en français · traduction anglaise en préparation";
       langLabelFr.classList.add("is-active");
       langLabelEn.classList.remove("is-active");
+      if (subtitleEl) {
+        subtitleEl.textContent = "Méthodes et technologies de l’hyperinvestigation";
+      }
     } else {
-      subtitleEl.textContent = "Methods and technologies of hyperinvestigation";
-      contentNoteEl.textContent = "Main version in French · English translation in progress";
       langLabelFr.classList.remove("is-active");
       langLabelEn.classList.add("is-active");
+      if (subtitleEl) {
+        subtitleEl.textContent = "Methods and technologies of hyperinvestigation";
+      }
     }
+
+    langBlocks.forEach(block => {
+      if (block.getAttribute("data-lang") === currentLang) {
+        block.classList.add("is-active");
+      } else {
+        block.classList.remove("is-active");
+      }
+    });
   }
 
   langToggle.addEventListener("click", () => {
