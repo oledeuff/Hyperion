@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test WebGL pur</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #eee;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 1rem;
+    }
+    #glcanvas {
+      border: 2px solid #666;
+      background: #222;
+    }
+    #log {
+      font-size: 0.9rem;
+      max-width: 600px;
+      text-align: center;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="glcanvas" width="600" height="400">
+    Si vous voyez ce texte, le canvas n'est pas interprété comme tel.
+  </canvas>
+  <div id="log"></div>
+
+  <script>
+    const log = (msg) => {
+      console.log(msg);
+      const el = document.getElementById("log");
+      el.textContent += msg + "\n";
+    };
+
+    window.addEventListener("load", () => {
+      log("Page chargée, début du test WebGL…");
+
+      const canvas = document.getElementById("glcanvas");
+      if (!canvas) {
+        log("❌ Canvas introuvable.");
+        return;
+      }
+
+      // On teste WebGL "pur", sans Three.js
+      const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+
+      if (!gl) {
+        log("❌ WebGL semble indisponible (context null).");
+        log("→ soit WebGL est désactivé, soit bloqué par une extension / la carte graphique.");
+        // petit visuel : fond rouge pour montrer l'échec
+        const ctx2d = canvas.getContext("2d");
+        if (ctx2d) {
+          ctx2d.fillStyle = "red";
+          ctx2d.fillRect(0, 0, canvas.width, canvas.height);
+          ctx2d.fillStyle = "white";
+          ctx2d.font = "18px sans-serif";
+          ctx2d.fillText("WebGL indisponible", 20, 40);
+        }
+        return;
+      }
+
+      log("✅ Contexte WebGL obtenu, on dessine un fond bleu…");
+
+      // On efface l'écran en bleu
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.clearColor(0.0, 0.25, 0.7, 1.0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+
+      log("✅ Si vous voyez un grand rectangle BLEU, WebGL fonctionne.");
+    });
+  </script>
+</body>
+</html>
