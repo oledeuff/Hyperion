@@ -630,6 +630,23 @@
       Projet IUF HyperION · Rouletabille · Boîte à billes de l’hyperinvestigation — 2025–2030.
     </p>
   </footer>
+<script>
+  window.addEventListener("load", function () {
+    const c = document.getElementById("boiteabilles-canvas");
+    if (!c) {
+      console.error("Canvas introuvable");
+      return;
+    }
+    const ctx = c.getContext("2d");
+    if (!ctx) {
+      console.error("Contexte 2D impossible (canvas bloqué ou désactivé).");
+      return;
+    }
+    // Test visuel : petit carré rouge dans le coin
+    ctx.fillStyle = "red";
+    ctx.fillRect(0, 0, 40, 40);
+  });
+</script>
 
   <!-- 1. Charger Three.js AVANT le script qui initialise la boîte -->
   <script src="https://unpkg.com/three@0.165.0/build/three.min.js"></script>
