@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rouletabille · Boîte à billes de l’hyperinvestigation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #14100f;
+      --bg-alt: #1e1915;
+      --accent: #d9a441;       /* jaune vieilli / laiton */
+      --accent-soft: #f0e0b5;
+      --text: #f5f1e9;
+      --text-muted: #c7bca7;
+      --border: #3c332b;
+      --hyperion-blue: #4ea3ff; /* rappel HyperION discret */
+      --card-radius: 18px;
+      --shadow-soft: 0 18px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif;
+      background: radial-gradient(circle at top, #2a221a 0, #0b0705 55%, #000 100%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--accent-soft);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 7, 5, 0.9),
+        rgba(10, 7, 5, 0.7)
+      );
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.8rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8), 0 0 18px rgba(0, 0, 0, 0.6);
+      background: radial-gradient(circle at 30% 30%, #fff7cf 0, #c78d27 18%, #392314 55%, #0a0503 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      color: #20120b;
+    }
+
+    .brand-text h1 {
+      font-size: 1.1rem;
+      margin: 0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-text p {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.8rem;
+    }
+
+    .lang-switch {
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 0.15rem 0.25rem;
+      display: inline-flex;
+      gap: 0.25rem;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .lang-switch span {
+      padding: 0.2rem 0.4rem;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .lang-switch .active {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .hyperion-link {
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(78, 163, 255, 0.5);
+      color: var(--hyperion-blue);
+      font-size: 0.78rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: radial-gradient(circle at top, rgba(78, 163, 255, 0.18), transparent);
+    }
+
+    .hyperion-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    nav {
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.5rem 1.4rem 0.7rem;
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+    }
+
+    .nav-inner a {
+      opacity: 0.9;
+    }
+
+    .nav-inner a:hover {
+      opacity: 1;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 1.4rem auto 2.4rem;
+      padding: 0 1.4rem;
+    }
+
+    .intro {
+      margin-bottom: 1.4rem;
+      padding: 1rem 1.2rem;
+      background: linear-gradient(135deg, rgba(44, 35, 23, 0.85), rgba(15, 10, 7, 0.95));
+      border-radius: var(--card-radius);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    .intro h2 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+      gap: 1.4rem;
+      align-items: flex-start;
+    }
+
+    /* Colonne gauche : boîte à billes en canvas */
+
+    .boite-container {
+      position: sticky;
+      top: 5.8rem; /* sous le header */
+    }
+
+    .boite {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      border-radius: 26px;
+      padding: 0.9rem;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.08), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(217, 164, 65, 0.15), transparent 60%),
+        linear-gradient(145deg, #201510, #070301);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .boite-frame {
+      position: absolute;
+      inset: 0.8rem;
+      border-radius: 22px;
+      border: 1px solid rgba(0, 0, 0, 0.8);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        inset 0 0 18px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+    }
+
+    .boite-title {
+      position: absolute;
+      left: 1.2rem;
+      top: 0.9rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-soft);
+      z-index: 2;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    }
+
+    .boite-legend {
+      position: absolute;
+      left: 1.2rem;
+      bottom: 0.9rem;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      max-width: 70%;
+      z-index: 2;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    }
+
+    #boiteabilles-canvas {
+      position: absolute;
+      inset: 1.6rem 1.2rem 1.25rem 1.2rem;
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: radial-gradient(circle at top, #222 0, #050302 50%, #000 100%);
+    }
+
+    /* Colonne droite : fiches */
+
+    .fiches {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .fiche {
+      background: rgba(15, 10, 7, 0.96);
+      border-radius: var(--card-radius);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1.1rem 1.2rem 1.2rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .fiche h2 {
+      margin-top: 0;
+      margin-bottom: 0.4rem;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-soft);
+    }
+
+    .fiche h3 {
+      margin-top: 0.6rem;
+      margin-bottom: 0.3rem;
+      font-size: 0.92rem;
+      color: var(--accent-soft);
+    }
+
+    .fiche p {
+      margin: 0.2rem 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .fiche ul {
+      margin: 0.2rem 0 0.4rem 1.1rem;
+      padding: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(217, 164, 65, 0.18);
+      border: 1px solid rgba(217, 164, 65, 0.4);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-soft);
+    }
+
+    footer {
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+      padding: 0 1.4rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .boite-container {
+        position: static;
+      }
+      .boite {
+        max-width: 420px;
+        margin: 0 auto 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-mark">RT</div>
+        <div class="brand-text">
+          <h1>Rouletabille</h1>
+          <p>Boîte à billes de l’hyperinvestigation (IUF · HyperION)</p>
+        </div>
+      </div>
+      <div class="header-controls">
+        <div class="lang-switch" aria-label="Langue">
+          <span class="active">FR</span>
+          <span>EN</span>
+        </div>
+        <!-- adapte le chemin si besoin (../index.html si le fichier est dans un sous-dossier) -->
+        <a class="hyperion-link" href="index.html">
+          <span>Retour à HyperION</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M3 8.5h7.09L6.8 11.8 8 13l5-5-5-5-1.2 1.2L10.09 7.5H3z" fill="currentColor"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <nav>
+      <div class="nav-inner">
+        <a href="#section-accueil">Accueil</a>
+        <a href="#section-rouletabille">Rouletabille / Boitabille</a>
+        <a href="#section-methode">Méthode &amp; système de pensée</a>
+        <a href="#section-enquete">Enquête sensorielle</a>
+        <a href="#section-comparaisons">Comparaisons &amp; modèles</a>
+        <a href="#section-hyperinvestigation">Hyperinvestigation &amp; OSINT</a>
+        <a href="#section-corpus">Corpus &amp; fiches</a>
+        <a href="#section-apropos">À propos</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="section-accueil" class="intro">
+      <h2>Boîte à billes de Rouletabille</h2>
+      <p>
+        Ce site explore les <strong>méthodes d’enquête de Rouletabille</strong> comme
+        préfiguration de l’OSINT et de l’hyperinvestigation&nbsp;: un reporter-détective
+        qui met en tension logique, sens du détail, dispositifs sensoriels et institutions
+        (journal, police, justice…).
+      </p>
+      <p>
+        À gauche, une <strong>boîte à billes</strong> interactive (WebGL / Three.js)&nbsp;:
+        chaque bille renvoie à une famille de fiches (système de pensée, enquête
+        sensorielle, comparaisons, liens avec HyperION). À droite, les fiches détaillent
+        la <em>méthode du bon bout de la raison</em>, les protocoles d’observation et les échos
+        contemporains (OSINT studies, hyperdocumentation).
+      </p>
+    </section>
+
+    <div class="layout">
+      <!-- Colonne gauche : boîte à billes en WebGL -->
+      <aside class="boite-container" aria-label="Boîte à billes de navigation">
+        <div class="boite">
+          <div class="boite-frame"></div>
+          <div class="boite-title">Boîte à billes · WebGL</div>
+          <p class="boite-legend">
+            Cliquer sur une bille déplace la vue vers la partie correspondante du site
+            (méthode, enquête sensorielle, comparaisons, HyperION…).
+          </p>
+          <canvas id="boiteabilles-canvas">
+            Votre navigateur ne supporte pas le canvas HTML5.
+          </canvas>
+        </div>
+      </aside>
+
+      <!-- Colonne droite : fiches -->
+      <section class="fiches">
+        <!-- Rouletabille / Boitabille -->
+        <article id="section-rouletabille" class="fiche">
+          <h2>Rouletabille / Boitabille</h2>
+          <p>
+            Rouletabille est à la fois <strong>reporter, enquêteur et quasi-justicier</strong>.
+            Il agit devant le tribunal, mais aussi dans les coulisses des institutions
+            (rédaction, palais de justice, appareils d’État).
+          </p>
+          <p>
+            Son nom renvoie au manuscrit originel&nbsp;: <em>Boitabille</em>, comme une
+            <strong>boîte à billes</strong> pleine de ressorts et de mécanismes. Le site
+            reprend cet imaginaire&nbsp;: chaque bille ouvre une partie du système
+            Rouletabille.
+          </p>
+          <h3>Précurseur de l’OSINT</h3>
+          <ul>
+            <li>collecte de traces et documents accessibles (écrits, témoignages, lieux) ;</li>
+            <li>mise en intrigue de ces traces dans des démonstrations publiques ;</li>
+            <li>dialogue constant avec les institutions (journal, police, justice).</li>
+          </ul>
+          <p>
+            Rouletabille devient ainsi un modèle fictionnel de
+            <strong>journalisme d’enquête hyperdocumenté</strong>, que le projet IUF HyperION
+            replace dans une histoire plus longue de l’hyperdocumentation.
+          </p>
+        </article>
+
+        <!-- Méthode & système de pensée -->
+        <article id="section-methode" class="fiche">
+          <h2>Méthode &amp; système de pensée</h2>
+          <span class="badge">Bon bout de la raison</span>
+          <p>
+            Rouletabille revendique une <strong>logique pure</strong> – le fameux
+            <em>bon bout de la raison</em> – tout en s’appuyant sur une observation
+            extrêmement fine des détails matériels. Sa méthode oscille entre
+            <strong>déduction, induction et abduction</strong>.
+          </p>
+          <h3>Logique préalable &amp; indices</h3>
+          <ul>
+            <li>poser d’abord une hypothèse rationnelle («&nbsp;2 + 2 = 4&nbsp;»),</li>
+            <li>chercher ensuite les éléments qui confirment ou infirment cette hypothèse,</li>
+            <li>laisser les indices “mêlés et confus” tout en refusant l’illusion des apparences.</li>
+          </ul>
+          <h3>Logique pratique vs logique mathématique</h3>
+          <p>
+            Rouletabille distingue ce qui est <em>mathématiquement possible</em>
+            de ce qui est <em>humainement possible</em>. Sa logique est une
+            <strong>logique pratique</strong>, attentive aux gestes, aux contraintes
+            matérielles, aux habitudes des acteurs.
+          </p>
+          <h3>Forces et limites</h3>
+          <p>
+            La méthode cherche l’<strong>irréfutabilité</strong>, mais repose sur une forte
+            part d’intuition et de confiance dans la cohérence interne de l’enquêteur.
+            C’est ce qui la rend à la fois fascinante et discutable, notamment
+            si on la met en regard des méthodes forensiques modernes.
+          </p>
+        </article>
+
+        <!-- Enquête sensorielle -->
+        <article id="section-enquete" class="fiche">
+          <h2>Enquête sensorielle</h2>
+          <span class="badge">Tous les sens en alerte</span>
+          <p>
+            Rouletabille mobilise l’ensemble de ses sens comme <strong>instruments d’enquête</strong>.
+            Chaque sens ouvre une série de fiches analytiques (à développer à partir du corpus
+            et de tes fichiers&nbsp;.md).
+          </p>
+          <h3>Vue</h3>
+          <p>
+            La lumière, les ombres, les perspectives et les géométries des lieux deviennent
+            des <em>documents visuels</em>. Rouletabille met en place de véritables
+            protocoles expérimentaux (reconstitution de trajectoires, vérification des angles,
+            tests de visibilité…).
+          </p>
+          <h3>Odorat</h3>
+          <p>
+            Les <strong>parfums et odeurs</strong> fonctionnent comme des signatures persistantes.
+            Ils permettent d’identifier des présences, des déplacements ou des manipulations
+            que les témoins ne mentionnent pas.
+          </p>
+          <h3>Ouïe</h3>
+          <p>
+            Soupirs, bruits infimes, <em>paysage sonore</em> d’un lieu&nbsp;: l’oreille de
+            Rouletabille capte ce qui échappe au récit officiel. Le temps de l’enquête
+            se recompose en fonction de ces micro-indices sonores.
+          </p>
+          <h3>Proprioception &amp; corps</h3>
+          <p>
+            Le corps de l’enquêteur devient un instrument de mesure. Rouletabille rejoue
+            des scènes, reproduit des mouvements, teste la possibilité matérielle
+            de certaines hypothèses (peut-on vraiment accomplir tel geste dans
+            ce laps de temps&nbsp;?).
+          </p>
+          <h3>Métacognition &amp; «&nbsp;paranormal&nbsp;»</h3>
+          <p>
+            Rouletabille articule en permanence ce qu’il “voit” au bout de ses yeux
+            et ce qu’il “voit” au bout de sa raison. Les hypothèses “paranormales”
+            sont traitées comme des tests&nbsp;: il explore l’“anormal” pour mieux
+            le réfuter et revenir à une explication rationnelle.
+          </p>
+        </article>
+
+        <!-- Comparaisons & modèles -->
+        <article id="section-comparaisons" class="fiche">
+          <h2>Comparaisons &amp; modèles</h2>
+          <p>
+            Rouletabille s’inscrit dans une <strong>galerie de détectives et d’enquêteurs
+            fictionnels et réels</strong>. Le site propose des fiches comparatives
+            pour situer sa méthode.
+          </p>
+          <h3>Dupin (Poe)</h3>
+          <p>
+            Héritier du <em>chevalier Dupin</em>, Rouletabille partage la lecture
+            des journaux comme matériau principal, mais en déplace l’économie vers
+            un journalisme d’enquête moderne.
+          </p>
+          <h3>Sherlock Holmes</h3>
+          <p>
+            La méthode de Rouletabille se présente comme une rupture avec Holmes, tout
+            en recyclant la fascination pour le <strong>détail insignifiant</strong>.
+            Comparer les deux systèmes permet de faire apparaître des modèles
+            de preuve différents.
+          </p>
+          <h3>Grégory Temple, Rodolphe Reiss, Gaston Leroux</h3>
+          <ul>
+            <li>Grégory Temple comme autre configuration romanesque de la preuve ;</li>
+            <li>Rodolphe Reiss comme référence aux techniques forensiques réelles ;</li>
+            <li>Gaston Leroux comme architecte d’un dispositif d’hyperdocumentation
+              romanesque.</li>
+          </ul>
+        </article>
+
+        <!-- Hyperinvestigation & OSINT -->
+        <article id="section-hyperinvestigation" class="fiche">
+          <h2>Hyperinvestigation &amp; OSINT</h2>
+          <p>
+            Ce site Rouletabille est un <strong>satellite d’HyperION</strong>, projet IUF
+            consacré aux méthodes et technologies de l’hyperinvestigation. Rouletabille
+            y apparaît comme un <em>laboratoire fictionnel</em> pour penser :
+          </p>
+          <ul>
+            <li>l’enquête comme <strong>hyperdocumentation</strong> (multiplicité de traces, formats, régimes de preuve) ;</li>
+            <li>l’<strong>OSINT</strong> comme pratique de lecture et de recoupement de documents publics ou semi-publics ;</li>
+            <li>la tension entre raisonnement a priori et indices sensibles, toujours médiés par des dispositifs.</li>
+          </ul>
+          <p>
+            Les fiches pourront articuler des scènes de Rouletabille avec des
+            <strong>cas contemporains d’OSINT</strong> (journalisme d’enquête, investigations
+            collaboratives, hyperdocumentation en ligne) pour nourrir les OSINT studies.
+          </p>
+        </article>
+
+        <!-- Corpus & fiches -->
+        <article id="section-corpus" class="fiche">
+          <h2>Corpus &amp; fiches</h2>
+          <p>
+            Le corpus principal repose sur les romans de Rouletabille (édition critique,
+            notes, appareils de documents) et sur tes <strong>fichiers d’annotations
+            en Markdown</strong>.
+          </p>
+          <h3>Index des fiches</h3>
+          <p>
+            Cette section pourra lister, sous forme de table ou de carte interactive,
+            l’ensemble des fiches&nbsp;:
+          </p>
+          <ul>
+            <li>fiches “sens” (vue, odorat, ouïe, proprioception, métacognition…) ;</li>
+            <li>fiches “méthode” (bon bout de la raison, logique pratique…) ;</li>
+            <li>fiches comparatives (Dupin, Holmes, Temple, Reiss, Leroux…) ;</li>
+            <li>fiches “OSINT / HyperION” (échos contemporains, cas d’étude).</li>
+          </ul>
+          <p>
+            Un lien pourra pointer vers un <strong>graphe Cosma</strong> spécifique
+            “Rouletabille détective hyperinvestigation”, où chaque fiche devient un nœud
+            relié selon les types de liens (sens, logique, scènes, comparaisons…).
+          </p>
+        </article>
+
+        <!-- À propos -->
+        <article id="section-apropos" class="fiche">
+          <h2>À propos</h2>
+          <p>
+            Ce site est développé dans le cadre du projet de recherche IUF
+            <strong>HyperION · Méthodes et technologies de l’hyperinvestigation</strong>.
+            Il propose une exploration de Rouletabille comme figure charnière entre
+            roman d’énigme, journalisme d’enquête et hyperdocumentation.
+          </p>
+          <p>
+            Il est conçu comme un <strong>site compagnon</strong> d’HyperION&nbsp;:
+            singulier dans son esthétique (inspirée des journaux et enquêtes
+            du début du XX<sup>e</sup> siècle), mais relié aux mêmes enjeux
+            épistémologiques et méthodologiques.
+          </p>
+          <p>
+            Crédits, mentions légales, licences (par ex. CC BY pour les textes du site)
+            et partenaires pourront être détaillés ici.
+          </p>
+        </article>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>
+      Projet IUF HyperION · Rouletabille · Boîte à billes de l’hyperinvestigation — 2025–2030.
+    </p>
+  </footer>
+
+  <!-- 1. Charger Three.js AVANT le script qui initialise la boîte -->
+  <script src="https://unpkg.com/three@0.165.0/build/three.min.js"></script>
+
+  <!-- 2. Script d’interaction (boîte à billes WebGL + liens vers les sections) -->
+  <script>
