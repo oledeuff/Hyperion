@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hypercube de l'hyperinvestigation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Three.js depuis un CDN -->
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+
+  <style>
+    :root {
+      --bg: #050814;
+      --bg-panel: #0b1020;
+      --accent: #4fd1c5;
+      --accent-soft: rgba(79, 209, 197, 0.18);
+      --text: #f7fafc;
+      --muted: #a0aec0;
+      --border: #1a202c;
+      --danger: #f56565;
+      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.5);
+      --radius-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1a365d 0, #050814 45%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1400px;
+      margin: 24px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 960px) {
+      .page {
+        grid-template-columns: 1fr;
+        margin: 12px;
+      }
+    }
+
+    .panel {
+      background: rgba(5, 10, 30, 0.98);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 20px 18px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(79, 209, 197, 0.1), transparent 55%);
+      pointer-events: none;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .panel-subtitle {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-radius: 999px;
+      border: 1px solid rgba(160, 174, 192, 0.3);
+      padding: 3px 9px;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(6px);
+    }
+
+    .tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    #scene-container {
+      width: 100%;
+      height: 520px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      background: radial-gradient(circle at center, #020617 0, #000 55%);
+      position: relative;
+    }
+
+    @media (max-width: 960px) {
+      #scene-container {
+        height: 420px;
+      }
+    }
+
+    .legend {
+      position: absolute;
+      inset: auto 12px 12px 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .legend-block {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 12px;
+      padding: 7px 10px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      display: inline-flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 50%;
+    }
+
+    .legend-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #e2e8f0;
+    }
+
+    .legend-line {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .legend-key {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .legend-key.strate {
+      background: var(--accent);
+    }
+
+    .legend-key.axis {
+      background: transparent;
+      border-radius: 2px;
+      border-width: 0 0 1px 0;
+    }
+
+    .legend-label {
+      color: var(--muted);
+    }
+
+    /* Panneau fiches */
+    .cards-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      height: 100%;
+    }
+
+    .cards-intro {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .chip {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+    }
+
+    .info-cards {
+      margin-top: 8px;
+      position: relative;
+      flex: 1;
+      min-height: 260px;
+    }
+
+    .info-card {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+      padding: 10px 8px 6px 0;
+      overflow-y: auto;
+    }
+
+    .info-card.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .info-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .info-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 10px;
+    }
+
+    .info-body {
+      font-size: 0.88rem;
+      line-height: 1.4;
+      color: #e2e8f0;
+    }
+
+    .info-body p + p {
+      margin-top: 6px;
+    }
+
+    .info-list {
+      margin-top: 6px;
+      padding-left: 14px;
+      font-size: 0.86rem;
+      color: #cbd5f5;
+    }
+
+    .pill-row {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      font-size: 0.72rem;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 3px 7px;
+      background: var(--accent-soft);
+      color: #e2fffb;
+      border: 1px solid rgba(79, 209, 197, 0.5);
+    }
+
+    .pill.danger {
+      background: rgba(245, 101, 101, 0.16);
+      border-color: rgba(245, 101, 101, 0.6);
+      color: #fed7d7;
+    }
+
+    .hint {
+      margin-top: auto;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px dashed rgba(75, 85, 99, 0.7);
+      padding-top: 8px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <!-- PANNEAU GAUCHE : SCÈNE 3D -->
+    <section class="panel">
+      <header class="panel-header">
+        <div>
+          <div class="panel-title">Hypercube de l'hyperinvestigation</div>
+          <div class="panel-subtitle">Strates · dominations · terrains</div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">
+            <span class="tag-dot"></span> 3D conceptuelle
+          </span>
+          <span class="tag">
+            <span class="tag-dot"></span> Accountability
+          </span>
+          <span class="tag">
+            <span class="tag-dot"></span> Literacy
+          </span>
+        </div>
+      </header>
+
+      <div id="scene-container">
+        <div class="legend">
+          <div class="legend-block">
+            <div class="legend-title">Axes de l'hypercube</div>
+            <div class="legend-line">
+              <span class="legend-key axis"></span>
+              <span class="legend-label">X · Régimes de domination</span>
+            </div>
+            <div class="legend-line">
+              <span class="legend-key axis"></span>
+              <span class="legend-label">Y · Strates (dont accountability & literacy)</span>
+            </div>
+            <div class="legend-line">
+              <span class="legend-key axis"></span>
+              <span class="legend-label">Z · Terrains d'enquête</span>
+            </div>
+          </div>
+          <div class="legend-block">
+            <div class="legend-title">Interaction</div>
+            <div class="legend-line">
+              <span class="legend-key strate"></span>
+              <span class="legend-label">Nœuds = strates cliquables</span>
+            </div>
+            <div class="legend-line">
+              <span class="legend-label">Clique sur un nœud pour afficher la fiche.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANNEAU DROIT : FICHES STRATES -->
+    <section class="panel">
+      <header class="panel-header">
+        <div>
+          <div class="panel-title">Strates & fiches explicatives</div>
+          <div class="panel-subtitle">Hyperinvestigation · épistémologie</div>
+        </div>
+      </header>
+
+      <div class="cards-wrap">
+        <div class="cards-intro">
+          Le “Y” du cube regroupe les <strong>strates d’analyse</strong> de l’hyperinvestigation.
+          Chaque strate est un point cliquable dans l’espace 3D, et renvoie à une
+          <strong>fiche courte</strong> : rôle dans l’enquête, liens aux dominations, et
+          implications pour <strong>accountability</strong> & <strong>literacy</strong>.
+          <div class="chips-row">
+            <span class="chip">Matérielle</span>
+            <span class="chip">Discursive / Médiatique</span>
+            <span class="chip">Numérique / Données</span>
+            <span class="chip">Modélisante / Juridique</span>
+            <span class="chip">Accountability</span>
+            <span class="chip">Literacy</span>
+          </div>
+        </div>
+
+        <div class="info-cards">
+          <!-- Fiche par défaut -->
+          <article class="info-card active" data-strate="intro">
+            <h2 class="info-title">Comment lire l'hypercube</h2>
+            <div class="info-sub">Vue générale</div>
+            <div class="info-body">
+              <p>
+                L’hypercube représente l’hyperinvestigation comme une pratique
+                multi-strates, prise dans des <strong>régimes de domination</strong> (axe X),
+                déployée sur des <strong>terrains d’enquête</strong> (axe Z), et traversant des
+                <strong>couches analytiques</strong> (axe Y).
+              </p>
+              <p>
+                Les strates <em>Matérielle, Discursive, Numérique, Modélisante</em> sont complétées ici par deux
+                dimensions transversales :
+              </p>
+              <ul class="info-list">
+                <li><strong>Accountability</strong> – capacité à mettre en cause, documenter et contraindre les pouvoirs.</li>
+                <li><strong>Literacy</strong> – capacité des collectifs à comprendre, répliquer et prolonger les enquêtes.</li>
+              </ul>
+              <p>
+                Cliquer sur un nœud de strate dans le cube permet de voir :
+              </p>
+              <ul class="info-list">
+                <li>son rôle dans l’enquête profonde ;</li>
+                <li>son rapport aux dominations (État, industrie, médias, plateformes) ;</li>
+                <li>ce qu’elle exige en termes de reddition de comptes et de littératie.</li>
+              </ul>
+              <div class="pill-row">
+                <span class="pill">Hyperdocumentation</span>
+                <span class="pill">Polémologie</span>
+                <span class="pill">Forensic Architecture</span>
+                <span class="pill">Bellingcat</span>
+                <span class="pill">CNews / Bolloré</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Matérielle -->
+          <article class="info-card" data-strate="material">
+            <h2 class="info-title">Strate matérielle</h2>
+            <div class="info-sub">Corps · sols · infrastructures</div>
+            <div class="info-body">
+              <p>
+                La strate matérielle concerne les <strong>corps</strong>, les <strong>ruines</strong>, les
+                <strong>écosystèmes</strong>, les <strong>bâtiments</strong>, les <strong>pipelines</strong>, les
+                dispositifs policiers et militaires. C’est ce qui fait irruption dans
+                l’enquête comme <em>irréductiblement concret</em>.
+              </p>
+              <p>
+                Dans les enquêtes de Weizman, cette strate apparaît dans la
+                <strong>cartographie de Gaza</strong>, la reconstruction des trajectoires de balles,
+                l’analyse des décombres. Dans les enquêtes écologiques, elle se
+                manifeste comme métaux lourds, forêts rasées, nappes polluées.
+              </p>
+              <ul class="info-list">
+                <li><strong>Accountability</strong> : documenter l’<em>impact matériel</em> et le traduire en
+                  responsabilités (crimes de guerre, écocide, négligence criminelle).</li>
+                <li><strong>Literacy</strong> : donner aux publics les outils pour lire un plan,
+                  une coupe, une carte d’impact et comprendre “où” se joue la
+                  violence.</li>
+              </ul>
+              <div class="pill-row">
+                <span class="pill">Corps & ruines</span>
+                <span class="pill">Écocide</span>
+                <span class="pill">Architecture de la destruction</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Discursive / Médiatique -->
+          <article class="info-card" data-strate="discursive">
+            <h2 class="info-title">Strate discursive / médiatique</h2>
+            <div class="info-sub">Récits · cadrages · montages</div>
+            <div class="info-body">
+              <p>
+                Ici, l’hyperinvestigation travaille sur les <strong>récits</strong> : communiqués
+                d’État, éditoriaux, bandeaux CNews, “éléments de langage”,
+                storytelling industriel ou technologique.
+              </p>
+              <p>
+                L’enquête sur CNews menée avec les outils d’Antoine Schirer en est
+                un exemple : le travail consiste à <strong>objectiver les cadrages</strong> via le
+                temps de parole, les thèmes dominants, les figures invitées, plutôt
+                que de rester dans la simple dénonciation idéologique.
+              </p>
+              <ul class="info-list">
+                <li><strong>Accountability</strong> : rendre les récits <em>répondables</em>, en les
+                  confrontant à des données et à des obligations (pluralisme,
+                  déontologie, droit de la presse).</li>
+                <li><strong>Literacy</strong> : former à la <em>lecture critique</em> des montages, à
+                  l’analyse de cadrage, à une compréhension des agendas médiatiques.</li>
+              </ul>
+              <div class="pill-row">
+                <span class="pill">Cadrage</span>
+                <span class="pill">Temps de parole</span>
+                <span class="pill">Contre-discours</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Numérique / Données -->
+          <article class="info-card" data-strate="data">
+            <h2 class="info-title">Strate numérique / données</h2>
+            <div class="info-sub">OSINT · traces numériques · séries</div>
+            <div class="info-body">
+              <p>
+                Cette strate est celle de l’<strong>OSINT</strong>, des bases de données, des logs,
+                des images satellites, des séries temporelles, des métadonnées. C’est
+                le terrain privilégié de Bellingcat et, de plus en plus, du journalisme
+                d’investigation.
+              </p>
+              <p>
+                L’hyperinvestigation y opère comme <strong>agencement de traces</strong> :
+                recoupements, géolocalisation, corrélation entre flux de données et
+                événements matériels ou narratifs.
+              </p>
+              <ul class="info-list">
+                <li><strong>Accountability</strong> : rendre visibles les <em>empreintes numériques</em> des
+                  dominations (mouvements de troupes, pipelines financiers, ciblage
+                  publicitaire, surveillance).</li>
+                <li><strong>Literacy</strong> : développer une capacité collective à <em>lire et répliquer</em>
+                  les méthodes d’OSINT (vérification d’images, croisement de sources,
+                  compréhension des limites des données).</li>
+              </ul>
+              <div class="pill-row">
+                <span class="pill">OSINT</span>
+                <span class="pill">Imagerie satellite</span>
+                <span class="pill">Data-journalisme</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Modélisante / Juridique / Institutionnelle -->
+          <article class="info-card" data-strate="model">
+            <h2 class="info-title">Strate modélisante / juridique / institutionnelle</h2>
+            <div class="info-sub">Modèles · normes · procédures</div>
+            <div class="info-body">
+              <p>
+                Les modèles climatiques, les algorithmes d’IA, les indicateurs de
+                risque, les normes environnementales, les régulations audiovisuelles
+                appartiennent à cette strate. Ils configurent <strong>les conditions du
+                dicible et du mesurable</strong>.
+              </p>
+              <p>
+                Noyer le montre bien : le modèle est un <em>objet de lutte</em>, car il décide
+                de ce qui compte (indicateurs) et de ce qui reste hors-cadre. L’hyperinvestigation
+                doit donc savoir <strong>mettre les modèles en procès</strong>.
+              </p>
+              <ul class="info-list">
+                <li><strong>Accountability</strong> : exiger la <em>justification des modèles</em> et des normes
+                  (données d’entrée, hypothèses, effets d’exclusion), et lier ces
+                  choix à des responsabilités politiques.</li>
+                <li><strong>Literacy</strong> : construire une <em>littératie des modèles</em> : comprendre
+                  ce que font les modèles, ce qu’ils ignorent, comment les contester
+                  et en proposer d’autres.</li>
+              </ul>
+              <div class="pill-row">
+                <span class="pill">Modélisation</span>
+                <span class="pill">Droit & régulation</span>
+                <span class="pill">Indicators politics</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Accountability -->
+          <article class="info-card" data-strate="accountability">
+            <h2 class="info-title">Strate accountability</h2>
+            <div class="info-sub">Reddition de comptes · justiciabilité</div>
+            <div class="info-body">
+              <p>
+                L’accountability n’est pas une strate “en plus”, mais une couche
+                <strong>transversale</strong> : elle mesure la capacité d’une hyperinvestigation à
+                <em>contraindre</em> les dominations à répondre – politiquement, juridiquement,
+                médiatiquement.
+              </p>
+              <p>
+                Une enquête hyperdocumentaire n’est “hyperinvestigation” que si elle
+                peut <strong>circuler vers des instances de décision</strong> : tribunaux, instances
+                de régulation, contre-pouvoirs médiatiques, mobilisations sociales.
+              </p>
+              <ul class="info-list">
+                <li>Relier les preuves à des <strong>forums de reddition de comptes</strong> :
+                  cours de justice, autorités administratives, commissions d’enquête.</li>
+                <li>Rendre lisible la <strong>chaîne de responsabilité</strong> : qui savait quoi,
+                  quand, et avait la capacité d’agir.</li>
+              </ul>
+              <div class="pill-row">
+                <span class="pill">Forums hybrides</span>
+                <span class="pill">Justiciabilité</span>
+                <span class="pill danger">Contre-forensics</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Literacy -->
+          <article class="info-card" data-strate="literacy">
+            <h2 class="info-title">Strate literacy</h2>
+            <div class="info-sub">Capacité d'enquête · pédagogie</div>
+            <div class="info-body">
+              <p>
+                La literacy désigne la capacité des <strong>collectifs</strong> (étudiants, publics,
+                communautés affectées) à comprendre, critiquer et prolonger les
+                hyperinvestigations. Elle est au cœur de la dimension
+                <strong>futurologique</strong> du concept.
+              </p>
+              <p>
+                HyperIon peut être lu comme un projet de <em>formation d’enquêteurs</em> :
+                transformer Gaza, Bellingcat, CNews, les enquêtes écologiques et
+                l’IA en <strong>terrains pédagogiques</strong> où s’apprennent des gestes,
+                des méthodes, une éthique de l’enquête.
+              </p>
+              <ul class="info-list">
+                <li>Concevoir des <strong>dispositifs de médiation</strong> (murs d’enquête, graphes,
+                  ateliers) qui rendent l’enquête appropriable.</li>
+                <li>Articuler literacy et <strong>capacité d’auto-défense</strong> face aux régimes
+                  de domination : savoir lire un contrat, un budget, un dataset,
+                  une propagande, un modèle d’IA.</li>
+              </ul>
+              <div class="pill-row">
+                <span class="pill">Pédagogie de l'enquête</span>
+                <span class="pill">Médiation des données</span>
+                <span class="pill">Capacité collective</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="hint">
+          Astuce&nbsp;: tu peux étendre ce site en ajoutant, pour chaque
+          strate, des liens vers des <strong>cas</strong> (Weizman, Bellingcat, CNews, enquêtes
+          écologiques, IA) ou vers des <strong>fiches Cosma</strong> dans HyperIon.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("scene-container");
+
+      // --- Scène Three.js de base ---
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x020617);
+
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+      camera.position.set(4.5, 3.5, 5.5);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
+      controls.rotateSpeed = 0.6;
+      controls.panSpeed = 0.6;
+
+      // Lumières
+      const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+      scene.add(ambient);
+
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+      dirLight.position.set(4, 6, 5);
+      scene.add(dirLight);
+
+      // Axe principal : un cube filaire pour le repère
+      const cubeSize = 3;
+      const boxGeom = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+      const edges = new THREE.EdgesGeometry(boxGeom);
+      const lineMat = new THREE.LineBasicMaterial({ color: 0x4b5563, linewidth: 1 });
+      const wireframe = new THREE.LineSegments(edges, lineMat);
+      scene.add(wireframe);
+
+      // Petits axes colorés pour X, Y, Z
+      const axisLength = 2.2;
+      const axesHelper = new THREE.AxesHelper(axisLength);
+      scene.add(axesHelper);
+      // X=rouge, Y=vert, Z=bleu par défaut avec AxesHelper
+
+      // --- Nœuds de strates sur l'axe Y (strates) ---
+      // On place 6 strates régulièrement entre bas et haut du cube.
+      const stratNames = [
+        { key: "material", label: "Matérielle" },
+        { key: "discursive", label: "Discursive" },
+        { key: "data", label: "Numérique" },
+        { key: "model", label: "Modélisante" },
+        { key: "accountability", label: "Accountability" },
+        { key: "literacy", label: "Literacy" }
+      ];
+
+      const sphereGeom = new THREE.SphereGeometry(0.08, 20, 20);
+      const strataNodes = [];
+
+      const minY = -cubeSize / 2 + 0.3;
+      const maxY = cubeSize / 2 - 0.3;
+      const step = (maxY - minY) / (stratNames.length - 1);
+
+      stratNames.forEach((s, index) => {
+        const material = new THREE.MeshPhongMaterial({
+          color: 0x4fd1c5,
+          emissive: 0x0f172a,
+          shininess: 80
+        });
+
+        const sphere = new THREE.Mesh(sphereGeom, material);
+
+        // Position : sur l'axe Y, et légèrement en avant pour être visible
+        const y = minY + step * index;
+        sphere.position.set(0, y, cubeSize / 2 - 0.3);
+
+        sphere.userData = {
+          type: "strate-node",
+          strateKey: s.key,
+          label: s.label
+        };
+
+        scene.add(sphere);
+        strataNodes.push(sphere);
+
+        // Petit texte "billboard" optionnel (facultatif, mais utile visuellement)
+        const canvas = document.createElement("canvas");
+        const size = 256;
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, size, size);
+        ctx.fillStyle = "rgba(15,23,42,0.9)";
+        ctx.beginPath();
+        ctx.arc(size / 2, size / 2, size / 2.3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#e2fffb";
+        ctx.font = "bold 32px system-ui";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(s.label[0], size / 2, size / 2); // première lettre
+
+        const texture = new THREE.CanvasTexture(canvas);
+        const spriteMat = new THREE.SpriteMaterial({
+          map: texture,
+          depthTest: false,
+          depthWrite: false
+        });
+        const sprite = new THREE.Sprite(spriteMat);
+        sprite.scale.set(0.32, 0.32, 0.32);
+        sprite.position.copy(sphere.position.clone().add(new THREE.Vector3(0.25, 0.22, 0)));
+        scene.add(sprite);
+      });
+
+      // --- Raycaster pour les clics ---
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+
+      function onClick(event) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        mouse.set(x, y);
+
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(strataNodes, false);
+
+        if (intersects.length > 0) {
+          const obj = intersects[0].object;
+          const key = obj.userData.strateKey;
+          if (key) {
+            activateCard(key);
+            highlightNode(obj);
+          }
+        }
+      }
+
+      renderer.domElement.addEventListener("click", onClick);
+
+      // --- Activation des fiches ---
+      const cards = Array.from(document.querySelectorAll(".info-card"));
+      let currentNode = null;
+
+      function activateCard(strateKey) {
+        cards.forEach(card => {
+          const key = card.dataset.strate;
+          if (!strateKey && key === "intro") {
+            card.classList.add("active");
+          } else {
+            card.classList.toggle("active", key === strateKey);
+          }
+        });
+      }
+
+      function highlightNode(node) {
+        if (currentNode && currentNode.material && currentNode !== node) {
+          currentNode.material.color.set(0x4fd1c5);
+          currentNode.scale.set(1, 1, 1);
+        }
+        if (node && node.material) {
+          node.material.color.set(0xfbbf24); // jaune doux
+          node.scale.set(1.25, 1.25, 1.25);
+        }
+        currentNode = node;
+      }
+
+      // --- Animation ---
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // --- Resize ---
+      window.addEventListener("resize", () => {
+        const newWidth = container.clientWidth;
+        const newHeight = container.clientHeight;
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(newWidth, newHeight);
+      });
+    });
+  </script>
+</body>
+</html>
