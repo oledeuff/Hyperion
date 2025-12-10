@@ -448,7 +448,7 @@
       color: #6b7280;
     }
 
-    /* PANEL DROIT (FICHES) */
+    /* PANEL DROIT (FICHES + INDEX) */
 
     .detail-wrap {
       display: flex;
@@ -465,6 +465,119 @@
 
     body.light-mode .detail-intro {
       color: #4b5563;
+    }
+
+    .index-menu {
+      margin-top: 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: radial-gradient(circle at top, rgba(15,23,42,0.98), #020617);
+      padding: 6px 8px;
+      font-size: 0.8rem;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+
+    body.light-mode .index-menu {
+      background: #f9fafb;
+      border-color: #e5e7eb;
+      box-shadow: 0 4px 12px rgba(15,23,42,0.06);
+    }
+
+    .index-header {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    body.light-mode .index-header {
+      color: #6b7280;
+    }
+
+    .index-groups {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px 8px;
+    }
+
+    @media (max-width: 400px) {
+      .index-groups {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .index-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .index-group-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    body.light-mode .index-group-title {
+      color: #6b7280;
+    }
+
+    .index-item {
+      border: none;
+      background: transparent;
+      color: #e5e7eb;
+      font-size: 0.78rem;
+      text-align: left;
+      padding: 2px 4px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.12s ease, color 0.12s ease;
+    }
+
+    .index-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .index-dot.strate { background: var(--c-strate); }
+    .index-dot.epistrate { background: var(--c-epistrate); }
+    .index-dot.axe { background: var(--c-axe); }
+    .index-dot.plane { background: var(--c-plane); }
+
+    .index-item span.code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 0.76rem;
+      opacity: 0.9;
+    }
+
+    .index-item:hover {
+      background: rgba(79,70,229,0.5);
+    }
+
+    body.light-mode .index-item {
+      color: #111827;
+    }
+
+    body.light-mode .index-item:hover {
+      background: #e5e7eb;
+    }
+
+    .index-item-active {
+      background: rgba(79,70,229,0.9);
+      color: #f9fafb;
+    }
+
+    body.light-mode .index-item-active {
+      background: #4f46e5;
+      color: #f9fafb;
     }
 
     .detail-card {
@@ -767,7 +880,7 @@
     </div>
   </section>
 
-  <!-- DROITE : FICHES -->
+  <!-- DROITE : FICHES + INDEX -->
   <section class="panel">
     <div class="panel-content detail-wrap">
       <header class="panel-header">
@@ -785,6 +898,12 @@
         quelques <strong>références indicatives</strong>.
       </div>
 
+      <!-- INDEX / MENU DES ÉLÉMENTS -->
+      <div class="index-menu">
+        <div class="index-header">Index des éléments</div>
+        <div class="index-groups" id="index-groups"></div>
+      </div>
+
       <article class="detail-card" id="detail-card">
         <header class="detail-header">
           <div class="detail-title" id="detail-title">
@@ -792,7 +911,7 @@
           </div>
           <div class="detail-badges" id="detail-badges">
             <span class="detail-badge">
-              Clique sur un nœud de la carte pour afficher sa fiche.
+              Clique sur un nœud de la carte ou sur un élément de l’index pour afficher sa fiche.
             </span>
           </div>
         </header>
@@ -1305,6 +1424,92 @@
   ELEMENTS.forEach(createNode);
 
   // -----------------------------
+  // INDEX / MENU DYNAMIQUE
+  // -----------------------------
+  const indexGroupsEl = document.getElementById("index-groups");
+  const indexItemElements = {};
+
+  function buildIndexMenu() {
+    const groups = {
+      strates: { label: "Strates", items: [] },
+      epistrates: { label: "Épistrates", items: [] },
+      axes: { label: "Axes", items: [] },
+      planE: { label: "Plan E", items: [] }
+    };
+
+    ELEMENTS.forEach(el => {
+      let key;
+      if (el.typeAnalytique === "Plan_épistémologique") {
+        key = "planE";
+      } else if (el.typeAnalytique === "Axe_transversal") {
+        key = "axes";
+      } else if (el.categorie && el.categorie.startsWith("Épistrate")) {
+        key = "epistrates";
+      } else {
+        key = "strates";
+      }
+      groups[key].items.push(el);
+    });
+
+    Object.values(groups).forEach(group => {
+      group.items.sort((a, b) => a.id.localeCompare(b.id));
+    });
+
+    Object.entries(groups).forEach(([key, group]) => {
+      const wrapper = document.createElement("div");
+      wrapper.className = "index-group";
+
+      const title = document.createElement("div");
+      title.className = "index-group-title";
+      title.textContent = group.label;
+      wrapper.appendChild(title);
+
+      group.items.forEach(el => {
+        const item = document.createElement("button");
+        item.type = "button";
+        item.className = "index-item";
+        item.dataset.id = el.id;
+
+        const dot = document.createElement("span");
+        dot.className = "index-dot " + (
+          el.typeAnalytique === "Plan_épistémologique" ? "plane" :
+          el.typeAnalytique === "Axe_transversal" ? "axe" :
+          (el.categorie && el.categorie.startsWith("Épistrate")) ? "epistrate" :
+          "strate"
+        );
+        item.appendChild(dot);
+
+        const code = document.createElement("span");
+        code.className = "code";
+        code.textContent = el.id;
+        item.appendChild(code);
+
+        const label = document.createElement("span");
+        label.textContent = "· " + el.name;
+        item.appendChild(label);
+
+        item.addEventListener("click", () => selectNode(el.id));
+        wrapper.appendChild(item);
+
+        indexItemElements[el.id] = item;
+      });
+
+      indexGroupsEl.appendChild(wrapper);
+    });
+  }
+
+  function updateIndexSelection(id) {
+    Object.values(indexItemElements).forEach(btn => {
+      btn.classList.remove("index-item-active");
+    });
+    if (indexItemElements[id]) {
+      indexItemElements[id].classList.add("index-item-active");
+    }
+  }
+
+  buildIndexMenu();
+
+  // -----------------------------
   // PANEL DE DÉTAIL
   // -----------------------------
   const detailCard = document.getElementById("detail-card");
@@ -1485,6 +1690,7 @@
 
     drawRelations(id);
     renderDetail(id);
+    updateIndexSelection(id);
   }
 
   Object.values(nodeElements).forEach(g => {
