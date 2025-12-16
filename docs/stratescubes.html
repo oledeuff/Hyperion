@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>HyperION · Hypercube des fiches</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-elevated: #020617;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1e293b;
+
+      --color-strate: #4f46e5;
+      --color-epistrate: #22c55e;
+      --color-parastrate: #f97316;
+      --color-plane: #e11d48;
+      --color-operateur: #06b6d4;
+
+      --shadow-soft: 0 22px 55px rgba(0, 0, 0, 0.85);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #020617 45%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.92));
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 650;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .brand-pill {
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--muted);
+    }
+
+    .brand-subtitle {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .lang-switch {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      padding: 4px 9px;
+      cursor: default;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    main {
+      flex: 1;
+      padding: 18px 20px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .left { flex: 1.05; min-width: 0; }
+    .right { flex: 0.95; min-width: 280px; }
+
+    .panel {
+      background:
+        radial-gradient(circle at 15% 0, rgba(56, 189, 248, 0.14), transparent 55%),
+        radial-gradient(circle at 85% 100%, rgba(129, 140, 248, 0.18), transparent 55%),
+        var(--bg-elevated);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: var(--shadow-soft);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .panel-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .panel-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .cube-container {
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      overflow: hidden;
+      position: relative;
+      background: radial-gradient(circle at center, #020617, #000);
+    }
+
+    #cubeCanvas {
+      display: block;
+      width: 100%;
+      height: 420px;
+      background: transparent;
+    }
+
+    .cube-overlay-label {
+      position: absolute;
+      bottom: 6px;
+      left: 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .cube-overlay-hover {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      max-width: 60%;
+      text-align: right;
+    }
+
+    /* Index */
+
+    .index-panel { padding: 10px 10px 8px; }
+
+    .index-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .index-search {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      padding: 4px 8px;
+      font-size: 0.78rem;
+      outline: none;
+      margin-bottom: 6px;
+    }
+
+    .index-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      max-height: 210px;
+      overflow-y: auto;
+      font-size: 0.8rem;
+    }
+
+    .index-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 6px;
+      border-radius: 999px;
+      cursor: pointer;
+      margin-bottom: 3px;
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+
+    .index-item span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .index-item small {
+      opacity: 0.8;
+      font-size: 0.72rem;
+      margin-left: 6px;
+    }
+
+    .index-item:hover {
+      background: rgba(148, 163, 184, 0.14);
+      transform: translateY(-0.5px);
+    }
+
+    .index-item.active {
+      background: rgba(56, 189, 248, 0.16);
+      border: 1px solid rgba(56, 189, 248, 0.65);
+    }
+
+    .index-item .legend-dot { flex-shrink: 0; }
+
+    /* Fiche + animation flip */
+
+    .fiche-card {
+      background: #020617;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 14px 12px;
+      position: relative;
+      overflow: visible;
+      display: flex;
+      flex-direction: column;
+      transform-origin: center;
+    }
+
+    .fiche-card.flip-out {
+      transition: transform 0.25s ease;
+      transform: rotateY(90deg);
+    }
+
+    .fiche-card.flip-in {
+      transition: transform 0.25s ease;
+      transform: rotateY(0deg);
+    }
+
+    .fiche-strip {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      border: 2px solid transparent;
+      pointer-events: none;
+    }
+
+    .strip-strate    { border-color: rgba(79, 70, 229, 0.9); }
+    .strip-epistrate { border-color: rgba(34, 197, 94, 0.9); }
+    .strip-parastrate{ border-color: rgba(249, 115, 22, 0.95); }
+    .strip-plane     { border-color: rgba(225, 29, 72, 0.95); }
+    .strip-operateur { border-color: rgba(6, 182, 212, 0.95); }
+
+    .fiche-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+      z-index: 1;
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      color: var(--muted);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .pill-id {
+      font-family: ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+      font-size: 0.72rem;
+    }
+
+    .fiche-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+      z-index: 1;
+    }
+
+    .fiche-subtitle {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      z-index: 1;
+    }
+
+    .flip-toggle {
+      align-self: flex-start;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--muted);
+      font-size: 0.78rem;
+      padding: 3px 10px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .flip-toggle[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .flip-toggle:not([disabled]):hover {
+      border-color: rgba(56, 189, 248, 0.8);
+      color: #e0f2fe;
+    }
+
+    .fiche-body {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    .fiche-body h1,
+    .fiche-body h2,
+    .fiche-body h3 {
+      margin: 0.5em 0 0.25em;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .fiche-body p {
+      margin: 0.25em 0 0.45em;
+    }
+
+    .fiche-body ul {
+      margin: 0.2em 0 0.45em 1.2em;
+      padding-left: 0.9em;
+    }
+
+    .fiche-body li {
+      margin-bottom: 0.18em;
+    }
+
+    .fiche-body strong { font-weight: 600; }
+    .fiche-body em { font-style: italic; }
+
+    .fiche-body-dark { display: none; }
+    .fiche-card.show-dark .fiche-body-light { display: none; }
+    .fiche-card.show-dark .fiche-body-dark  { display: block; }
+
+    .fiche-footer {
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .hint { font-size: 0.76rem; color: var(--muted); }
+
+    @media (max-width: 960px) {
+      main { flex-direction: column; }
+      #cubeCanvas { height: 360px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <header>
+    <div class="brand">
+      <div class="brand-title-row">
+        <div class="brand-title">HYPERION</div>
+        <div class="brand-pill">Méthodes &amp; technologies de l’hyperinvestigation</div>
+      </div>
+      <div class="brand-subtitle">
+        Strates · Épistrates · Parastrates · Plan E · Opérateurs
+      </div>
+    </div>
+    <div class="header-controls">
+      <div class="lang-switch">FR / EN</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background: var(--color-strate);"></span>Strates</span>
+        <span><span class="legend-dot" style="background: var(--color-epistrate);"></span>Épistrates</span>
+        <span><span class="legend-dot" style="background: var(--color-parastrate);"></span>Parastrates</span>
+        <span><span class="legend-dot" style="background: var(--color-plane);"></span>Plan E</span>
+        <span><span class="legend-dot" style="background: var(--color-operateur);"></span>Opérateurs</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- LEFT: hypercube + index -->
+    <section class="column left">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Hypercube des fiches</div>
+          <div class="panel-hint">Survolez une arête active · cliquez pour ouvrir la fiche à droite.</div>
+        </div>
+        <div class="cube-container">
+          <canvas id="cubeCanvas" width="900" height="420"></canvas>
+          <div class="cube-overlay-label">
+            Tesseract 4D projeté en 3D. Arêtes colorées = fiches actives.
+          </div>
+          <div class="cube-overlay-hover" id="hoverInfo">
+            Survolez une arête pour voir son identifiant.
+          </div>
+        </div>
+      </div>
+
+      <div class="panel index-panel">
+        <div class="index-header">
+          <span>Index des fiches</span>
+          <span class="hint">Cliquer pour charger la fiche</span>
+        </div>
+        <input id="indexSearch" class="index-search" type="text" placeholder="Filtrer (id, libellé, type)..." />
+        <ul id="indexList" class="index-list"></ul>
+      </div>
+    </section>
+
+    <!-- RIGHT: fiche recto / dark side -->
+    <section class="column right">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">Fiche (recto / dark side)</div>
+          <div class="panel-hint">Recto = structure de base · Verso = risques / détournements.</div>
+        </div>
+        <div class="fiche-card" id="ficheCard">
+          <div class="fiche-strip" id="ficheStrip"></div>
+
+          <div class="fiche-pills" id="fichePills"></div>
+          <div class="fiche-title" id="ficheTitle">Sélectionnez une arête active</div>
+          <div class="fiche-subtitle" id="ficheSubtitle">
+            Cliquez sur une arête lumineuse ou un élément de l’index pour charger la fiche.
+          </div>
+
+          <button class="flip-toggle" id="flipToggle" disabled>Dark side (n.c.)</button>
+
+          <div class="fiche-body fiche-body-light" id="ficheBodyLight">
+            <p>
+              Recto : définition, exemples, fonction, face claire, biblio, sans les métadonnées.
+            </p>
+            <p class="hint">
+              Verso : uniquement la partie « Face dark » issue des fiches Markdown, pour visualiser les risques
+              et les usages pervers de chaque strate / épistrate / parastrate / opérateur.
+            </p>
+          </div>
+
+          <div class="fiche-body fiche-body-dark" id="ficheBodyDark">
+            <p class="hint">
+              Côté dark non encore explicité. Choisissez une fiche avec une section « ## Face dark » pour voir les risques.
+            </p>
+          </div>
+
+          <div class="fiche-footer">
+            <span class="hint">IDs = identifiants à reprendre dans Cosma / HyperIon.</span>
+            <span class="hint">Les métadonnées restent hors du texte, signalées par les pastilles et les couleurs.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  // --- Métadonnées catégories ---
+  const categoryConfig = {
+    Strate:   { color: getComputedStyle(document.documentElement).getPropertyValue("--color-strate").trim(),   label: "Strate" },
+    Epistrate:{ color: getComputedStyle(document.documentElement).getPropertyValue("--color-epistrate").trim(), label: "Épistrate" },
+    Parastrate:{color: getComputedStyle(document.documentElement).getPropertyValue("--color-parastrate").trim(),label: "Parastrate" },
+    PlanE:    { color: getComputedStyle(document.documentElement).getPropertyValue("--color-plane").trim(),    label: "Plan E" },
+    Operateur:{ color: getComputedStyle(document.documentElement).getPropertyValue("--color-operateur").trim(),label: "Opérateur" }
+  };
+
+  // --- Données des fiches (avec Face dark incluse dans le markdown) ---
+  const fiches = [
+    {
+      id: "S1",
+      label: "Strate matérielle",
+      category: "Strate",
+      summary:
+        "Corps, sols, ruines, architectures et milieux physiques : là où les dominations s’inscrivent comme transformations matérielles.",
+      markdown: `---
+id: S1
+type: strate
+label: Strate matérielle
+---
+
+# S1 · Strate matérielle
+
+## Définition
+Strate des **corps, sols, ruines, architectures et milieux physiques**.  
+Les dominations s’y inscrivent comme **transformations matérielles** : destructions, emprises spatiales, écocides locaux, dispositifs répressifs.
+
+## Exemples
+- Ruines, impacts, shrapnels et plans architecturaux mobilisés dans les enquêtes de *Forensic Architecture* (Weizman).  
+- Sols contaminés, nappes polluées, décharges toxiques, friches industrielles.  
+- Murs, prisons, centres de rétention, postes frontières, architectures carcérales.
+
+## Fonction dans l’hyperinvestigation
+- Ancrer l’enquête dans l’**irréductible matérialité** des violences (guerres, écocides, violences policières).  
+- Passer de l’« événement » à la **preuve située**, en montrant ce qui reste dans les corps et les milieux.
+
+## Face claire
+- Permet de résister aux récits purement discursifs ; fournit des **preuves robustes**.
+
+## Face dark
+- Risque de **fétichiser la trace matérielle** au détriment des vécus et des interprétations.  
+- Peut être réinvestie par des dispositifs de contrôle (forensique au service des pouvoirs en place).
+
+## Liens forts
+- Épistrates : EPI-METR, EPI-MOD, EPI-PLAT.  
+- Parastrates : PARA-MEDIA, PARA-ECONO, PARA-SECUR.  
+- Opérateurs : O1-ACCOUNTABILITY, O2-LITERACY.  
+- Plan E : E1 (formes de preuve), E4 (généalogie forensique).
+
+## Biblio indicative
+- Eyal Weizman, *Forensic Architecture. Violence at the Threshold of Detectability*, Zone Books/MIT Press, 2017.`
+    },
+    {
+      id: "S3",
+      label: "Strate numérique / OSINT",
+      category: "Strate",
+      summary:
+        "Traces numériques publiques ou semi-publiques : terrain privilégié de l’OSINT pour recomposer des chaînes d’événements.",
+      markdown: `---
+id: S3
+type: strate
+label: Strate numérique / OSINT
+---
+
+# S3 · Strate numérique / données (OSINT)
+
+## Définition
+Strate des **traces numériques publiques ou semi-publiques** : images, vidéos, métadonnées, archives ouvertes, bases institutionnelles.  
+Terrain privilégié de l’**OSINT**, où l’on recompose des chaînes d’événements à partir de fragments dispersés.
+
+## Exemples
+- Enquêtes de Bellingcat sur les armes, les bombardements, l’identification de soldats.  
+- Surveillance des chaînes d’info (CNEWS, etc.) par extraction de sous-titres et analyse de contenus.  
+- Investigation sur l’exportation d’armes à partir de registres publics, données douanières, catalogues industriels.
+
+## Fonction dans l’hyperinvestigation
+- Développer une **méthodologie d’enquête documentaire** (collecte, vérification, recoupement, archivage).  
+- Faire le lien entre les strates matérielles (S1, S6, S7) et les espaces discursifs et politiques.
+
+## Face claire
+- Offre des **ressources ouvertes** pour des enquêtes citoyennes, journalistiques, académiques.
+
+## Face dark
+- Nourrit la montée du **dark OSINT** (profilage, doxxing, chantage, faux OSINT).  
+- Rend possible des formes de surveillance distribuée et de harcèlement coordonné.
+
+## Liens forts
+- Épistrates : EPI-METR, EPI-MOD, EPI-PLAT, EPI-SEC.  
+- Parastrates : PARA-MEDIA, PARA-ECONO, PARA-PARAACAD, PARA-SECUR, PARA-MEME.  
+- Opérateurs : O1-ACCOUNTABILITY, O2-LITERACY.  
+- Plan E : E1 (preuve), E3 (systèmes de connaissance), E4, E5 (généalogie fictionnelle).
+
+## Biblio indicative
+- Eliot Higgins, *We Are Bellingcat. An Intelligence Agency for the People*, Bloomsbury, 2021.`
+    },
+    {
+      id: "S6",
+      label: "Strate écologique / géologique",
+      category: "Strate",
+      summary:
+        "Milieux vivants et géologiques, écocides et ‘slow violence’ : sols, nappes, atmosphère, espèces.",
+      markdown: `---
+id: S6
+type: strate
+label: Strate écologique / géologique
+---
+
+# S6 · Strate écologique / géologique
+
+## Définition
+Strate des **milieux vivants et géologiques** : sols, nappes, atmosphère, cycles biogéochimiques, espèces, glaciers, littoraux.  
+Les conflits s’y manifestent comme **écocides** et formes de « slow violence ».
+
+## Exemples
+- Zones sacrifiées : bassins miniers, décharges toxiques, sites nucléaires.  
+- Reculs de glaciers, incendies de forêts, érosion côtière dans les séries temporelles (imagerie, données climatiques).  
+- Zones mortes marines (hypoxie, nitrates, trafic) cartographiées sur le temps long.
+
+## Fonction dans l’hyperinvestigation
+- Faire exister les **violences environnementales** comme objets d’enquête à part entière.  
+- Articuler **sciences de la Terre, archives industrielles et témoignages**.
+
+## Face claire
+- Fournit des **preuves lentes** de transformations profondes, difficiles à nier.
+
+## Face dark
+- Peut être captée par des narratifs de **gestion technocratique** (neutralité carbone abstraite, compensations symboliques).  
+- Risque de réduire les milieux à des « stocks » de ressources ou des variables d’optimisation.
+
+## Liens forts
+- Épistrates : EPI-MOD (modèles climatiques), EPI-METR (indicateurs), EPI-PLAT.  
+- Parastrates : PARA-ECONO (industries extractives, énergie), PARA-MEDIA, PARA-PARAACAD.  
+- Opérateurs : O1-ACCOUNTABILITY, O2-LITERACY.  
+- Plan E : E1, E3.
+
+## Biblio indicative
+- Rob Nixon, *Slow Violence and the Environmentalism of the Poor*, Harvard University Press, 2011.`
+    },
+    {
+      id: "S7",
+      label: "Strate technogenèse / IA / infrastructures",
+      category: "Strate",
+      summary:
+        "Architectures de calcul, réseaux, IA, dispositifs de surveillance : la technique comme régime autonome.",
+      markdown: `---
+id: S7
+type: strate
+label: Strate technogenèse / IA / infrastructures
+---
+
+# S7 · Strate technogenèse / IA / infrastructures numériques
+
+## Définition
+Strate des **architectures de calcul et de réseau** : data centers, câbles, plateformes, IA, dispositifs de surveillance.  
+La technique y apparaît comme **régime autonome** articulé à la géopolitique, à l’économie et aux écologies.
+
+## Exemples
+- Data centers hyperscale et leurs besoins en eau/énergie.  
+- Plateformes (moteurs de recherche, réseaux sociaux, streaming) et leurs algorithmes de recommandation.  
+- Systèmes d’IA (LLM, reconnaissance faciale, scoring) dans des contextes sécuritaires, industriels, éducatifs.
+
+## Fonction dans l’hyperinvestigation
+- Documenter les **conditions matérielles et logicielles** de l’OSINT, de l’hyperdocumentation et de l’hyperinvestigation.  
+- Relier l’IA aux coûts planétaires (écologiques, sociaux, politiques).
+
+## Face claire
+- Rend visibles les **conditions d’existence** de nos enquêtes (qui stocke quoi, où, comment).
+
+## Face dark
+- Se présente comme une **infrastructure neutre** tout en concentrant les pouvoirs de surveillance et de manipulation.  
+- Alimente des logiques d’**automatisation des jugements**, de scoring et de tri social.
+
+## Liens forts
+- Épistrates : EPI-PLAT, EPI-MOD, EPI-SEC.  
+- Parastrates : PARA-ECONO, PARA-SECUR, PARA-MEDIA, PARA-MEME.  
+- Opérateurs : O1-ACCOUNTABILITY, O2-LITERACY.  
+- Plan E : E2 (position de l’enquêteur), E3 (systèmes de connaissance).
+
+## Biblio indicative
+- Kate Crawford, *Atlas of AI. Power, Politics, and the Planetary Costs of Artificial Intelligence*, Yale University Press, 2021.`
+    },
+    {
+      id: "S8",
+      label: "Strate imaginale / SF / mutants",
+      category: "Strate",
+      summary:
+        "Fictions, poésie, SF, mutants : laboratoire de scénarios d’enquête et de futurs possibles.",
+      markdown: `---
+id: S8
+type: strate
+label: Strate imaginale / SF / mutants
+---
+
+# S8 · Strate imaginale / SF / mutants
+
+## Définition
+Strate des **ressources fictionnelles et poétiques** (SF, anticipation, poésie, figures de mutants).  
+L’imaginal fonctionne comme **laboratoire de scénarios** pour penser futurs, dominations et lignes de fuite.
+
+## Exemples
+- Fictions d’archives totales et d’enquêtes distribuées dans des mondes planétaires (Liu Cixin et autres).  
+- Détectives de SF connectés à des hyper-archives, à des IA ou à des intelligences non humaines.  
+- Poétiques de la planétarité en crise (planètes-usines, mondes-poubelles, écologies extraterrestres).
+
+## Fonction dans l’hyperinvestigation
+- Proposer des **matrices narratives** pour concevoir des scénarios d’enquête.  
+- Travailler une **futurologie du concept** d’hyperinvestigation (HyperIon comme objet de fiction critique).
+
+## Face claire
+- Permet de **désaturer le présent** et de tester des hypothèses dans des mondes possibles.
+
+## Face dark
+- Risque de **dissoudre le conflit réel** dans le pur imaginaire si l’articulation aux terrains se perd.  
+- Peut être récupérée par des logiques d’évasion (escapisme) au lieu d’un travail critique.
+
+## Liens forts
+- Parastrates : PARA-MEME (culture memétique dérivée de la SF).  
+- Opérateurs : O2-LITERACY (pédagogie par la fiction).  
+- Plan E : E5 (généalogie fictionnelle), E1 (régimes de vérité dans la fiction).
+
+## Biblio indicative
+- Canon SF à préciser selon les terrains retenus (Liu Cixin, etc.).`
+    },
+
+    // Épistrates
+    {
+      id: "EPI-METR",
+      label: "Épistrate métrique–indiciaire",
+      category: "Epistrate",
+      summary:
+        "Indicateurs, scores, indices qui transforment les situations en valeurs chiffrées comparables.",
+      markdown: `---
+id: EPI-METR
+type: epistrate
+label: Épistrate métrique–indiciaire
+---
+
+# EPI-METR · Épistrate métrique–indiciaire
+
+## Définition
+Couches de **mesures, indicateurs, scores, indices** qui surcodent les strates matérielles, numériques, écologiques ou médiatiques.  
+Elle transforme des situations en **valeurs chiffrées** comparables, agrégables, classables.
+
+## Exemples
+- Indicateurs de pluralisme médiatique, de concentration des audiences, de temps de parole.  
+- Scientométrie : facteurs d’impact, h-index, altmetrics.  
+- Indicateurs environnementaux : tonnes de CO₂, indices de qualité de l’air, seuils de pollution.
+
+## Face claire
+- Rend visibles des **tendances**, des biais, des anomalies (pics, lacunes, déséquilibres).  
+- Sert de base à des **alertes** et des mobilisations (cartographies de pollution, indicateurs de surmortalité).
+
+## Face dark
+- Devient un instrument de **gouvernement par les chiffres** (benchmarks, rankings, « KPI »).  
+- Invisibilise ce qui n’entre pas dans la mesure (expériences, savoirs locaux, zones grises).
+
+## Rôle dans l’hyperinvestigation
+- À documenter comme **couche spécifique** dans chaque enquête : quels indicateurs sont mobilisés, par qui, avec quels effets.  
+- Sert de point d’articulation entre S3 (OSINT), S6 (écologie), S7 (infrastructures) et le plan E3 (systèmes de connaissance).
+
+## Liens forts
+- Strates : S1, S3, S6, S7.  
+- Parastrates : PARA-ECONO, PARA-PARAACAD.  
+- Plan E : E1, E3.`
+    },
+    {
+      id: "EPI-MOD",
+      label: "Épistrate de modélisation / simulation",
+      category: "Epistrate",
+      summary:
+        "Modèles, scénarios, simulations produisant des futurs calculés (climat, économie, épidémies).",
+      markdown: `---
+id: EPI-MOD
+type: epistrate
+label: Épistrate de modélisation / simulation
+---
+
+# EPI-MOD · Épistrate de modélisation / simulation
+
+## Définition
+Couches de **modèles, scénarios, simulations** (climatiques, économiques, épidémiologiques, politiques) qui produisent des représentations calculées des phénomènes.
+
+## Exemples
+- Modèles climatiques et scénarios utilisés dans les rapports d’expertise.  
+- Simulations de propagation de désinformation ou de pandémies.  
+- Stress tests financiers, hydriques, énergétiques.
+
+## Face claire
+- Permet d’**explorer des futurs** possibles et d’identifier des points de bascule.  
+- Rend visibles des effets invisibles aux échelles humaines (temps longs, non-linéarités).
+
+## Face dark
+- Peut être brandi comme **preuve incontestable** alors que les hypothèses sont discutables.  
+- Sert à **naturaliser des choix politiques** (« le modèle dit que nous n’avons pas d’alternative »).
+
+## Rôle dans l’hyperinvestigation
+- Nécessite des fiches spécifiques décrivant : **données sources, hypothèses, incertitudes, usages politiques**.  
+- Articule terrains (écologiques, médiatiques, IA) avec le plan E1 (formes de preuve) et E3 (infrastructures de savoir).
+
+## Liens forts
+- Strates : S6, S7, S3.  
+- Épistrates : EPI-METR, EPI-PLAT.  
+- Parastrates : PARA-ECONO, PARA-PARAACAD.`
+    },
+    {
+      id: "EPI-PLAT",
+      label: "Épistrate de platformisation",
+      category: "Epistrate",
+      summary:
+        "Outils, plateformes, workflows qui encodent les pratiques d’enquête.",
+      markdown: `---
+id: EPI-PLAT
+type: epistrate
+label: Épistrate de platformisation
+---
+
+# EPI-PLAT · Épistrate de platformisation des enquêtes
+
+## Définition
+Couches d’**outils, plateformes et workflows** qui encodent les pratiques d’enquête elles-mêmes : collecter, stocker, visualiser, publier.
+
+## Exemples
+- Plateformes d’OSINT, dashboards de monitoring médiatique, outils de scraping et de géolocalisation.  
+- Plateformes de publications scientifiques (portails, archives ouvertes, systèmes d’évaluation).  
+- Pipelines d’IA pour l’analyse de documents, la détection d’images, la transcription.
+
+## Face claire
+- Réduit le **seuil d’entrée** dans certaines pratiques d’enquête.  
+- Favorise la **reproductibilité** et la mutualisation de méthodes (workflows partagés, notebooks).
+
+## Face dark
+- Normalise ce qui compte comme **« vraie enquête »** (ce qui passe par la plateforme).  
+- Crée de nouvelles dépendances (accès, licences, opacité des algorithmes).
+
+## Rôle dans l’hyperinvestigation
+- Chaque terrain devrait préciser les **outils / plateformes** mobilisés et leurs limites.  
+- Articule S3/S7 avec O2-LITERACY (formation à l’usage critique des outils).
+
+## Liens forts
+- Strates : S3, S7.  
+- Épistrates : EPI-METR, EPI-MOD, EPI-SEC.  
+- Parastrates : PARA-ECONO, PARA-SECUR.  
+- Plan E : E2, E3.`
+    },
+    {
+      id: "EPI-SEC",
+      label: "Épistrate de sécurité / secret",
+      category: "Epistrate",
+      summary:
+        "Protocoles de sécurité, secret, confidentialité, responsible disclosure autour des enquêtes.",
+      markdown: `---
+id: EPI-SEC
+type: epistrate
+label: Épistrate de sécurité / secret
+---
+
+# EPI-SEC · Épistrate de sécurité / secret
+
+## Définition
+Couches de **protocoles de sécurité, de secret, de confidentialité** qui doublent les enquêtes et leur circulation.
+
+## Exemples
+- OPSEC, chiffrement, compartimentation des accès dans les collectifs d’enquête.  
+- Régimes de secret-défense, accords de confidentialité, clauses contractuelles.  
+- Normes de « responsible disclosure » pour les vulnérabilités et les fuites.
+
+## Face claire
+- Protège les **sources, les enquêteurs, les publics vulnérables**.  
+- Évite que l’enquête ne devienne elle-même un instrument de nuisance (doxxing, ré-identification).
+
+## Face dark
+- Offre un vocabulaire prêt-à-l’emploi pour **cacher des informations** d’intérêt public.  
+- Permet de **verrouiller la critique** sous couvert de sécurité ou de compétitivité.
+
+## Rôle dans l’hyperinvestigation
+- Rendre explicites les **choix de secret / transparence** associés à chaque terrain.  
+- À la frontière entre épistrate (protocoles) et parastrate (milieux sécuritaires).
+
+## Liens forts
+- Strates : S3, S7.  
+- Parastrates : PARA-SECUR.  
+- Plan E : E2 (position de l’enquêteur), E1 (forums et formes de preuve).`
+    },
+
+    // Parastrates
+    {
+      id: "PARA-MEDIA",
+      label: "Parastrate médiatico-politique",
+      category: "Parastrate",
+      summary:
+        "Médias, plateformes, acteurs politiques et communicants qui encadrent la visibilité des enquêtes.",
+      markdown: `---
+id: PARA-MEDIA
+type: parastrate
+label: Parastrate médiatico-politique
+---
+
+# PARA-MEDIA · Parastrate médiatico-politique
+
+## Définition
+Milieu des **médias, plateformes, acteurs politiques et communicants** qui encadre la visibilité des enquêtes et des conflits.
+
+## Exemples
+- Chaînes d’info (CNEWS, etc.), talk-shows, éditorialistes, formats de débat.  
+- Campagnes politiques, think tanks, agences de communication.  
+- Plateformes sociales (X, Facebook, TikTok) comme arènes de mise en scène.
+
+## Face claire
+- Offre des **forums de visibilité** pour les enquêtes, documentaires, investigations.  
+- Peut accueillir des **formes de contre-expertise** et de critique.
+
+## Face dark
+- Organise des **régimes d’attention** qui déforment les enjeux (polarisation, sensationalisme).  
+- Sert de vecteur majeur à la **désinformation politique et scientifique**.
+
+## Rôle dans l’hyperinvestigation
+- À cartographier pour chaque terrain : quels médias, quels formats, quelles alliances ?  
+- Interagit fortement avec S3 (discursif/OSINT), PARA-MEME (mèmes).
+
+## Liens forts
+- Strates : S3, S6, S7.  
+- Épistrates : EPI-METR (mesure médiatique).  
+- Parastrates : PARA-MEME, PARA-ECONO.  
+- Plan E : E1 (forums de vérité).`
+    },
+    {
+      id: "PARA-ECONO",
+      label: "Parastrate économique–industriel",
+      category: "Parastrate",
+      summary:
+        "Groupes industriels, financiers, énergétiques et numériques : sponsors, dépendances, verrouillages.",
+      markdown: `---
+id: PARA-ECONO
+type: parastrate
+label: Parastrate économique–industriel
+---
+
+# PARA-ECONO · Parastrate économique–industriel
+
+## Définition
+Milieu des **groupes industriels, financiers, énergétiques et numériques** qui structurent les infrastructures matérielles, écologiques et informationnelles.
+
+## Exemples
+- Majors de l’énergie, industries extractives, agro-industrie, chimie.  
+- Plateformes numériques dominantes, data brokers, GAFAM/BATX.  
+- Banques, fonds d’investissement, assureurs, agences de notation.
+
+## Face claire
+- Peut financer des infrastructures (open data, projets de recherche, médiation).  
+- Peut être contraint par des enquêtes à **répondre de ses impacts** (accountability).
+
+## Face dark
+- Orientations industrielles et financières qui **définissent les zones enquêtables / inenquêtables**.  
+- Forte capacité à **coopter ou neutraliser** des enquêtes via sponsoring, partenariats, lobbying.
+
+## Rôle dans l’hyperinvestigation
+- Chaque cas devrait expliciter ses **attachments industriels** (qui finance quoi, qui dépend de qui).  
+- Articule S1, S6, S7, EPI-METR, EPI-MOD avec E2 (position de l’enquêteur).
+
+## Liens forts
+- Strates : S1, S6, S7.  
+- Épistrates : EPI-METR, EPI-MOD, EPI-PLAT.  
+- Parastrates : PARA-MEDIA, PARA-PARAACAD, PARA-SECUR.`
+    },
+    {
+      id: "PARA-PARAACAD",
+      label: "Parastrate para-académique / para-scientifique",
+      category: "Parastrate",
+      summary:
+        "Revues prédatrices, paper mills, think tanks pseudo-scientifiques, agences d’écriture.",
+      markdown: `---
+id: PARA-PARAACAD
+type: parastrate
+label: Parastrate para-académique / para-scientifique
+---
+
+# PARA-PARAACAD · Parastrate para-académique / para-scientifique
+
+## Définition
+Milieu des **revues prédatrices, paper mills, think tanks pseudo-scientifiques, agences d’écriture** qui entourent et parasitent la production scientifique.
+
+## Exemples
+- Revues prédatrices, conférences bidons, réseaux d’édition douteux.  
+- Paper mills identifiées par la forensic scientometrics (Cabanac et al.).  
+- Think tanks « experts » financés par des intérêts industriels ou politiques.
+
+## Face claire
+- À la marge, certains espaces hybrides peuvent servir de **laboratoires éditoriaux** ou d’innovations de forme.  
+- Peut être retourné en objet d’**enquête critique**.
+
+## Face dark
+- Alimente la **désinformation scientifique** et pollue les corpus.  
+- Sert de relais à des **intérêts industriels ou idéologiques** sous couvert d’expertise.
+
+## Rôle dans l’hyperinvestigation
+- Nécessite des fiches « corpus scientifique » dans chaque enquête, avec une attention à ces milieux.  
+- Articule S3, S6, S7, EPI-METR, E3 (systèmes de connaissance).
+
+## Liens forts
+- Strates : S3, S6, S7 (via les corpus).  
+- Épistrates : EPI-METR, EPI-MOD.  
+- Parastrates : PARA-ECONO, PARA-MEDIA.  
+- Plan E : E1, E3.
+
+## Biblio indicative
+- Travaux de Guillaume Cabanac et collaborateurs sur la forensic scientometrics et la détection de « paper mills ».`
+    },
+    {
+      id: "PARA-SECUR",
+      label: "Parastrate sécuritaire / para-étatique",
+      category: "Parastrate",
+      summary:
+        "Services de renseignement, entreprises de sécurité, sociétés militaires privées, cyber-officines.",
+      markdown: `---
+id: PARA-SECUR
+type: parastrate
+label: Parastrate sécuritaire / para-étatique
+---
+
+# PARA-SECUR · Parastrate sécuritaire / para-étatique
+
+## Définition
+Milieu des **services de renseignement, entreprises de sécurité, sociétés militaires privées, cyber-officines**.
+
+## Exemples
+- Entreprises de surveillance (privées), sociétés militaires privées.  
+- Officines d’OSINT offensif, de doxxing, de campagnes d’influence.  
+- Coopérations ambiguës entre services de renseignement et acteurs privés.
+
+## Face claire
+- Peut réemployer des méthodologies d’enquête pour des fins de **justice, de protection, de réparation**.  
+- Peut fournir des données ou expertises utiles à certaines investigations.
+
+## Face dark
+- Détourne l’hyperinvestigation vers la **répression, le profilage de masse, la chasse aux opposants**.  
+- Sabote ou manipule les **enquêtes publiques** (opérations d’intox, faux leaks).
+
+## Rôle dans l’hyperinvestigation
+- À identifier dans chaque cas : **quels acteurs sécuritaires, quelles coopérations ou tensions** ?  
+- Interroge directement EPI-SEC et la position de l’enquêteur (E2).
+
+## Liens forts
+- Strates : S3, S7.  
+- Épistrates : EPI-SEC, EPI-PLAT.  
+- Parastrates : PARA-ECONO, PARA-MEDIA.  
+- Plan E : E2.`
+    },
+    {
+      id: "PARA-MEME",
+      label: "Parastrate memétique / infra-symbolique",
+      category: "Parastrate",
+      summary:
+        "Mèmes, blagues, formats viraux comme sous-sol symbolique des polémiques.",
+      markdown: `---
+id: PARA-MEME
+type: parastrate
+label: Parastrate memétique / infra-symbolique
+---
+
+# PARA-MEME · Parastrate memétique / infra-symbolique
+
+## Définition
+Milieu des **mèmes, blagues, micro-récits, formats viraux** qui accompagnent ou précèdent les polémiques.
+
+## Exemples
+- Mèmes climatosceptiques, racistes, sexistes ou conspirationnistes.  
+- Blagues récurrentes, running gags, challenges TikTok.  
+- Iconographie dérivée de la SF, du complotisme, des cultures de niche.
+
+## Face claire
+- Peut être mobilisé pour **vulgariser des enquêtes**, toucher des publics éloignés.  
+- Donne des indices fins sur les **perceptions populaires** (peurs, colères, ironie).
+
+## Face dark
+- Vecteur rapide de **désinformation et de banalisation de la violence**.  
+- Fabrique un **sous-sol affectif** qui rend certains résultats d’enquête inaudibles.
+
+## Rôle dans l’hyperinvestigation
+- À documenter comme **atmosphère symbolique** autour des terrains (CNEWS, écologie, IA, guerre).  
+- Articulé à S8 (imaginal) et à O2-LITERACY (travail critique sur les mèmes).
+
+## Liens forts
+- Strates : S3, S8.  
+- Parastrates : PARA-MEDIA, PARA-ECONO.  
+- Opérateurs : O2-LITERACY.`
+    },
+
+    // Opérateurs
+    {
+      id: "O1-ACCOUNTABILITY",
+      label: "O1 · Accountability (reddition de comptes)",
+      category: "Operateur",
+      summary:
+        "Opérateur de reddition de comptes : relier les enquêtes aux forums de décision où la preuve doit être discutée.",
+      markdown: `---
+id: O1-ACCOUNTABILITY
+type: operateur
+label: Opérateur de reddition de comptes
+---
+
+# O1 · Accountability (reddition de comptes)
+
+## Définition
+Opérateur qui relie les enquêtes aux **forums de décision** (juridiques, politiques, médiatiques, scientifiques, citoyens) où la preuve doit être discutée.
+
+## Rôle
+- Forcer à se demander : **pour qui** et **où** l’enquête doit-elle produire des effets ?  
+- Relier strates/épistrates/parastrates aux **instances de jugement** (tribunaux, régulateurs, commissions, opinion).
+
+## Exemples
+- Enquêtes de FA mobilisées devant des juridictions internationales.  
+- Recours climatiques basés sur des dossiers d’expertise.  
+- Auditions parlementaires utilisant des matériaux d’OSINT.
+
+## Face claire
+- Donne une **finalité politique et juridique** aux enquêtes.  
+- Aide à organiser la **chaîne de responsabilité**.
+
+## Face dark
+- Peut être capté par des **forums captifs** ou biaisés, qui neutralisent la portée des preuves.  
+- Risque de réduire l’enquête à un **instrument de communication institutionnelle**.
+
+## Liens forts
+- Toutes strates ; particulièrement S1, S3, S6, S7.  
+- Plan E : E1 (formes de preuve), E2 (position de l’enquêteur).`
+    },
+    {
+      id: "O2-LITERACY",
+      label: "O2 · Literacy (capacités d’enquête)",
+      category: "Operateur",
+      summary:
+        "Littératies informationnelles, médiatiques, numériques, algorithmiques comme opérateur d’appropriation de l’enquête.",
+      markdown: `---
+id: O2-LITERACY
+type: operateur
+label: Opérateur de littératies d’enquête
+---
+
+# O2 · Literacy (capacités d’enquête)
+
+## Définition
+Opérateur des **littératies informationnelles, médiatiques, numériques, algorithmiques** qui rendent les enquêtes appropriables par divers publics.
+
+## Rôle
+- Transformer l’hyperinvestigation en **pédagogie de l’enquête**, pas seulement en expertise fermée.  
+- Outiller les publics pour **lire, critiquer, prolonger** les enquêtes.
+
+## Exemples
+- Ateliers et cours de cultures de l’information et des médias.  
+- Parcours pédagogiques OSINT (murs d’enquête, graphes, exercices critiques).  
+- Formations à la critique d’IA, de modèles, d’indicateurs.
+
+## Face claire
+- Renforce les **capacités d’enquête distribuées** (citoyens, étudiants, collectifs).  
+- Rend possibles des **contre-enquêtes** et des usages émancipateurs.
+
+## Face dark
+- Peut être récupérée par des dispositifs de **formation au profilage, à la surveillance**, à l’OSINT offensif.  
+- Risque de devenir un simple label marketing (« data literacy », etc.) sans contenu critique.
+
+## Liens forts
+- Strates : S3, S6, S7, S8.  
+- Épistrates : EPI-PLAT, EPI-METR.  
+- Parastrates : PARA-MEME, PARA-MEDIA.  
+- Plan E : E2, E3.
+
+## Biblio indicative
+- Olivier Le Deuff, *La formation aux cultures numériques. Une nouvelle pédagogie pour une culture de l’information à l’heure du numérique*, FYP, 2012.  
+- Olivier Le Deuff, « OSINT literacy », communication à ECIL (à paraître).`
+    },
+
+    // Plan E
+    {
+      id: "E1",
+      label: "E1 · Régimes de vérité & formes de preuve",
+      category: "PlanE",
+      summary:
+        "Conditions de reconnaissance de la preuve dans les forums (droit, sciences, médias, opinion).",
+      markdown: `---
+id: E1
+type: planE
+label: Régimes de vérité & formes de preuve
+---
+
+# E1 · Régimes de vérité & formes de preuve
+
+## Définition
+Plan qui analyse les **conditions de reconnaissance de la preuve** dans différents forums : droit, sciences, médias, plateformes, opinion publique.
+
+## Exemples
+- Statut de la vidéo, de l’image satellite ou des modèles 3D comme preuves dans des juridictions nationales ou internationales.  
+- Normes de la revue scientifique (peer review, préprints, open review).  
+- Fact-checking, rubriques « vrai/faux » et autres dispositifs journalistiques de validation/déjugement.
+
+## Fonction dans l’hyperinvestigation
+- Rendre visibles les **règles du jeu de la preuve** : ce que l’on accepte, ce que l’on rejette, qui décide.  
+- Comparer la manière dont un même matériau (image, modèle, témoignage) est traité dans différents forums.
+
+## Face claire
+- Clarifie **où et comment** les enquêtes peuvent produire des effets.  
+- Permet de concevoir des **stratégies de circulation** des preuves.
+
+## Face dark
+- Si on naturalise un seul régime de vérité (juridique, scientifique, médiatique), on invisibilise les autres forums.  
+- Risque de transformer certains forums en **chambres d’enregistrement** des preuves produites ailleurs.
+
+## Liens forts
+- Strates : S1, S3, S6, S7.  
+- Épistrates : EPI-METR, EPI-MOD.  
+- Parastrates : PARA-MEDIA, PARA-PARAACAD.  
+- Opérateurs : O1-ACCOUNTABILITY.  
+
+## Biblio indicative
+- Eyal Weizman, *Forensic Architecture. Violence at the Threshold of Detectability*, Zone Books/MIT Press, 2017.`
+    },
+    {
+      id: "E2",
+      label: "E2 · Position de l’enquêteur / réflexivité",
+      category: "PlanE",
+      summary:
+        "Réflexivité sur la position de l’enquêteur / collectif : financements, alliances, vulnérabilités.",
+      markdown: `---
+id: E2
+type: planE
+label: Position de l’enquêteur / réflexivité
+---
+
+# E2 · Position de l’enquêteur / réflexivité
+
+## Définition
+Plan qui situe l’**enquêteur ou le collectif d’enquête** dans les rapports de force : financements, affiliations, infrastructures, alliances, vulnérabilités.
+
+## Exemples
+- Agences de recherche adossées à des universités, financées par des fondations ou des ONG, travaillant sur des terrains de guerre ou d’écocide.  
+- Projets académiques impliquant des partenariats avec des institutions publiques, des entreprises, des associations.  
+- Journalistes d’investigation travaillant dans des médias appartenant à de grands groupes industriels.
+
+## Fonction dans l’hyperinvestigation
+- Éviter de naturaliser la position « neutre » de l’enquête : **assumer les attaches matérielles, institutionnelles et politiques**.  
+- Inscrire HyperIon lui-même dans un régime de **réflexivité située**.
+
+## Face claire
+- Renforce la **confiance** dans les enquêtes par la clarté sur les attaches.  
+- Permet d’identifier les **angles morts** liés à la position de l’enquêteur.
+
+## Face dark
+- Peut devenir un simple exercice de style (« déclaration de conflits d’intérêts » formelle).  
+- Expose aussi les enquêteurs à des **vulnérabilités** (attaques ad hominem, campagnes de dénigrement).
+
+## Liens forts
+- Strates : S7 (infrastructures), S3.  
+- Épistrates : EPI-PLAT, EPI-SEC.  
+- Parastrates : PARA-ECONO, PARA-SECUR.  
+- Opérateurs : O1-ACCOUNTABILITY, O2-LITERACY.`
+    },
+    {
+      id: "E3",
+      label: "E3 · Épistémologie des systèmes de connaissance",
+      category: "PlanE",
+      summary:
+        "Systèmes de production, d’évaluation et de circulation du savoir (revues, bases, indicateurs, IA).",
+      markdown: `---
+id: E3
+type: planE
+label: Épistémologie des systèmes de connaissance
+---
+
+# E3 · Épistémologie des systèmes de connaissance
+
+## Définition
+Plan qui analyse les **systèmes de production, d’évaluation et de circulation du savoir** (revues, bases, indicateurs, IA de rédaction) comme infrastructures de pouvoir.
+
+## Exemples
+- Effets des index internationaux et des classements sur la visibilité des recherches, disciplines, langues.  
+- Plateformes et circuits éditoriaux (préprints, open access, réseaux sociaux académiques).  
+- Usage d’outils d’IA de rédaction, de traduction ou de réécriture dans les circuits de publication.
+
+## Fonction dans l’hyperinvestigation
+- Comprendre comment la **politique des revues, des indicateurs, des infrastructures éditoriales** façonne ce qui peut être su, publié et légitimé.  
+- Situer les enquêtes dans des **écosystèmes de connaissance** (corpus, revues, plateformes, normes).
+
+## Face claire
+- Permet de concevoir des **stratégies de publication** adaptées aux objectifs des enquêtes.  
+- Met en lumière des **lignes de fracture** (langues, disciplines, types de supports).
+
+## Face dark
+- Naturalise des infrastructures très situées comme universelles.  
+- Peut servir à légitimer des politiques de **mise en conformité métrique** au détriment des terrains et des publics.
+
+## Liens forts
+- Strates : S3, S6, S7.  
+- Épistrates : EPI-METR, EPI-MOD, EPI-PLAT.  
+- Parastrates : PARA-PARAACAD, PARA-ECONO.  
+- Opérateurs : O2-LITERACY.`
+    },
+    {
+      id: "E4",
+      label: "E4 · Généalogie historique des pratiques d’enquête",
+      category: "PlanE",
+      summary:
+        "Traditions de la criminalistique, de la photo judiciaire, de la documentation scientifique.",
+      markdown: `---
+id: E4
+type: planE
+label: Généalogie historique des pratiques d’enquête
+---
+
+# E4 · Généalogie historique des pratiques d’enquête
+
+## Définition
+Plan qui relie l’hyperinvestigation aux **traditions de la criminalistique, de la documentation scientifique et de la photographie judiciaire**.
+
+## Exemples
+- Rodolphe Reiss et la systématisation de la photographie de scène de crime, des techniques de traces, des protocoles de collecte.  
+- Développement de la police scientifique et des laboratoires forensiques au XXe siècle.  
+- Histoire de la documentation scientifique, de la bibliographie et de l’archivistique comme infrastructures de l’enquête.
+
+## Fonction dans l’hyperinvestigation
+- Situer l’hyperinvestigation comme **héritière** de ces pratiques plutôt que comme rupture pure.  
+- Identifier les **gestes repris** (photographie, prélèvement, annotation, archivage) et ceux à critiquer (vision policière, fantasme de neutralité).
+
+## Face claire
+- Donne de la **profondeur historique** à HyperIon.  
+- Permet des comparaisons fines entre anciens protocoles et nouveaux dispositifs.
+
+## Face dark
+- Rappelle que beaucoup de techniques forensiques sont nées dans des régimes de **contrôle social, colonial, policier**.  
+- Peut conduire à reproduire des **schémas de suspicion généralisée** si la critique manque.
+
+## Liens forts
+- Strates : S1, S3.  
+- Épistrates : EPI-METR.  
+- Plan E : E1, E5.
+
+## Biblio indicative
+- Rodolphe A. Reiss, *Manuel de police scientifique* (début XXe siècle).`
+    },
+    {
+      id: "E5",
+      label: "E5 · Généalogie fictionnelle des détectives & de l’enquête",
+      category: "PlanE",
+      summary:
+        "Figures de détectives de fiction comme matrices narratives de l’enquête.",
+      markdown: `---
+id: E5
+type: planE
+label: Généalogie fictionnelle des détectives & de l’enquête
+---
+
+# E5 · Généalogie fictionnelle des détectives & de l’enquête
+
+## Définition
+Plan qui relie l’hyperinvestigation aux **figures de détectives de fiction** (Dupin, Holmes, Rouletabille, Temple, détectives de SF), conçues comme matrices de scénarios d’enquête.
+
+## Exemples
+- Dupin (Poe) : lecture de détails insignifiants, détection dans la ville moderne, articulation entre rationalité et imagination.  
+- Rouletabille (Leroux) : chambre close, complot, enquête journalistique, rôle de la presse et des publics.  
+- Détectives de science-fiction : enquêteurs collectifs, posthumains, connectés à des hyper-archives ou à des intelligences non humaines.
+
+## Fonction dans l’hyperinvestigation
+- Faire apparaître que nos enquêtes sont prises dans des **formes narratives héritées** que l’on peut assumer, détourner ou critiquer.  
+- Utiliser ces matrices fictionnelles comme **ressources** pour concevoir des scénarios d’enquête HyperIon.
+
+## Face claire
+- Permet de travailler des **formes pédagogiques** (enquêtes jouées, scénarios, fictions critiques).  
+- Ouvre à une **futurologie du concept d’hyperinvestigation**.
+
+## Face dark
+- Peut reconduire des **stéréotypes de l’enquêteur-héros**, solitaire, masculin, génial.  
+- Risque de détourner l’attention des **collectifs d’enquête** réels et des infrastructures.
+
+## Liens forts
+- Strates : S8 (imaginal), S3.  
+- Parastrates : PARA-MEME, PARA-MEDIA.  
+- Plan E : E1, E4.
+
+## Biblio indicative
+- Edgar Allan Poe, nouvelles avec C. Auguste Dupin.  
+- Gaston Leroux, *Le Mystère de la chambre jaune*, 1907.`
+    }
+  ];
+
+  const ficheById = {};
+  fiches.forEach(f => { ficheById[f.id] = f; });
+
+  // --- Tesseract 4D -> 3D ---
+  const canvas = document.getElementById("cubeCanvas");
+  const ctx = canvas.getContext("2d");
+  const hoverInfo = document.getElementById("hoverInfo");
+
+  const width = canvas.width;
+  const height = canvas.height;
+  const cx = width / 2;
+  const cy = height / 2;
+
+  const vertices4D = [];
+  for (let x of [-1, 1]) {
+    for (let y of [-1, 1]) {
+      for (let z of [-1, 1]) {
+        for (let w of [-1, 1]) {
+          vertices4D.push({ x, y, z, w });
+        }
+      }
+    }
+  }
+
+  const edges = [];
+  for (let i = 0; i < vertices4D.length; i++) {
+    for (let j = i + 1; j < vertices4D.length; j++) {
+      const a = vertices4D[i];
+      const b = vertices4D[j];
+      let diff = 0;
+      if (a.x !== b.x) diff++;
+      if (a.y !== b.y) diff++;
+      if (a.z !== b.z) diff++;
+      if (a.w !== b.w) diff++;
+      if (diff === 1) edges.push({ a: i, b: j, ficheId: null });
+    }
+  }
+
+  const ficheIds = fiches.map(f => f.id);
+  for (let i = 0; i < edges.length; i++) {
+    edges[i].ficheId = ficheIds[i] || null;
+  }
+
+  let angle = 0;
+  const projected = new Array(vertices4D.length);
+  let hoverEdgeIndex = -1;
+  let selectedFicheId = null;
+
+  function projectVertices() {
+    angle += 0.3;
+    const a = (angle * Math.PI) / 180;
+    const a2 = a * 0.7;
+
+    for (let i = 0; i < vertices4D.length; i++) {
+      const v = vertices4D[i];
+      let { x, y, z, w } = v;
+
+      const x1 = x * Math.cos(a) - w * Math.sin(a);
+      const w1 = x * Math.sin(a) + w * Math.cos(a);
+
+      const y1 = y * Math.cos(a2) - z * Math.sin(a2);
+      const z1 = y * Math.sin(a2) + z * Math.cos(a2);
+
+      const distance4D = 4;
+      const wPerspective = 1 / (distance4D - w1);
+      const px = x1 * wPerspective;
+      const py = y1 * wPerspective;
+
+      const scale = 240;
+      const sx = cx + px * scale;
+      const sy = cy + py * scale;
+
+      projected[i] = { x: sx, y: sy, z: z1 };
+    }
+  }
+
+  function distancePointToSegment(px, py, ax, ay, bx, by) {
+    const abx = bx - ax;
+    const aby = by - ay;
+    const apx = px - ax;
+    const apy = py - ay;
+    const ab2 = abx * abx + aby * aby;
+    if (ab2 === 0) return Math.hypot(px - ax, py - ay);
+    let t = (apx * abx + apy * aby) / ab2;
+    t = Math.max(0, Math.min(1, t));
+    const cx = ax + abx * t;
+    const cy = ay + aby * t;
+    return Math.hypot(px - cx, py - cy);
+  }
+
+  function draw() {
+    projectVertices();
+    ctx.clearRect(0, 0, width, height);
+
+    const grad = ctx.createRadialGradient(cx, cy, 40, cx, cy, 340);
+    grad.addColorStop(0, "rgba(15,23,42,1)");
+    grad.addColorStop(1, "rgba(0,0,0,1)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
+
+    for (let i = 0; i < edges.length; i++) {
+      const e = edges[i];
+      const p1 = projected[e.a];
+      const p2 = projected[e.b];
+      const hasFiche = !!e.ficheId;
+      const isHover = (i === hoverEdgeIndex);
+      const isSelected = (selectedFicheId && e.ficheId === selectedFicheId);
+
+      let strokeStyle = "rgba(148,163,184,0.18)";
+      let lineWidth = 1.1;
+
+      if (hasFiche) {
+        const fiche = ficheById[e.ficheId];
+        const catColor = categoryConfig[fiche.category].color || "rgba(148,163,184,0.7)";
+        if (isSelected) {
+          strokeStyle = catColor;
+          lineWidth = 4;
+        } else if (isHover) {
+          strokeStyle = catColor;
+          lineWidth = 3;
+        } else {
+          strokeStyle = catColor;
+          lineWidth = 2.2;
+        }
+      }
+
+      ctx.strokeStyle = strokeStyle;
+      ctx.lineWidth = lineWidth;
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.stroke();
+    }
+
+    if (hoverEdgeIndex >= 0) {
+      const e = edges[hoverEdgeIndex];
+      if (e.ficheId) {
+        const p1 = projected[e.a];
+        const p2 = projected[e.b];
+        const mx = (p1.x + p2.x) / 2;
+        const my = (p1.y + p2.y) / 2 - 10;
+
+        const fiche = ficheById[e.ficheId];
+        const text = e.ficheId + " · " + fiche.label;
+
+        ctx.font = "11px system-ui, sans-serif";
+        const padding = 6;
+        const metrics = ctx.measureText(text);
+        const tw = metrics.width + padding * 2;
+
+        ctx.fillStyle = "rgba(15,23,42,0.9)";
+        ctx.strokeStyle = "rgba(148,163,184,0.8)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(mx - tw / 2, my - 14, tw, 18, 6);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#e5e7eb";
+        ctx.textBaseline = "middle";
+        ctx.fillText(text, mx - tw / 2 + padding, my - 5);
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  canvas.addEventListener("mousemove", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    const mouseX = (e.clientX - rect.left) * scaleX;
+    const mouseY = (e.clientY - rect.top) * scaleY;
+
+    let bestIndex = -1;
+    let bestDist = 1e9;
+
+    for (let i = 0; i < edges.length; i++) {
+      const eEdge = edges[i];
+      if (!eEdge.ficheId) continue;
+      const p1 = projected[eEdge.a];
+      const p2 = projected[eEdge.b];
+      const d = distancePointToSegment(mouseX, mouseY, p1.x, p1.y, p2.x, p2.y);
+      if (d < bestDist) {
+        bestDist = d;
+        bestIndex = i;
+      }
+    }
+
+    const threshold = 25;
+    if (bestDist < threshold) {
+      hoverEdgeIndex = bestIndex;
+      const edge = edges[hoverEdgeIndex];
+      const fiche = ficheById[edge.ficheId];
+      hoverInfo.textContent = edge.ficheId + " · " + fiche.label;
+    } else {
+      hoverEdgeIndex = -1;
+      hoverInfo.textContent = "Survolez une arête pour voir son identifiant.";
+    }
+  });
+
+  canvas.addEventListener("mouseleave", () => {
+    hoverEdgeIndex = -1;
+    hoverInfo.textContent = "Survolez une arête pour voir son identifiant.";
+  });
+
+  canvas.addEventListener("click", () => {
+    if (hoverEdgeIndex >= 0) {
+      const edge = edges[hoverEdgeIndex];
+      if (edge.ficheId) selectFiche(edge.ficheId);
+    }
+  });
+
+  // --- Markdown : on enlève totalement le front-matter YAML avant de structurer ---
+
+  function stripFrontMatter(md) {
+    const lines = md.split(/\r?\n/);
+    if (!lines[0] || !lines[0].startsWith("---")) return md;
+    let endIndex = -1;
+    for (let i = 1; i < lines.length; i++) {
+      if (lines[i].startsWith("---")) {
+        endIndex = i;
+        break;
+      }
+    }
+    if (endIndex === -1) return md;
+    return lines.slice(endIndex + 1).join("\n");
+  }
+
+  // Séparer recto (tout sauf Face dark + Liens forts) et verso (Face dark seulement)
+  function splitRectoVerso(md) {
+    const cleaned = stripFrontMatter(md);
+    const lines = cleaned.split(/\r?\n/);
+    const headerLines = [];
+    const sections = [];
+
+    let i = 0;
+    while (i < lines.length && !/^##\s+/.test(lines[i])) {
+      if (lines[i].trim() !== "") headerLines.push(lines[i]);
+      i++;
+    }
+
+    let currentTitle = null;
+    let currentLines = [];
+    for (; i < lines.length; i++) {
+      const m = lines[i].match(/^##\s+(.+)/);
+      if (m) {
+        if (currentTitle !== null) {
+          sections.push({ title: currentTitle, text: currentLines.join("\n") });
+        }
+        currentTitle = m[1].trim();
+        currentLines = [lines[i]];
+      } else {
+        currentLines.push(lines[i]);
+      }
+    }
+    if (currentTitle !== null) {
+      sections.push({ title: currentTitle, text: currentLines.join("\n") });
+    }
+
+    const rectoSections = [];
+    const darkSections = [];
+
+    sections.forEach(sec => {
+      if (/face\s+dark/i.test(sec.title)) {
+        darkSections.push(sec);
+      } else if (/liens\s+forts/i.test(sec.title)) {
+        // on n'affiche pas "Liens forts" sur le recto pour alléger
+      } else {
+        rectoSections.push(sec);
+      }
+    });
+
+    const rectoMd = [headerLines.join("\n")]
+      .concat(rectoSections.map(s => s.text))
+      .join("\n\n")
+      .trim();
+
+    const versoMd = darkSections.map(s => s.text).join("\n\n").trim();
+
+    return [rectoMd, versoMd];
+  }
+
+  function escapeInline(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function formatInline(text) {
+    let t = escapeInline(text);
+    t = t.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    t = t.replace(/\*(.+?)\*/g, "<em>$1</em>");
+    return t;
+  }
+
+  function renderMarkdown(md) {
+    const lines = md.split(/\r?\n/);
+    let html = "";
+    let inList = false;
+
+    function closeList() {
+      if (inList) {
+        html += "</ul>";
+        inList = false;
+      }
+    }
+
+    for (let raw of lines) {
+      const line = raw.replace(/\s+$/,"");
+      if (!line.trim()) {
+        closeList();
+        continue;
+      }
+
+      if (line.startsWith("# ")) {
+        closeList();
+        html += "<h1>" + escapeInline(line.slice(2)) + "</h1>";
+      } else if (line.startsWith("## ")) {
+        closeList();
+        html += "<h2>" + escapeInline(line.slice(3)) + "</h2>";
+      } else if (line.startsWith("### ")) {
+        closeList();
+        html += "<h3>" + escapeInline(line.slice(4)) + "</h3>";
+      } else if (line.startsWith("- ")) {
+        if (!inList) {
+          html += "<ul>";
+          inList = true;
+        }
+        html += "<li>" + formatInline(line.slice(2)) + "</li>";
+      } else {
+        closeList();
+        html += "<p>" + formatInline(line) + "</p>";
+      }
+    }
+    closeList();
+    return html;
+  }
+
+  // --- Fiche recto / dark side ---
+
+  const ficheCard     = document.getElementById("ficheCard");
+  const ficheStrip    = document.getElementById("ficheStrip");
+  const fichePills    = document.getElementById("fichePills");
+  const ficheTitle    = document.getElementById("ficheTitle");
+  const ficheSubtitle = document.getElementById("ficheSubtitle");
+  const ficheBodyLight= document.getElementById("ficheBodyLight");
+  const ficheBodyDark = document.getElementById("ficheBodyDark");
+  const flipToggle    = document.getElementById("flipToggle");
+
+  let showingDark = false;
+  let isAnimating = false;
+
+  function selectFiche(id) {
+    const fiche = ficheById[id];
+    if (!fiche) return;
+    selectedFicheId = id;
+    showingDark = false;
+    ficheCard.classList.remove("show-dark");
+
+    fichePills.innerHTML = "";
+    const pillType = document.createElement("div");
+    pillType.className = "pill";
+    pillType.textContent = categoryConfig[fiche.category].label;
+    fichePills.appendChild(pillType);
+
+    const pillId = document.createElement("div");
+    pillId.className = "pill pill-id";
+    pillId.textContent = fiche.id;
+    fichePills.appendChild(pillId);
+
+    ficheTitle.textContent = fiche.label;
+    ficheSubtitle.textContent = fiche.summary || "";
+
+    const [rectoMd, versoMd] = splitRectoVerso(fiche.markdown);
+    ficheBodyLight.innerHTML = renderMarkdown(rectoMd);
+
+    if (versoMd && versoMd.trim().length > 0) {
+      ficheBodyDark.innerHTML = renderMarkdown(versoMd);
+      flipToggle.disabled = false;
+      flipToggle.textContent = "Voir dark side";
+    } else {
+      ficheBodyDark.innerHTML =
+        '<p class="hint">Côté dark non encore explicité pour cette fiche. Ajouter un bloc « ## Face dark » dans le Markdown si nécessaire.</p>';
+      flipToggle.disabled = true;
+      flipToggle.textContent = "Dark side (n.c.)";
+    }
+
+    ficheStrip.className = "fiche-strip";
+    switch (fiche.category) {
+      case "Strate":    ficheStrip.classList.add("strip-strate"); break;
+      case "Epistrate": ficheStrip.classList.add("strip-epistrate"); break;
+      case "Parastrate":ficheStrip.classList.add("strip-parastrate"); break;
+      case "PlanE":     ficheStrip.classList.add("strip-plane"); break;
+      case "Operateur": ficheStrip.classList.add("strip-operateur"); break;
+    }
+
+    updateIndexActive(id);
+  }
+
+  flipToggle.addEventListener("click", () => {
+    if (flipToggle.disabled || isAnimating) return;
+    isAnimating = true;
+
+    ficheCard.classList.remove("flip-in");
+    ficheCard.classList.add("flip-out");
+
+    setTimeout(() => {
+      showingDark = !showingDark;
+      ficheCard.classList.toggle("show-dark", showingDark);
+      flipToggle.textContent = showingDark ? "Revenir au côté clair" : "Voir dark side";
+
+      ficheCard.classList.remove("flip-out");
+      ficheCard.classList.add("flip-in");
+
+      setTimeout(() => {
+        ficheCard.classList.remove("flip-in");
+        isAnimating = false;
+      }, 260);
+    }, 260);
+  });
+
+  // --- Index des fiches ---
+
+  const indexSearch = document.getElementById("indexSearch");
+  const indexList   = document.getElementById("indexList");
+
+  function renderIndex(filterText = "") {
+    const text = filterText.toLowerCase();
+    indexList.innerHTML = "";
+    fiches
+      .filter(n => {
+        if (!text) return true;
+        return (
+          n.id.toLowerCase().includes(text) ||
+          n.label.toLowerCase().includes(text) ||
+          categoryConfig[n.category].label.toLowerCase().includes(text)
+        );
+      })
+      .sort((a, b) => a.id.localeCompare(b.id))
+      .forEach(n => {
+        const li = document.createElement("li");
+        li.className = "index-item";
+        li.setAttribute("data-id", n.id);
+
+        const left = document.createElement("div");
+        left.style.display = "flex";
+        left.style.alignItems = "center";
+        left.style.gap = "6px";
+
+        const dot = document.createElement("span");
+        dot.className = "legend-dot";
+        dot.style.background = categoryConfig[n.category].color;
+        left.appendChild(dot);
+
+        const labelSpan = document.createElement("span");
+        labelSpan.textContent = n.id + " · " + n.label;
+        left.appendChild(labelSpan);
+
+        const typeSpan = document.createElement("small");
+        typeSpan.textContent = categoryConfig[n.category].label;
+
+        li.appendChild(left);
+        li.appendChild(typeSpan);
+
+        li.addEventListener("click", () => selectFiche(n.id));
+        indexList.appendChild(li);
+      });
+
+    updateIndexActive(selectedFicheId);
+  }
+
+  function updateIndexActive(id) {
+    const items = indexList.querySelectorAll(".index-item");
+    items.forEach(item => {
+      item.classList.toggle("active", item.getAttribute("data-id") === id);
+    });
+  }
+
+  indexSearch.addEventListener("input", () => {
+    renderIndex(indexSearch.value);
+  });
+
+  renderIndex();
+  selectFiche("S3");
+  requestAnimationFrame(draw);
+</script>
+</body>
+</html>
