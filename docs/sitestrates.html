@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>HyperIon · Strates & Hyperinvestigation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Style de base, ambiance spéculative, dark mode -->
   <style>
     :root {
       --bg: #05060a;
@@ -73,7 +72,6 @@
       min-height: 0;
     }
 
-    /* Colonne gauche : visualisation + index */
     .left-panel {
       width: 42%;
       min-width: 320px;
@@ -235,7 +233,6 @@
       color: var(--muted);
     }
 
-    /* Colonne droite : fiche */
     .right-panel {
       flex: 1;
       display: flex;
@@ -326,7 +323,6 @@
       box-shadow: 0 18px 40px rgba(0,0,0,0.6);
     }
 
-    /* Rendu Markdown minimal */
     .fiche-inner h1,
     .fiche-inner h2,
     .fiche-inner h3 {
@@ -385,7 +381,6 @@
       margin-bottom: 6px;
     }
 
-    /* Responsive */
     @media (max-width: 900px) {
       main {
         flex-direction: column;
@@ -403,9 +398,7 @@
     }
   </style>
 
-  <!-- Three.js pour le tesseract / cube -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <!-- Marked pour le rendu Markdown -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
@@ -418,7 +411,6 @@
   </header>
 
   <main>
-    <!-- Colonne gauche -->
     <section class="left-panel">
       <div class="vis-container">
         <canvas id="tesseractCanvas"></canvas>
@@ -451,7 +443,6 @@
       </div>
     </section>
 
-    <!-- Colonne droite -->
     <section class="right-panel">
       <div class="fiche-header">
         <div class="fiche-id" id="ficheId">Sélectionne une fiche</div>
@@ -474,11 +465,152 @@
 
   <script>
     // -----------------------
-    // Gestion des fiches
+    // Données des fiches (métadonnées + chemin fichier)
     // -----------------------
+    const FICHES = [
+      {
+        id: "S1",
+        label: "Strate matérielle",
+        category: "Strate",
+        summary: "Corps, sols, ruines, architectures et milieux physiques où s’inscrivent matériellement les dominations.",
+        file: "fiches/S1_strate_materielle.md"
+      },
+      {
+        id: "S3",
+        label: "Strate numérique / données (OSINT)",
+        category: "Strate",
+        summary: "Traces numériques publiques ou semi-publiques et OSINT comme technologie de la spéculation.",
+        file: "fiches/S3_strate_numerique_OSINT.md"
+      },
+      {
+        id: "S6",
+        label: "Strate écologique / géologique",
+        category: "Strate",
+        summary: "Milieux vivants et géologiques où se manifestent écocides et formes de slow violence.",
+        file: "fiches/S6_strate_ecologique_geologique.md"
+      },
+      {
+        id: "S7",
+        label: "Strate technogenèse / IA / infrastructures",
+        category: "Strate",
+        summary: "Architectures de calcul et de réseau (data centers, plateformes, IA, dispositifs de surveillance) comme régime autonome articulé à la géopolitique, à l’économie et aux écologies.",
+        file: "fiches/S7_strate_technogenese_IA_infrastructures.md"
+      },
+      {
+        id: "S8",
+        label: "Strate imaginale / science spéculative (SF)",
+        category: "Strate",
+        summary: "Ressources fictionnelles et poétiques (SF, anticipation, mutants, archives totales) comme science spéculative des mondes possibles et des régimes futurs d’enquête.",
+        file: "fiches/S8_strate_imaginale_SF_mutants.md"
+      },
+      {
+        id: "EPI-METR",
+        label: "Épistrate métrique–indiciaire",
+        category: "Epistrate",
+        summary: "Couches de mesures et d’indicateurs qui surcodent les strates et transforment les situations en valeurs chiffrées.",
+        file: "fiches/EPI_METR_epistrate_metrique_indiciaire.md"
+      },
+      {
+        id: "EPI-MOD",
+        label: "Épistrate de modélisation / simulation",
+        category: "Epistrate",
+        summary: "Couches de modèles, scénarios et simulations qui produisent des représentations calculées des phénomènes.",
+        file: "fiches/EPI_MOD_epistrate_modelisation_simulation.md"
+      },
+      {
+        id: "EPI-PLAT",
+        label: "Épistrate de platformisation",
+        category: "Epistrate",
+        summary: "Outils, plateformes et workflows qui encodent et normalisent les pratiques d’enquête.",
+        file: "fiches/EPI_PLAT_epistrate_platformisation.md"
+      },
+      {
+        id: "EPI-SEC",
+        label: "Épistrate de sécurité / secret",
+        category: "Epistrate",
+        summary: "Protocoles de sécurité, de secret et de confidentialité qui doublent les enquêtes et leur circulation.",
+        file: "fiches/EPI_SEC_epistrate_securite_secret.md"
+      },
+      {
+        id: "PARA-ECONO",
+        label: "Parastrate économique–industriel",
+        category: "Parastrate",
+        summary: "Groupes industriels, financiers, énergétiques et numériques qui structurent les infrastructures matérielles, écologiques et informationnelles.",
+        file: "fiches/PARA_ECONO_parastrate_economique_industriel.md"
+      },
+      {
+        id: "PARA-MEDIA",
+        label: "Parastrate médiatico-politique",
+        category: "Parastrate",
+        summary: "Médias, plateformes et acteurs politiques qui encadrent la visibilité et la mise en scène des enquêtes.",
+        file: "fiches/PARA_MEDIA_parastrate_mediatico_politique.md"
+      },
+      {
+        id: "PARA-MEME",
+        label: "Parastrate memétique / infra-symbolique",
+        category: "Parastrate",
+        summary: "Mèmes, blagues, micro-récits et formats viraux qui constituent l’atmosphère infra-symbolique des terrains.",
+        file: "fiches/PARA_MEME_parastrate_memetique_infra_symbolique.md"
+      },
+      {
+        id: "PARA-PARAACAD",
+        label: "Parastrate para-académique / para-scientifique",
+        category: "Parastrate",
+        summary: "Milieux qui parasitent ou doublent la production scientifique (revues prédatrices, paper mills, think tanks pseudo-scientifiques).",
+        file: "fiches/PARA_PARAACAD_parastrate_para_academique_scientifique.md"
+      },
+      {
+        id: "PARA-SECUR",
+        label: "Parastrate sécuritaire / para-étatique",
+        category: "Parastrate",
+        summary: "Services de renseignement, entreprises de sécurité, cyber-officines et milieux para-étatiques liés à l’OSINT offensif.",
+        file: "fiches/PARA_SECUR_parastrate_securitaire_para_etatique.md"
+      },
+      {
+        id: "O2-LITERACY",
+        label: "Opérateur de littératies d’enquête",
+        category: "Operateur",
+        summary: "Littératies informationnelles, médiatiques, numériques et algorithmiques qui rendent l’hyperinvestigation appropriable par des publics.",
+        file: "fiches/O2_LITERACY_operateur_litteraties_enquete.md"
+      },
+      {
+        id: "E1",
+        label: "Régimes de vérité & formes de preuve",
+        category: "PlanE",
+        summary: "Conditions de reconnaissance de la preuve dans les différents forums (juridiques, scientifiques, médiatiques, plateformes).",
+        file: "fiches/E1_regimes_verite_formes_preuve.md"
+      },
+      {
+        id: "E2",
+        label: "Position de l’enquêteur / réflexivité",
+        category: "PlanE",
+        summary: "Inscription de l’enquêteur ou du collectif dans les rapports de force, les infrastructures et les attaches matérielles.",
+        file: "fiches/E2_position_enqueteur_reflexivite.md"
+      },
+      {
+        id: "E3",
+        label: "Épistémologie des systèmes de connaissance",
+        category: "PlanE",
+        summary: "Analyse des systèmes de production, évaluation et circulation du savoir, y compris les régimes de connaissance spéculatifs.",
+        file: "fiches/E3_epistemologie_systemes_connaissance.md"
+      },
+      {
+        id: "E4",
+        label: "Généalogie historique des pratiques d’enquête",
+        category: "PlanE",
+        summary: "Lien entre hyperinvestigation et traditions de criminalistique, de documentation scientifique et de photographie judiciaire.",
+        file: "fiches/E4_genealogie_historique_pratiques_enquete.md"
+      },
+      {
+        id: "E5",
+        label: "Généalogie fictionnelle des détectives & de l’enquête",
+        category: "PlanE",
+        summary: "Les détectives de fiction comme matrices épistémiques pour penser enquête, spéculation et observateur-participant.",
+        file: "fiches/E5_genealogie_fictionnelle_detectives_enquete.md"
+      }
+    ];
 
     let fiches = [];
-    let filteredFiches = [];
     let currentFicheId = null;
 
     function categoryToTagClass(category) {
@@ -503,22 +635,14 @@
       }
     }
 
-    async function loadFiches() {
-      try {
-        const res = await fetch("fiches.json");
-        if (!res.ok) {
-          throw new Error("Impossible de charger fiches.json");
-        }
-        fiches = await res.json();
-        filteredFiches = fiches.slice();
-        renderFicheList();
-        if (filteredFiches.length > 0) {
-          showFiche(filteredFiches[0].id);
-        }
-      } catch (err) {
-        console.error(err);
+    function initFiches() {
+      fiches = FICHES.slice();
+      renderFicheList();
+      if (fiches.length > 0) {
+        showFiche(fiches[0].id);
+      } else {
         document.getElementById("ficheStatus").textContent =
-          "Erreur : impossible de charger les fiches. Vérifie la présence de fiches.json et des fichiers .md.";
+          "Aucune fiche disponible (tableau FICHES vide).";
       }
     }
 
@@ -533,8 +657,6 @@
         const hay = (f.id + " " + f.label + " " + (f.summary || "")).toLowerCase();
         return hay.includes(search);
       });
-
-      filteredFiches = items;
 
       listEl.innerHTML = "";
       items.forEach(fiche => {
@@ -565,8 +687,8 @@
         listEl.appendChild(li);
       });
 
-      const countInfo = document.getElementById("countInfo");
-      countInfo.textContent = items.length + " / " + fiches.length;
+      document.getElementById("countInfo").textContent =
+        items.length + " / " + fiches.length;
     }
 
     function stripFrontMatter(md) {
@@ -584,7 +706,7 @@
       if (!fiche) return;
 
       currentFicheId = id;
-      // Met à jour l'état visuel dans la liste
+
       document.querySelectorAll(".index-item").forEach(li => {
         li.classList.toggle("active", li.dataset.id === id);
       });
@@ -629,7 +751,6 @@
     // -----------------------
     // Tesseract / cube 3D
     // -----------------------
-
     let scene, camera, renderer, tesseractGroup;
 
     function initTesseract() {
@@ -642,7 +763,6 @@
       renderer.setPixelRatio(window.devicePixelRatio || 1);
 
       scene = new THREE.Scene();
-
       camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
       camera.position.set(0, 0, 10);
 
@@ -661,7 +781,6 @@
         opacity: 0.6
       });
 
-      // Hypercube 4D légèrement stylisé, projeté en 3D
       const s = 1.5;
       const vertices4D = [];
       for (let x of [-1, 1]) {
@@ -676,7 +795,7 @@
 
       function project4Dto3D(v4) {
         const w = v4.w;
-        const k = 1 / (2 - w); // projection perspective W
+        const k = 1 / (2 - w);
         return new THREE.Vector3(v4.x * k * s, v4.y * k * s, v4.z * k * s);
       }
 
@@ -709,15 +828,8 @@
       const edges = new THREE.LineSegments(edgeGeometry, edgeMaterial);
       tesseractGroup.add(edges);
 
-      // Petites sphères pour suggérer des familles (strates, épistrates, etc.)
       const sphereGeo = new THREE.SphereGeometry(0.07, 16, 16);
-      const colors = [
-        0x4fd1c5, // strates
-        0xf6ad55, // épistrates
-        0xf56565, // parastrates
-        0x9f7aea, // plan E
-        0x63b3ed  // opérateurs
-      ];
+      const colors = [0x4fd1c5, 0xf6ad55, 0xf56565, 0x9f7aea, 0x63b3ed];
 
       vertices3D.forEach((v, idx) => {
         const mat = new THREE.MeshStandardMaterial({
@@ -732,7 +844,6 @@
         tesseractGroup.add(sphere);
       });
 
-      // rotation lente
       function animate() {
         requestAnimationFrame(animate);
         tesseractGroup.rotation.y += 0.003;
@@ -741,7 +852,6 @@
       }
       animate();
 
-      // Resize
       window.addEventListener("resize", () => {
         const w = canvas.clientWidth || canvas.parentElement.clientWidth;
         const h = canvas.clientHeight || canvas.parentElement.clientHeight || 260;
@@ -751,13 +861,9 @@
       });
     }
 
-    // -----------------------
-    // Initialisation
-    // -----------------------
-
     document.addEventListener("DOMContentLoaded", () => {
       initTesseract();
-      loadFiches();
+      initFiches();
 
       document.getElementById("searchInput").addEventListener("input", () => {
         renderFicheList();
