@@ -574,579 +574,588 @@
   </main>
 
   <script>
-    const FICHES = [
-      {
-        id: "S1",
-        label: "Strate matérielle",
-        category: "Strate",
-        summary: "Corps, sols, ruines, architectures et milieux physiques où s’inscrivent matériellement les dominations.",
-        file: "fiches/S1_strate_materielle"
-      },
-      {
-        id: "S3",
-        label: "Strate numérique / données (OSINT)",
-        category: "Strate",
-        summary: "Traces numériques publiques ou semi-publiques et OSINT comme technologie de la spéculation.",
-        file: "fiches/S3_strate_numerique_OSINT"
-      },
-      {
-        id: "S6",
-        label: "Strate écologique / géologique",
-        category: "Strate",
-        summary: "Milieux vivants et géologiques où se manifestent écocides et formes de slow violence.",
-        file: "fiches/S6_strate_ecologique_geologique"
-      },
-      {
-        id: "S7",
-        label: "Strate technogenèse / IA / infrastructures",
-        category: "Strate",
-        summary: "Architectures de calcul et de réseau (data centers, plateformes, IA, dispositifs de surveillance) comme régime autonome articulé à la géopolitique, à l’économie et aux écologies.",
-        file: "fiches/S7_strate_technogenese_IA_infrastructures"
-      },
-      {
-        id: "S8",
-        label: "Strate imaginale / science spéculative (SF)",
-        category: "Strate",
-        summary: "Ressources fictionnelles et poétiques (SF, anticipation, mutants, archives totales) comme science spéculative des mondes possibles et des régimes futurs d’enquête.",
-        file: "fiches/S8_strate_imaginale_SF_mutants"
-      },
-      {
-        id: "EPI-METR",
-        label: "Épistrate métrique–indiciaire",
-        category: "Epistrate",
-        summary: "Couches de mesures et d’indicateurs qui surcodent les strates et transforment les situations en valeurs chiffrées.",
-        file: "fiches/EPI_METR_epistrate_metrique_indiciaire"
-      },
-      {
-        id: "EPI-MOD",
-        label: "Épistrate de modélisation / simulation",
-        category: "Epistrate",
-        summary: "Couches de modèles, scénarios et simulations qui produisent des représentations calculées des phénomènes.",
-        file: "fiches/EPI_MOD_epistrate_modelisation_simulation"
-      },
-      {
-        id: "EPI-PLAT",
-        label: "Épistrate de platformisation",
-        category: "Epistrate",
-        summary: "Outils, plateformes et workflows qui encodent et normalisent les pratiques d’enquête.",
-        file: "fiches/EPI_PLAT_epistrate_platformisation"
-      },
-      {
-        id: "EPI-SEC",
-        label: "Épistrate de sécurité / secret",
-        category: "Epistrate",
-        summary: "Protocoles de sécurité, de secret et de confidentialité qui doublent les enquêtes et leur circulation.",
-        file: "fiches/EPI_SEC_epistrate_securite_secret"
-      },
-      {
-        id: "PARA-ECONO",
-        label: "Parastrate économique–industriel",
-        category: "Parastrate",
-        summary: "Groupes industriels, financiers, énergétiques et numériques qui structurent les infrastructures matérielles, écologiques et informationnelles.",
-        file: "fiches/PARA_ECONO_parastrate_economique_industriel"
-      },
-      {
-        id: "PARA-MEDIA",
-        label: "Parastrate médiatico-politique",
-        category: "Parastrate",
-        summary: "Médias, plateformes et acteurs politiques qui encadrent la visibilité et la mise en scène des enquêtes.",
-        file: "fiches/PARA_MEDIA_parastrate_mediatico_politique"
-      },
-      {
-        id: "PARA-MEME",
-        label: "Parastrate memétique / infra-symbolique",
-        category: "Parastrate",
-        summary: "Mèmes, blagues, micro-récits et formats viraux qui constituent l’atmosphère infra-symbolique des terrains.",
-        file: "fiches/PARA_MEME_parastrate_memetique_infra_symbolique"
-      },
-      {
-        id: "PARA-PARAACAD",
-        label: "Parastrate para-académique / para-scientifique",
-        category: "Parastrate",
-        summary: "Milieux qui parasitent ou doublent la production scientifique (revues prédatrices, paper mills, think tanks pseudo-scientifiques).",
-        file: "fiches/PARA_PARAACAD_parastrate_para_academique_scientifique"
-      },
-      {
-        id: "PARA-SECUR",
-        label: "Parastrate sécuritaire / para-étatique",
-        category: "Parastrate",
-        summary: "Services de renseignement, entreprises de sécurité, cyber-officines et milieux para-étatiques liés à l’OSINT offensif.",
-        file: "fiches/PARA_SECUR_parastrate_securitaire_para_etatique"
-      },
-      {
-        id: "O2-LITERACY",
-        label: "Opérateur de littératies d’enquête",
-        category: "Operateur",
-        summary: "Littératies informationnelles, médiatiques, numériques et algorithmiques qui rendent l’hyperinvestigation appropriable par des publics.",
-        file: "fiches/O2_LITERACY_operateur_litteraties_enquete"
-      },
-      {
-        id: "E1",
-        label: "Régimes de vérité & formes de preuve",
-        category: "PlanE",
-        summary: "Conditions de reconnaissance de la preuve dans les différents forums (juridiques, scientifiques, médiatiques, plateformes).",
-        file: "fiches/E1_regimes_verite_formes_preuve"
-      },
-      {
-        id: "E2",
-        label: "Position de l’enquêteur / réflexivité",
-        category: "PlanE",
-        summary: "Inscription de l’enquêteur ou du collectif dans les rapports de force, les infrastructures et les attaches matérielles.",
-        file: "fiches/E2_position_enqueteur_reflexivite"
-      },
-      {
-        id: "E3",
-        label: "Épistémologie des systèmes de connaissance",
-        category: "PlanE",
-        summary: "Analyse des systèmes de production, évaluation et circulation du savoir, y compris les régimes de connaissance spéculatifs.",
-        file: "fiches/E3_epistemologie_systemes_connaissance"
-      },
-      {
-        id: "E4",
-        label: "Généalogie historique des pratiques d’enquête",
-        category: "PlanE",
-        summary: "Lien entre hyperinvestigation et traditions de criminalistique, de documentation scientifique et de photographie judiciaire.",
-        file: "fiches/E4_genealogie_historique_pratiques_enquete"
-      },
-      {
-        id: "E5",
-        label: "Généalogie fictionnelle des détectives & de l’enquête",
-        category: "PlanE",
-        summary: "Les détectives de fiction comme matrices épistémiques pour penser enquête, spéculation et observateur-participant.",
-        file: "fiches/E5_genealogie_fictionnelle_detectives_enquete"
-      }
-    ];
-
-    const PRIMARY_FICHE_BY_CATEGORY = {
-      "Strate": "S1",
-      "Epistrate": "EPI-METR",
-      "Parastrate": "PARA-ECONO",
-      "PlanE": "E1",
-      "Operateur": "O2-LITERACY"
-    };
-
-    let fiches = [];
-    let filteredFiches = [];
-    let currentFicheId = null;
-    let viewMode = "single";
-
-    function categoryToTagClass(category) {
-      switch (category) {
-        case "Strate": return "strate";
-        case "Epistrate": return "epistrate";
-        case "Parastrate": return "parastrate";
-        case "PlanE": return "plane";
-        case "Operateur": return "operateur";
-        default: return "";
-      }
+  const FICHES = [
+    {
+      id: "S1",
+      label: "Strate matérielle",
+      category: "Strate",
+      summary: "Corps, sols, ruines, architectures et milieux physiques où s’inscrivent matériellement les dominations.",
+      file: "fiches/S1_strate_materielle"
+    },
+    {
+      id: "S3",
+      label: "Strate numérique / données (OSINT)",
+      category: "Strate",
+      summary: "Traces numériques publiques ou semi-publiques et OSINT comme technologie de la spéculation.",
+      file: "fiches/S3_strate_numerique_OSINT"
+    },
+    {
+      id: "S6",
+      label: "Strate écologique / géologique",
+      category: "Strate",
+      summary: "Milieux vivants et géologiques où se manifestent écocides et formes de slow violence.",
+      file: "fiches/S6_strate_ecologique_geologique"
+    },
+    {
+      id: "S7",
+      label: "Strate technogenèse / IA / infrastructures",
+      category: "Strate",
+      summary: "Architectures de calcul et de réseau (data centers, plateformes, IA, dispositifs de surveillance) comme régime autonome articulé à la géopolitique, à l’économie et aux écologies.",
+      file: "fiches/S7_strate_technogenese_IA_infrastructures"
+    },
+    {
+      id: "S8",
+      label: "Strate imaginale / science spéculative (SF)",
+      category: "Strate",
+      summary: "Ressources fictionnelles et poétiques (SF, anticipation, mutants, archives totales) comme science spéculative des mondes possibles et des régimes futurs d’enquête.",
+      file: "fiches/S8_strate_imaginale_SF_mutants"
+    },
+    {
+      id: "EPI-METR",
+      label: "Épistrate métrique–indiciaire",
+      category: "Epistrate",
+      summary: "Couches de mesures et d’indicateurs qui surcodent les strates et transforment les situations en valeurs chiffrées.",
+      file: "fiches/EPI_METR_epistrate_metrique_indiciaire"
+    },
+    {
+      id: "EPI-MOD",
+      label: "Épistrate de modélisation / simulation",
+      category: "Epistrate",
+      summary: "Couches de modèles, scénarios et simulations qui produisent des représentations calculées des phénomènes.",
+      file: "fiches/EPI_MOD_epistrate_modelisation_simulation"
+    },
+    {
+      id: "EPI-PLAT",
+      label: "Épistrate de platformisation",
+      category: "Epistrate",
+      summary: "Outils, plateformes et workflows qui encodent et normalisent les pratiques d’enquête.",
+      file: "fiches/EPI_PLAT_epistrate_platformisation"
+    },
+    {
+      id: "EPI-SEC",
+      label: "Épistrate de sécurité / secret",
+      category: "Epistrate",
+      summary: "Protocoles de sécurité, de secret et de confidentialité qui doublent les enquêtes et leur circulation.",
+      file: "fiches/EPI_SEC_epistrate_securite_secret"
+    },
+    {
+      id: "PARA-ECONO",
+      label: "Parastrate économique–industriel",
+      category: "Parastrate",
+      summary: "Groupes industriels, financiers, énergétiques et numériques qui structurent les infrastructures matérielles, écologiques et informationnelles.",
+      file: "fiches/PARA_ECONO_parastrate_economique_industriel"
+    },
+    {
+      id: "PARA-MEDIA",
+      label: "Parastrate médiatico-politique",
+      category: "Parastrate",
+      summary: "Médias, plateformes et acteurs politiques qui encadrent la visibilité et la mise en scène des enquêtes.",
+      file: "fiches/PARA_MEDIA_parastrate_mediatico_politique"
+    },
+    {
+      id: "PARA-MEME",
+      label: "Parastrate memétique / infra-symbolique",
+      category: "Parastrate",
+      summary: "Mèmes, blagues, micro-récits et formats viraux qui constituent l’atmosphère infra-symbolique des terrains.",
+      file: "fiches/PARA_MEME_parastrate_memetique_infra_symbolique"
+    },
+    {
+      id: "PARA-PARAACAD",
+      label: "Parastrate para-académique / para-scientifique",
+      category: "Parastrate",
+      summary: "Milieux qui parasitent ou doublent la production scientifique (revues prédatrices, paper mills, think tanks pseudo-scientifiques).",
+      file: "fiches/PARA_PARAACAD_parastrate_para_academique_scientifique"
+    },
+    {
+      id: "PARA-SECUR",
+      label: "Parastrate sécuritaire / para-étatique",
+      category: "Parastrate",
+      summary: "Services de renseignement, entreprises de sécurité, cyber-officines et milieux para-étatiques liés à l’OSINT offensif.",
+      file: "fiches/PARA_SECUR_parastrate_securitaire_para_etatique"
+    },
+    {
+      id: "O2-LITERACY",
+      label: "Opérateur de littératies d’enquête",
+      category: "Operateur",
+      summary: "Littératies informationnelles, médiatiques, numériques et algorithmiques qui rendent l’hyperinvestigation appropriable par des publics.",
+      file: "fiches/O2_LITERACY_operateur_litteraties_enquete"
+    },
+    {
+      id: "E1",
+      label: "Régimes de vérité & formes de preuve",
+      category: "PlanE",
+      summary: "Conditions de reconnaissance de la preuve dans les différents forums (juridiques, scientifiques, médiatiques, plateformes).",
+      file: "fiches/E1_regimes_verite_formes_preuve"
+    },
+    {
+      id: "E2",
+      label: "Position de l’enquêteur / réflexivité",
+      category: "PlanE",
+      summary: "Inscription de l’enquêteur ou du collectif dans les rapports de force, les infrastructures et les attaches matérielles.",
+      file: "fiches/E2_position_enqueteur_reflexivite"
+    },
+    {
+      id: "E3",
+      label: "Épistémologie des systèmes de connaissance",
+      category: "PlanE",
+      summary: "Analyse des systèmes de production, évaluation et circulation du savoir, y compris les régimes de connaissance spéculatifs.",
+      file: "fiches/E3_epistemologie_systemes_connaissance"
+    },
+    {
+      id: "E4",
+      label: "Généalogie historique des pratiques d’enquête",
+      category: "PlanE",
+      summary: "Lien entre hyperinvestigation et traditions de criminalistique, de documentation scientifique et de photographie judiciaire.",
+      file: "fiches/E4_genealogie_historique_pratiques_enquete"
+    },
+    {
+      id: "E5",
+      label: "Généalogie fictionnelle des détectives & de l’enquête",
+      category: "PlanE",
+      summary: "Les détectives de fiction comme matrices épistémiques pour penser enquête, spéculation et observateur-participant.",
+      file: "fiches/E5_genealogie_fictionnelle_detectives_enquete"
     }
+  ];
 
-    function categoryToLabel(category) {
-      switch (category) {
-        case "Strate": return "Strate";
-        case "Epistrate": return "Épistrate";
-        case "Parastrate": return "Parastrate";
-        case "PlanE": return "Plan E";
-        case "Operateur": return "Opérateur";
-        default: return category || "Autre";
-      }
+  const PRIMARY_FICHE_BY_CATEGORY = {
+    "Strate": "S1",
+    "Epistrate": "EPI-METR",
+    "Parastrate": "PARA-ECONO",
+    "PlanE": "E1",
+    "Operateur": "O2-LITERACY"
+  };
+
+  let fiches = [];
+  let filteredFiches = [];
+  let currentFicheId = null;
+  let viewMode = "single";
+
+  function categoryToTagClass(category) {
+    switch (category) {
+      case "Strate": return "strate";
+      case "Epistrate": return "epistrate";
+      case "Parastrate": return "parastrate";
+      case "PlanE": return "plane";
+      case "Operateur": return "operateur";
+      default: return "";
     }
+  }
 
-    function initFiches() {
-      fiches = FICHES.slice();
-      renderFicheList();
-      if (filteredFiches.length > 0) {
-        showFiche(filteredFiches[0].id);
-      } else {
-        document.getElementById("ficheStatus").textContent =
-          "Aucune fiche disponible (tableau FICHES vide).";
-      }
+  function categoryToLabel(category) {
+    switch (category) {
+      case "Strate": return "Strate";
+      case "Epistrate": return "Épistrate";
+      case "Parastrate": return "Parastrate";
+      case "PlanE": return "Plan E";
+      case "Operateur": return "Opérateur";
+      default: return category || "Autre";
     }
+  }
 
-    function renderFicheList() {
-      const listEl = document.getElementById("ficheList");
-      const search = (document.getElementById("searchInput").value || "").toLowerCase();
-      const cat = document.getElementById("categoryFilter").value;
-
-      const items = fiches.filter(f => {
-        if (cat && f.category !== cat) return false;
-        if (!search) return true;
-        const hay = (f.id + " " + f.label + " " + (f.summary || "")).toLowerCase();
-        return hay.includes(search);
-      });
-
-      filteredFiches = items;
-
-      listEl.innerHTML = "";
-      items.forEach(fiche => {
-        const li = document.createElement("li");
-        li.className = "index-item" + (fiche.id === currentFicheId ? " active" : "");
-        li.dataset.id = fiche.id;
-
-        const idEl = document.createElement("div");
-        idEl.className = "index-item-id";
-        idEl.textContent = fiche.id;
-
-        const labelEl = document.createElement("div");
-        labelEl.className = "index-item-label";
-        labelEl.textContent = fiche.label;
-
-        const summaryEl = document.createElement("div");
-        summaryEl.className = "index-item-summary";
-        summaryEl.textContent = fiche.summary || "";
-
-        li.appendChild(idEl);
-        li.appendChild(labelEl);
-        li.appendChild(summaryEl);
-
-        li.addEventListener("click", () => {
-          setViewMode("single");
-          showFiche(fiche.id);
-        });
-
-        listEl.appendChild(li);
-      });
-
-      document.getElementById("countInfo").textContent =
-        items.length + " / " + fiches.length;
-
-      if (viewMode === "list") {
-        renderListView();
-      }
+  function initFiches() {
+    fiches = FICHES.slice();
+    renderFicheList();
+    if (filteredFiches.length > 0) {
+      showFiche(filteredFiches[0].id);
+    } else {
+      document.getElementById("ficheStatus").textContent =
+        "Aucune fiche disponible (tableau FICHES vide).";
     }
+  }
 
-    function parseHtmlBody(html) {
-      try {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        if (doc && doc.body) {
-          return doc.body.innerHTML;
-        }
-      } catch (e) {
-        console.warn("Impossible de parser le HTML, on injecte brut.");
-      }
-      return html;
-    }
+  function renderFicheList() {
+    const listEl = document.getElementById("ficheList");
+    const search = (document.getElementById("searchInput").value || "").toLowerCase();
+    const cat = document.getElementById("categoryFilter").value;
 
-    async function showFiche(id) {
-      const fiche = fiches.find(f => f.id === id);
-      if (!fiche) return;
+    const items = fiches.filter(f => {
+      if (cat && f.category !== cat) return false;
+      if (!search) return true;
+      const hay = (f.id + " " + f.label + " " + (f.summary || "")).toLowerCase();
+      return hay.includes(search);
+    });
 
-      currentFicheId = id;
+    filteredFiches = items;
 
-      document.querySelectorAll(".index-item").forEach(li => {
-        li.classList.toggle("active", li.dataset.id === id);
-      });
+    listEl.innerHTML = "";
+    items.forEach(fiche => {
+      const li = document.createElement("li");
+      li.className = "index-item" + (fiche.id === currentFicheId ? " active" : "");
+      li.dataset.id = fiche.id;
 
-      const ficheIdEl = document.getElementById("ficheId");
-      const ficheLabelEl = document.getElementById("ficheLabel");
-      const ficheTagEl = document.getElementById("ficheTag");
-      const ficheSummaryEl = document.getElementById("ficheSummary");
-      const ficheStatusEl = document.getElementById("ficheStatus");
-      const ficheContentEl = document.getElementById("ficheContent");
+      const idEl = document.createElement("div");
+      idEl.className = "index-item-id";
+      idEl.textContent = fiche.id;
 
-      ficheIdEl.textContent = fiche.id;
-      ficheLabelEl.textContent = fiche.label;
-      ficheSummaryEl.textContent = fiche.summary || "";
+      const labelEl = document.createElement("div");
+      labelEl.className = "index-item-label";
+      labelEl.textContent = fiche.label;
 
-      const tagClass = categoryToTagClass(fiche.category);
-      ficheTagEl.className = "fiche-tag " + tagClass;
-      ficheTagEl.textContent = categoryToLabel(fiche.category);
-      ficheTagEl.style.visibility = "visible";
+      const summaryEl = document.createElement("div");
+      summaryEl.className = "index-item-summary";
+      summaryEl.textContent = fiche.summary || "";
 
-      ficheStatusEl.textContent = "Chargement de la fiche…";
-      ficheContentEl.innerHTML = "";
+      li.appendChild(idEl);
+      li.appendChild(labelEl);
+      li.appendChild(summaryEl);
 
-      try {
-        const res = await fetch(fiche.file);
-        if (!res.ok) {
-          throw new Error("Impossible de charger " + fiche.file);
-        }
-        const html = await res.text();
-        const bodyHtml = parseHtmlBody(html);
-
-        ficheContentEl.innerHTML = bodyHtml;
-        ficheStatusEl.textContent = "Fiche chargée.";
-      } catch (err) {
-        console.error("Erreur de chargement de fiche :", fiche.file, err);
-        ficheStatusEl.textContent =
-          "Erreur : impossible de charger le contenu de la fiche (« " + fiche.file +
-          " »). Vérifie que la page existe bien sur GitHub Pages.";
-      }
-    }
-
-    async function renderListView() {
-      const ficheIdEl = document.getElementById("ficheId");
-      const ficheLabelEl = document.getElementById("ficheLabel");
-      const ficheTagEl = document.getElementById("ficheTag");
-      const ficheSummaryEl = document.getElementById("ficheSummary");
-      const ficheStatusEl = document.getElementById("ficheStatus");
-      const ficheContentEl = document.getElementById("ficheContent");
-
-      ficheIdEl.textContent = "Mode liste";
-      ficheLabelEl.textContent = "Toutes les fiches filtrées";
-      ficheTagEl.style.visibility = "hidden";
-      ficheSummaryEl.textContent =
-        "Affichage séquentiel de toutes les fiches correspondant au filtre actuel (" +
-        filteredFiches.length + " élément(s)).";
-
-      ficheStatusEl.textContent =
-        "Chargement de " + filteredFiches.length + " fiche(s)…";
-      ficheContentEl.innerHTML = "";
-
-      const parser = new DOMParser();
-
-      for (const f of filteredFiches) {
-        try {
-          const res = await fetch(f.file);
-          if (!res.ok) throw new Error("Impossible de charger " + f.file);
-          const html = await res.text();
-          let bodyHtml;
-          try {
-            const doc = parser.parseFromString(html, "text/html");
-            bodyHtml = doc.body ? doc.body.innerHTML : html;
-          } catch {
-            bodyHtml = html;
-          }
-
-          const section = document.createElement("section");
-          section.className = "fiche-list-item";
-          section.innerHTML = `
-            <div class="fiche-list-header">
-              <div class="fiche-list-id">${f.id}</div>
-              <div class="fiche-list-title">${f.label}</div>
-              <div class="fiche-list-meta">${categoryToLabel(f.category)}</div>
-              <div class="fiche-list-summary">${f.summary || ""}</div>
-            </div>
-            <div class="fiche-list-content">
-              ${bodyHtml}
-            </div>
-          `;
-          ficheContentEl.appendChild(section);
-        } catch (err) {
-          console.error("Erreur de chargement (mode liste) :", f.file, err);
-          const errorSection = document.createElement("section");
-          errorSection.className = "fiche-list-item";
-          errorSection.innerHTML = `
-            <div class="fiche-list-header">
-              <div class="fiche-list-id">${f.id}</div>
-              <div class="fiche-list-title">${f.label}</div>
-              <div class="fiche-list-meta">${categoryToLabel(f.category)}</div>
-              <div class="fiche-list-summary">Erreur de chargement pour « ${f.file} ».</div>
-            </div>
-          `;
-          ficheContentEl.appendChild(errorSection);
-        }
-      }
-
-      ficheStatusEl.textContent =
-        "Mode liste : " + filteredFiches.length + " fiche(s) affichée(s).";
-    }
-
-    function setViewMode(mode) {
-      if (mode === viewMode) return;
-      viewMode = mode;
-
-      const buttons = document.querySelectorAll(".view-btn");
-      buttons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.mode === mode);
-      });
-
-      if (viewMode === "single") {
-        if (filteredFiches.length === 0) {
-          document.getElementById("ficheStatus").textContent =
-            "Aucune fiche filtrée.";
-          document.getElementById("ficheContent").innerHTML = "";
-          return;
-        }
-        const id = currentFicheId || filteredFiches[0].id;
-        showFiche(id);
-      } else if (viewMode === "list") {
-        renderListView();
-      }
-    }
-
-    // -----------------------
-    // Tesseract / cube 3D cliquable
-    // -----------------------
-    let scene, camera, renderer, tesseractGroup;
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    const COLORS = [0x4fd1c5, 0xf6ad55, 0xf56565, 0x9f7aea, 0x63b3ed];
-    const CATEGORY_BY_COLOR_INDEX = [
-      "Strate",
-      "Epistrate",
-      "Parastrate",
-      "PlanE",
-      "Operateur"
-    ];
-
-    function initTesseract() {
-      const canvas = document.getElementById("tesseractCanvas");
-      const width = canvas.clientWidth || canvas.parentElement.clientWidth;
-      const height = canvas.clientHeight || canvas.parentElement.clientHeight || 260;
-
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(window.devicePixelRatio || 1);
-
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-      camera.position.set(0, 0, 10);
-
-      const ambient = new THREE.AmbientLight(0xffffff, 0.6);
-      scene.add(ambient);
-      const dir = new THREE.DirectionalLight(0xffffff, 0.8);
-      dir.position.set(5, 8, 10);
-      scene.add(dir);
-
-      tesseractGroup = new THREE.Group();
-      scene.add(tesseractGroup);
-
-      const edgeMaterial = new THREE.LineBasicMaterial({
-        color: 0x8892f5,
-        transparent: true,
-        opacity: 0.6
-      });
-
-      const s = 1.5;
-      const vertices4D = [];
-      for (let x of [-1, 1]) {
-        for (let y of [-1, 1]) {
-          for (let z of [-1, 1]) {
-            for (let w of [-1, 1]) {
-              vertices4D.push(new THREE.Vector4(x, y, z, w));
-            }
-          }
-        }
-      }
-
-      function project4Dto3D(v4) {
-        const w = v4.w;
-        const k = 1 / (2 - w);
-        return new THREE.Vector3(v4.x * k * s, v4.y * k * s, v4.z * k * s);
-      }
-
-      const vertices3D = vertices4D.map(project4Dto3D);
-
-      function isEdge(i, j) {
-        let diff = 0;
-        for (let c of ["x", "y", "z", "w"]) {
-          if (vertices4D[i][c] !== vertices4D[j][c]) diff++;
-        }
-        return diff === 1;
-      }
-
-      const edgeGeometry = new THREE.BufferGeometry();
-      const positions = [];
-      for (let i = 0; i < vertices3D.length; i++) {
-        for (let j = i + 1; j < vertices3D.length; j++) {
-          if (isEdge(i, j)) {
-            positions.push(
-              vertices3D[i].x, vertices3D[i].y, vertices3D[i].z,
-              vertices3D[j].x, vertices3D[j].y, vertices3D[j].z
-            );
-          }
-        }
-      }
-      edgeGeometry.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute(positions, 3)
-      );
-      const edges = new THREE.LineSegments(edgeGeometry, edgeMaterial);
-      tesseractGroup.add(edges);
-
-      const sphereGeo = new THREE.SphereGeometry(0.07, 16, 16);
-
-      vertices3D.forEach((v, idx) => {
-        const colorIndex = idx % COLORS.length;
-        const color = COLORS[colorIndex];
-        const category = CATEGORY_BY_COLOR_INDEX[colorIndex];
-
-        const mat = new THREE.MeshStandardMaterial({
-          color: color,
-          emissive: color,
-          emissiveIntensity: 0.4,
-          metalness: 0.4,
-          roughness: 0.3
-        });
-        const sphere = new THREE.Mesh(sphereGeo, mat);
-        sphere.position.copy(v);
-        sphere.userData.category = category;
-        tesseractGroup.add(sphere);
-      });
-
-      function animate() {
-        requestAnimationFrame(animate);
-        tesseractGroup.rotation.y += 0.003;
-        tesseractGroup.rotation.x += 0.001;
-        renderer.render(scene, camera);
-      }
-      animate();
-
-      window.addEventListener("resize", () => {
-        const w = canvas.clientWidth || canvas.parentElement.clientWidth;
-        const h = canvas.clientHeight || canvas.parentElement.clientHeight || 260;
-        renderer.setSize(w, h);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-      });
-
-      // clic sur le canvas WebGL
-      renderer.domElement.addEventListener("click", onTesseractClick);
-    }
-
-    function onTesseractClick(event) {
-      const canvas = renderer.domElement;
-      const rect = canvas.getBoundingClientRect();
-      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-      raycaster.setFromCamera(mouse, camera);
-      // On intersecte toute la hiérarchie du groupe
-      const intersects = raycaster.intersectObjects(tesseractGroup.children, true);
-      if (intersects.length === 0) return;
-
-      // On remonte à l'ancêtre qui porte userData.category
-      let obj = intersects[0].object;
-      while (obj && !obj.userData.category && obj.parent) {
-        obj = obj.parent;
-      }
-      const category = obj.userData && obj.userData.category;
-      if (!category) return;
-
-      // Appliquer le filtre catégorie
-      const catSelect = document.getElementById("categoryFilter");
-      catSelect.value = category;
-      renderFicheList();
-
-      // Charger la fiche "pivot" de cette catégorie si définie
-      const primaryId = PRIMARY_FICHE_BY_CATEGORY[category];
-      if (primaryId) {
+      li.addEventListener("click", () => {
         setViewMode("single");
-        showFiche(primaryId);
+        showFiche(fiche.id);
+      });
+
+      listEl.appendChild(li);
+    });
+
+    document.getElementById("countInfo").textContent =
+      items.length + " / " + fiches.length;
+
+    if (viewMode === "list") {
+      renderListView();
+    }
+  }
+
+  function parseHtmlBody(html) {
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      if (doc && doc.body) {
+        return doc.body.innerHTML;
+      }
+    } catch (e) {
+      console.warn("Impossible de parser le HTML, on injecte brut.");
+    }
+    return html;
+  }
+
+  async function showFiche(id) {
+    const fiche = fiches.find(f => f.id === id);
+    if (!fiche) return;
+
+    currentFicheId = id;
+
+    document.querySelectorAll(".index-item").forEach(li => {
+      li.classList.toggle("active", li.dataset.id === id);
+    });
+
+    const ficheIdEl = document.getElementById("ficheId");
+    const ficheLabelEl = document.getElementById("ficheLabel");
+    const ficheTagEl = document.getElementById("ficheTag");
+    const ficheSummaryEl = document.getElementById("ficheSummary");
+    const ficheStatusEl = document.getElementById("ficheStatus");
+    const ficheContentEl = document.getElementById("ficheContent");
+
+    ficheIdEl.textContent = fiche.id;
+    ficheLabelEl.textContent = fiche.label;
+    ficheSummaryEl.textContent = fiche.summary || "";
+
+    const tagClass = categoryToTagClass(fiche.category);
+    ficheTagEl.className = "fiche-tag " + tagClass;
+    ficheTagEl.textContent = categoryToLabel(fiche.category);
+    ficheTagEl.style.visibility = "visible";
+
+    ficheStatusEl.textContent = "Chargement de la fiche…";
+    ficheContentEl.innerHTML = "";
+
+    try {
+      const res = await fetch(fiche.file);
+      if (!res.ok) {
+        throw new Error("Impossible de charger " + fiche.file);
+      }
+      const html = await res.text();
+      const bodyHtml = parseHtmlBody(html);
+
+      ficheContentEl.innerHTML = bodyHtml;
+      ficheStatusEl.textContent = "Fiche chargée.";
+    } catch (err) {
+      console.error("Erreur de chargement de fiche :", fiche.file, err);
+      ficheStatusEl.textContent =
+        "Erreur : impossible de charger le contenu de la fiche (« " + fiche.file +
+        " »). Vérifie que la page existe bien sur GitHub Pages.";
+    }
+  }
+
+  async function renderListView() {
+    const ficheIdEl = document.getElementById("ficheId");
+    const ficheLabelEl = document.getElementById("ficheLabel");
+    const ficheTagEl = document.getElementById("ficheTag");
+    const ficheSummaryEl = document.getElementById("ficheSummary");
+    const ficheStatusEl = document.getElementById("ficheStatus");
+    const ficheContentEl = document.getElementById("ficheContent");
+
+    ficheIdEl.textContent = "Mode liste";
+    ficheLabelEl.textContent = "Toutes les fiches filtrées";
+    ficheTagEl.style.visibility = "hidden";
+    ficheSummaryEl.textContent =
+      "Affichage séquentiel de toutes les fiches correspondant au filtre actuel (" +
+      filteredFiches.length + " élément(s)).";
+
+    ficheStatusEl.textContent =
+      "Chargement de " + filteredFiches.length + " fiche(s)…";
+    ficheContentEl.innerHTML = "";
+
+    const parser = new DOMParser();
+
+    for (const f of filteredFiches) {
+      try {
+        const res = await fetch(f.file);
+        if (!res.ok) throw new Error("Impossible de charger " + f.file);
+        const html = await res.text();
+        let bodyHtml;
+        try {
+          const doc = parser.parseFromString(html, "text/html");
+          bodyHtml = doc.body ? doc.body.innerHTML : html;
+        } catch {
+          bodyHtml = html;
+        }
+
+        const section = document.createElement("section");
+        section.className = "fiche-list-item";
+        section.innerHTML = `
+          <div class="fiche-list-header">
+            <div class="fiche-list-id">${f.id}</div>
+            <div class="fiche-list-title">${f.label}</div>
+            <div class="fiche-list-meta">${categoryToLabel(f.category)}</div>
+            <div class="fiche-list-summary">${f.summary || ""}</div>
+          </div>
+          <div class="fiche-list-content">
+            ${bodyHtml}
+          </div>
+        `;
+        ficheContentEl.appendChild(section);
+      } catch (err) {
+        console.error("Erreur de chargement (mode liste) :", f.file, err);
+        const errorSection = document.createElement("section");
+        errorSection.className = "fiche-list-item";
+        errorSection.innerHTML = `
+          <div class="fiche-list-header">
+            <div class="fiche-list-id">${f.id}</div>
+            <div class="fiche-list-title">${f.label}</div>
+            <div class="fiche-list-meta">${categoryToLabel(f.category)}</div>
+            <div class="fiche-list-summary">Erreur de chargement pour « ${f.file} ».</div>
+          </div>
+        `;
+        ficheContentEl.appendChild(errorSection);
       }
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      initTesseract();
-      initFiches();
+    ficheStatusEl.textContent =
+      "Mode liste : " + filteredFiches.length + " fiche(s) affichée(s).";
+  }
 
-      document.getElementById("searchInput").addEventListener("input", () => {
-        renderFicheList();
+  function setViewMode(mode) {
+    if (mode === viewMode) return;
+    viewMode = mode;
+
+    const buttons = document.querySelectorAll(".view-btn");
+    buttons.forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.mode === mode);
+    });
+
+    if (viewMode === "single") {
+      if (filteredFiches.length === 0) {
+        document.getElementById("ficheStatus").textContent =
+          "Aucune fiche filtrée.";
+        document.getElementById("ficheContent").innerHTML = "";
+        return;
+      }
+      const id = currentFicheId || filteredFiches[0].id;
+      showFiche(id);
+    } else if (viewMode === "list") {
+      renderListView();
+    }
+  }
+
+  // -----------------------
+  // Tesseract 3D cliquable (version robuste)
+  // -----------------------
+  let scene, camera, renderer, tesseractGroup;
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+
+  const COLORS = [0x4fd1c5, 0xf6ad55, 0xf56565, 0x9f7aea, 0x63b3ed];
+  const CATEGORY_BY_COLOR_INDEX = [
+    "Strate",
+    "Epistrate",
+    "Parastrate",
+    "PlanE",
+    "Operateur"
+  ];
+
+  function initTesseract() {
+    const canvas = document.getElementById("tesseractCanvas");
+    const width = canvas.clientWidth || canvas.parentElement.clientWidth;
+    const height = canvas.clientHeight || canvas.parentElement.clientHeight || 260;
+
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+    camera.position.set(0, 0, 10);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambient);
+    const dir = new THREE.DirectionalLight(0xffffff, 0.8);
+    dir.position.set(5, 8, 10);
+    scene.add(dir);
+
+    tesseractGroup = new THREE.Group();
+    scene.add(tesseractGroup);
+
+    const edgeMaterial = new THREE.LineBasicMaterial({
+      color: 0x8892f5,
+      transparent: true,
+      opacity: 0.6
+    });
+
+    const s = 1.5;
+    const vertices4D = [];
+    for (let x of [-1, 1]) {
+      for (let y of [-1, 1]) {
+        for (let z of [-1, 1]) {
+          for (let w of [-1, 1]) {
+            vertices4D.push(new THREE.Vector4(x, y, z, w));
+          }
+        }
+      }
+    }
+
+    function project4Dto3D(v4) {
+      const w = v4.w;
+      const k = 1 / (2 - w);
+      return new THREE.Vector3(v4.x * k * s, v4.y * k * s, v4.z * k * s);
+    }
+
+    const vertices3D = vertices4D.map(project4Dto3D);
+
+    function isEdge(i, j) {
+      let diff = 0;
+      for (let c of ["x", "y", "z", "w"]) {
+        if (vertices4D[i][c] !== vertices4D[j][c]) diff++;
+      }
+      return diff === 1;
+    }
+
+    const edgeGeometry = new THREE.BufferGeometry();
+    const positions = [];
+    for (let i = 0; i < vertices3D.length; i++) {
+      for (let j = i + 1; j < vertices3D.length; j++) {
+        if (isEdge(i, j)) {
+          positions.push(
+            vertices3D[i].x, vertices3D[i].y, vertices3D[i].z,
+            vertices3D[j].x, vertices3D[j].y, vertices3D[j].z
+          );
+        }
+      }
+    }
+    edgeGeometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(positions, 3)
+    );
+    const edges = new THREE.LineSegments(edgeGeometry, edgeMaterial);
+    tesseractGroup.add(edges);
+
+    // sphères un peu plus grandes pour faciliter le clic
+    const sphereGeo = new THREE.SphereGeometry(0.12, 20, 20);
+
+    vertices3D.forEach((v, idx) => {
+      const colorIndex = idx % COLORS.length;
+      const color = COLORS[colorIndex];
+      const category = CATEGORY_BY_COLOR_INDEX[colorIndex];
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: color,
+        emissive: color,
+        emissiveIntensity: 0.4,
+        metalness: 0.4,
+        roughness: 0.3
       });
+      const sphere = new THREE.Mesh(sphereGeo, mat);
+      sphere.position.copy(v);
+      sphere.userData.category = category;
+      tesseractGroup.add(sphere);
+    });
 
-      document.getElementById("categoryFilter").addEventListener("change", () => {
-        renderFicheList();
-      });
+    function animate() {
+      requestAnimationFrame(animate);
+      tesseractGroup.rotation.y += 0.003;
+      tesseractGroup.rotation.x += 0.001;
+      renderer.render(scene, camera);
+    }
+    animate();
 
-      document.querySelectorAll(".view-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          setViewMode(btn.dataset.mode);
-        });
+    window.addEventListener("resize", () => {
+      const w = canvas.clientWidth || canvas.parentElement.clientWidth;
+      const h = canvas.clientHeight || canvas.parentElement.clientHeight || 260;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    });
+
+    // On écoute les clics au niveau du document
+    document.addEventListener("click", onSceneClick);
+  }
+
+  function onSceneClick(event) {
+    const canvas = renderer && renderer.domElement;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    // si le clic est hors du canvas, on ne fait rien
+    if (
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom
+    ) {
+      return;
+    }
+
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(tesseractGroup.children, true);
+    if (intersects.length === 0) return;
+
+    let obj = intersects[0].object;
+    while (obj && !obj.userData.category && obj.parent) {
+      obj = obj.parent;
+    }
+    const category = obj.userData && obj.userData.category;
+    if (!category) return;
+
+    const catSelect = document.getElementById("categoryFilter");
+    catSelect.value = category;
+    renderFicheList();
+
+    const primaryId = PRIMARY_FICHE_BY_CATEGORY[category];
+    if (primaryId) {
+      setViewMode("single");
+      showFiche(primaryId);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initTesseract();
+    initFiches();
+
+    document.getElementById("searchInput").addEventListener("input", () => {
+      renderFicheList();
+    });
+
+    document.getElementById("categoryFilter").addEventListener("change", () => {
+      renderFicheList();
+    });
+
+    document.querySelectorAll(".view-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        setViewMode(btn.dataset.mode);
       });
     });
-  </script>
+  });
+</script>
 </body>
 </html>
