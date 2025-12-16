@@ -72,6 +72,7 @@
       min-height: 0;
     }
 
+    /* Colonne gauche */
     .left-panel {
       width: 42%;
       min-width: 320px;
@@ -233,6 +234,7 @@
       color: var(--muted);
     }
 
+    /* Colonne droite */
     .right-panel {
       flex: 1;
       display: flex;
@@ -245,6 +247,13 @@
       padding: 10px 16px 8px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
       background: linear-gradient(120deg, rgba(159,122,234,0.16), rgba(50,197,255,0.05));
+    }
+
+    .fiche-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     .fiche-id {
@@ -299,6 +308,32 @@
       color: var(--operateur);
     }
 
+    .view-toggle {
+      display: inline-flex;
+      gap: 4px;
+      background: rgba(5,6,10,0.6);
+      border-radius: 999px;
+      padding: 2px;
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+
+    .view-btn {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .view-btn.active {
+      background: rgba(159,122,234,0.22);
+      color: var(--accent);
+    }
+
     .fiche-summary {
       margin-top: 4px;
       font-size: 0.8rem;
@@ -323,10 +358,12 @@
       box-shadow: 0 18px 40px rgba(0,0,0,0.6);
     }
 
+    /* Rendu du contenu (HTML issu de Jekyll) */
     .fiche-inner h1,
     .fiche-inner h2,
-    .fiche-inner h3 {
-      margin-top: 0.4em;
+    .fiche-inner h3,
+    .fiche-inner h4 {
+      margin-top: 0.6em;
       margin-bottom: 0.3em;
     }
 
@@ -349,8 +386,9 @@
       color: var(--text);
     }
 
-    .fiche-inner ul {
-      padding-left: 1.1em;
+    .fiche-inner ul,
+    .fiche-inner ol {
+      padding-left: 1.3em;
       margin: 0.3em 0 0.4em;
       font-size: 0.85rem;
     }
@@ -381,6 +419,53 @@
       margin-bottom: 6px;
     }
 
+    /* Mode liste : styliser chaque bloc de fiche */
+    .fiche-list-item {
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: radial-gradient(circle at top left, rgba(159,122,234,0.16), rgba(5,6,12,0.96));
+    }
+
+    .fiche-list-header {
+      margin-bottom: 6px;
+    }
+
+    .fiche-list-id {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      color: var(--muted);
+    }
+
+    .fiche-list-title {
+      font-size: 0.93rem;
+      font-weight: 600;
+      margin-top: 1px;
+    }
+
+    .fiche-list-meta {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 2px;
+    }
+
+    .fiche-list-summary {
+      font-size: 0.77rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .fiche-list-content {
+      margin-top: 6px;
+      border-top: 1px dashed rgba(255,255,255,0.12);
+      padding-top: 6px;
+      font-size: 0.86rem;
+    }
+
     @media (max-width: 900px) {
       main {
         flex-direction: column;
@@ -398,8 +483,8 @@
     }
   </style>
 
+  <!-- Three.js pour le tesseract -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
   <header>
@@ -411,6 +496,7 @@
   </header>
 
   <main>
+    <!-- Colonne gauche -->
     <section class="left-panel">
       <div class="vis-container">
         <canvas id="tesseractCanvas"></canvas>
@@ -443,15 +529,25 @@
       </div>
     </section>
 
+    <!-- Colonne droite -->
     <section class="right-panel">
       <div class="fiche-header">
-        <div class="fiche-id" id="ficheId">Sélectionne une fiche</div>
-        <div class="fiche-title-row">
-          <h2 class="fiche-title" id="ficheLabel">Aucune fiche chargée</h2>
-          <span class="fiche-tag" id="ficheTag" style="visibility:hidden;">Catégorie</span>
+        <div class="fiche-header-top">
+          <div>
+            <div class="fiche-id" id="ficheId">Sélectionne une fiche</div>
+            <div class="fiche-title-row">
+              <h2 class="fiche-title" id="ficheLabel">Aucune fiche chargée</h2>
+              <span class="fiche-tag" id="ficheTag" style="visibility:hidden;">Catégorie</span>
+            </div>
+          </div>
+          <div class="view-toggle">
+            <button class="view-btn active" data-mode="single">Mode fiche</button>
+            <button class="view-btn" data-mode="list">Mode liste</button>
+          </div>
         </div>
         <p class="fiche-summary" id="ficheSummary">
-          Clique sur un élément dans l’index à gauche pour afficher sa fiche d’hyperinvestigation.
+          Clique sur un élément dans l’index à gauche pour afficher sa fiche d’hyperinvestigation,
+          ou bascule en mode liste pour voir toutes les fiches filtrées.
         </p>
       </div>
       <div class="fiche-body">
@@ -465,7 +561,7 @@
 
   <script>
     // -----------------------
-    // Données des fiches (métadonnées + chemin fichier)
+    // Données des fiches (HTML généré par Jekyll, sans extension .md)
     // -----------------------
     const FICHES = [
       {
@@ -473,145 +569,147 @@
         label: "Strate matérielle",
         category: "Strate",
         summary: "Corps, sols, ruines, architectures et milieux physiques où s’inscrivent matériellement les dominations.",
-        file: "fiches/S1_strate_materielle.md"
+        file: "fiches/S1_strate_materielle"
       },
       {
         id: "S3",
         label: "Strate numérique / données (OSINT)",
         category: "Strate",
         summary: "Traces numériques publiques ou semi-publiques et OSINT comme technologie de la spéculation.",
-        file: "fiches/S3_strate_numerique_OSINT.md"
+        file: "fiches/S3_strate_numerique_OSINT"
       },
       {
         id: "S6",
         label: "Strate écologique / géologique",
         category: "Strate",
         summary: "Milieux vivants et géologiques où se manifestent écocides et formes de slow violence.",
-        file: "fiches/S6_strate_ecologique_geologique.md"
+        file: "fiches/S6_strate_ecologique_geologique"
       },
       {
         id: "S7",
         label: "Strate technogenèse / IA / infrastructures",
         category: "Strate",
         summary: "Architectures de calcul et de réseau (data centers, plateformes, IA, dispositifs de surveillance) comme régime autonome articulé à la géopolitique, à l’économie et aux écologies.",
-        file: "fiches/S7_strate_technogenese_IA_infrastructures.md"
+        file: "fiches/S7_strate_technogenese_IA_infrastructures"
       },
       {
         id: "S8",
         label: "Strate imaginale / science spéculative (SF)",
         category: "Strate",
         summary: "Ressources fictionnelles et poétiques (SF, anticipation, mutants, archives totales) comme science spéculative des mondes possibles et des régimes futurs d’enquête.",
-        file: "fiches/S8_strate_imaginale_SF_mutants.md"
+        file: "fiches/S8_strate_imaginale_SF_mutants"
       },
       {
         id: "EPI-METR",
         label: "Épistrate métrique–indiciaire",
         category: "Epistrate",
         summary: "Couches de mesures et d’indicateurs qui surcodent les strates et transforment les situations en valeurs chiffrées.",
-        file: "fiches/EPI_METR_epistrate_metrique_indiciaire.md"
+        file: "fiches/EPI_METR_epistrate_metrique_indiciaire"
       },
       {
         id: "EPI-MOD",
         label: "Épistrate de modélisation / simulation",
         category: "Epistrate",
         summary: "Couches de modèles, scénarios et simulations qui produisent des représentations calculées des phénomènes.",
-        file: "fiches/EPI_MOD_epistrate_modelisation_simulation.md"
+        file: "fiches/EPI_MOD_epistrate_modelisation_simulation"
       },
       {
         id: "EPI-PLAT",
         label: "Épistrate de platformisation",
         category: "Epistrate",
         summary: "Outils, plateformes et workflows qui encodent et normalisent les pratiques d’enquête.",
-        file: "fiches/EPI_PLAT_epistrate_platformisation.md"
+        file: "fiches/EPI_PLAT_epistrate_platformisation"
       },
       {
         id: "EPI-SEC",
         label: "Épistrate de sécurité / secret",
         category: "Epistrate",
         summary: "Protocoles de sécurité, de secret et de confidentialité qui doublent les enquêtes et leur circulation.",
-        file: "fiches/EPI_SEC_epistrate_securite_secret.md"
+        file: "fiches/EPI_SEC_epistrate_securite_secret"
       },
       {
         id: "PARA-ECONO",
         label: "Parastrate économique–industriel",
         category: "Parastrate",
         summary: "Groupes industriels, financiers, énergétiques et numériques qui structurent les infrastructures matérielles, écologiques et informationnelles.",
-        file: "fiches/PARA_ECONO_parastrate_economique_industriel.md"
+        file: "fiches/PARA_ECONO_parastrate_economique_industriel"
       },
       {
         id: "PARA-MEDIA",
         label: "Parastrate médiatico-politique",
         category: "Parastrate",
         summary: "Médias, plateformes et acteurs politiques qui encadrent la visibilité et la mise en scène des enquêtes.",
-        file: "fiches/PARA_MEDIA_parastrate_mediatico_politique.md"
+        file: "fiches/PARA_MEDIA_parastrate_mediatico_politique"
       },
       {
         id: "PARA-MEME",
         label: "Parastrate memétique / infra-symbolique",
         category: "Parastrate",
         summary: "Mèmes, blagues, micro-récits et formats viraux qui constituent l’atmosphère infra-symbolique des terrains.",
-        file: "fiches/PARA_MEME_parastrate_memetique_infra_symbolique.md"
+        file: "fiches/PARA_MEME_parastrate_memetique_infra_symbolique"
       },
       {
         id: "PARA-PARAACAD",
         label: "Parastrate para-académique / para-scientifique",
         category: "Parastrate",
         summary: "Milieux qui parasitent ou doublent la production scientifique (revues prédatrices, paper mills, think tanks pseudo-scientifiques).",
-        file: "fiches/PARA_PARAACAD_parastrate_para_academique_scientifique.md"
+        file: "fiches/PARA_PARAACAD_parastrate_para_academique_scientifique"
       },
       {
         id: "PARA-SECUR",
         label: "Parastrate sécuritaire / para-étatique",
         category: "Parastrate",
         summary: "Services de renseignement, entreprises de sécurité, cyber-officines et milieux para-étatiques liés à l’OSINT offensif.",
-        file: "fiches/PARA_SECUR_parastrate_securitaire_para_etatique.md"
+        file: "fiches/PARA_SECUR_parastrate_securitaire_para_etatique"
       },
       {
         id: "O2-LITERACY",
         label: "Opérateur de littératies d’enquête",
         category: "Operateur",
         summary: "Littératies informationnelles, médiatiques, numériques et algorithmiques qui rendent l’hyperinvestigation appropriable par des publics.",
-        file: "fiches/O2_LITERACY_operateur_litteraties_enquete.md"
+        file: "fiches/O2_LITERACY_operateur_litteraties_enquete"
       },
       {
         id: "E1",
         label: "Régimes de vérité & formes de preuve",
         category: "PlanE",
         summary: "Conditions de reconnaissance de la preuve dans les différents forums (juridiques, scientifiques, médiatiques, plateformes).",
-        file: "fiches/E1_regimes_verite_formes_preuve.md"
+        file: "fiches/E1_regimes_verite_formes_preuve"
       },
       {
         id: "E2",
         label: "Position de l’enquêteur / réflexivité",
         category: "PlanE",
         summary: "Inscription de l’enquêteur ou du collectif dans les rapports de force, les infrastructures et les attaches matérielles.",
-        file: "fiches/E2_position_enqueteur_reflexivite.md"
+        file: "fiches/E2_position_enqueteur_reflexivite"
       },
       {
         id: "E3",
         label: "Épistémologie des systèmes de connaissance",
         category: "PlanE",
         summary: "Analyse des systèmes de production, évaluation et circulation du savoir, y compris les régimes de connaissance spéculatifs.",
-        file: "fiches/E3_epistemologie_systemes_connaissance.md"
+        file: "fiches/E3_epistemologie_systemes_connaissance"
       },
       {
         id: "E4",
         label: "Généalogie historique des pratiques d’enquête",
         category: "PlanE",
         summary: "Lien entre hyperinvestigation et traditions de criminalistique, de documentation scientifique et de photographie judiciaire.",
-        file: "fiches/E4_genealogie_historique_pratiques_enquete.md"
+        file: "fiches/E4_genealogie_historique_pratiques_enquete"
       },
       {
         id: "E5",
         label: "Généalogie fictionnelle des détectives & de l’enquête",
         category: "PlanE",
         summary: "Les détectives de fiction comme matrices épistémiques pour penser enquête, spéculation et observateur-participant.",
-        file: "fiches/E5_genealogie_fictionnelle_detectives_enquete.md"
+        file: "fiches/E5_genealogie_fictionnelle_detectives_enquete"
       }
     ];
 
     let fiches = [];
+    let filteredFiches = [];
     let currentFicheId = null;
+    let viewMode = "single"; // "single" ou "list"
 
     function categoryToTagClass(category) {
       switch (category) {
@@ -638,8 +736,8 @@
     function initFiches() {
       fiches = FICHES.slice();
       renderFicheList();
-      if (fiches.length > 0) {
-        showFiche(fiches[0].id);
+      if (filteredFiches.length > 0) {
+        showFiche(filteredFiches[0].id);
       } else {
         document.getElementById("ficheStatus").textContent =
           "Aucune fiche disponible (tableau FICHES vide).";
@@ -657,6 +755,8 @@
         const hay = (f.id + " " + f.label + " " + (f.summary || "")).toLowerCase();
         return hay.includes(search);
       });
+
+      filteredFiches = items;
 
       listEl.innerHTML = "";
       items.forEach(fiche => {
@@ -681,6 +781,7 @@
         li.appendChild(summaryEl);
 
         li.addEventListener("click", () => {
+          setViewMode("single");
           showFiche(fiche.id);
         });
 
@@ -689,16 +790,24 @@
 
       document.getElementById("countInfo").textContent =
         items.length + " / " + fiches.length;
+
+      // Si on est en mode liste, on réactualise aussi l'affichage de droite
+      if (viewMode === "list") {
+        renderListView();
+      }
     }
 
-    function stripFrontMatter(md) {
-      if (md.startsWith("---")) {
-        const end = md.indexOf("---", 3);
-        if (end !== -1) {
-          return md.slice(end + 3).trimStart();
+    function parseHtmlBody(html) {
+      try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        if (doc && doc.body) {
+          return doc.body.innerHTML;
         }
+      } catch (e) {
+        console.warn("Impossible de parser le HTML, on injecte brut.");
       }
-      return md;
+      return html;
     }
 
     async function showFiche(id) {
@@ -735,16 +844,107 @@
         if (!res.ok) {
           throw new Error("Impossible de charger " + fiche.file);
         }
-        let md = await res.text();
-        md = stripFrontMatter(md);
+        const html = await res.text();
+        const bodyHtml = parseHtmlBody(html);
 
-        const html = marked.parse(md);
-        ficheContentEl.innerHTML = html;
+        ficheContentEl.innerHTML = bodyHtml;
         ficheStatusEl.textContent = "Fiche chargée.";
       } catch (err) {
-        console.error(err);
+        console.error("Erreur de chargement de fiche :", fiche.file, err);
         ficheStatusEl.textContent =
-          "Erreur : impossible de charger le contenu de la fiche (" + fiche.file + ").";
+          "Erreur : impossible de charger le contenu de la fiche (« " + fiche.file +
+          " »). Vérifie que la page existe bien sur GitHub Pages.";
+      }
+    }
+
+    async function renderListView() {
+      const ficheIdEl = document.getElementById("ficheId");
+      const ficheLabelEl = document.getElementById("ficheLabel");
+      const ficheTagEl = document.getElementById("ficheTag");
+      const ficheSummaryEl = document.getElementById("ficheSummary");
+      const ficheStatusEl = document.getElementById("ficheStatus");
+      const ficheContentEl = document.getElementById("ficheContent");
+
+      ficheIdEl.textContent = "Mode liste";
+      ficheLabelEl.textContent = "Toutes les fiches filtrées";
+      ficheTagEl.style.visibility = "hidden";
+      ficheSummaryEl.textContent =
+        "Affichage séquentiel de toutes les fiches correspondant au filtre actuel (" +
+        filteredFiches.length + " élément(s)).";
+
+      ficheStatusEl.textContent =
+        "Chargement de " + filteredFiches.length + " fiche(s)…";
+      ficheContentEl.innerHTML = "";
+
+      const parser = new DOMParser();
+
+      for (const f of filteredFiches) {
+        try {
+          const res = await fetch(f.file);
+          if (!res.ok) throw new Error("Impossible de charger " + f.file);
+          const html = await res.text();
+          let bodyHtml;
+          try {
+            const doc = parser.parseFromString(html, "text/html");
+            bodyHtml = doc.body ? doc.body.innerHTML : html;
+          } catch {
+            bodyHtml = html;
+          }
+
+          const section = document.createElement("section");
+          section.className = "fiche-list-item";
+          section.innerHTML = `
+            <div class="fiche-list-header">
+              <div class="fiche-list-id">${f.id}</div>
+              <div class="fiche-list-title">${f.label}</div>
+              <div class="fiche-list-meta">${categoryToLabel(f.category)}</div>
+              <div class="fiche-list-summary">${f.summary || ""}</div>
+            </div>
+            <div class="fiche-list-content">
+              ${bodyHtml}
+            </div>
+          `;
+          ficheContentEl.appendChild(section);
+        } catch (err) {
+          console.error("Erreur de chargement (mode liste) :", f.file, err);
+          const errorSection = document.createElement("section");
+          errorSection.className = "fiche-list-item";
+          errorSection.innerHTML = `
+            <div class="fiche-list-header">
+              <div class="fiche-list-id">${f.id}</div>
+              <div class="fiche-list-title">${f.label}</div>
+              <div class="fiche-list-meta">${categoryToLabel(f.category)}</div>
+              <div class="fiche-list-summary">Erreur de chargement pour « ${f.file} ».</div>
+            </div>
+          `;
+          ficheContentEl.appendChild(errorSection);
+        }
+      }
+
+      ficheStatusEl.textContent =
+        "Mode liste : " + filteredFiches.length + " fiche(s) affichée(s).";
+    }
+
+    function setViewMode(mode) {
+      if (mode === viewMode) return;
+      viewMode = mode;
+
+      const buttons = document.querySelectorAll(".view-btn");
+      buttons.forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.mode === mode);
+      });
+
+      if (viewMode === "single") {
+        if (filteredFiches.length === 0) {
+          document.getElementById("ficheStatus").textContent =
+            "Aucune fiche filtrée.";
+          document.getElementById("ficheContent").innerHTML = "";
+          return;
+        }
+        const id = currentFicheId || filteredFiches[0].id;
+        showFiche(id);
+      } else if (viewMode === "list") {
+        renderListView();
       }
     }
 
@@ -871,6 +1071,12 @@
 
       document.getElementById("categoryFilter").addEventListener("change", () => {
         renderFicheList();
+      });
+
+      document.querySelectorAll(".view-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          setViewMode(btn.dataset.mode);
+        });
       });
     });
   </script>
