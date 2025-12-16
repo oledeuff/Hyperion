@@ -89,7 +89,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
       background: radial-gradient(circle at center, rgba(159,122,234,0.08), transparent 70%);
       overflow: hidden;
-      cursor: pointer; /* pour signaler qu'on peut cliquer */
+      cursor: pointer;
     }
 
     #tesseractCanvas {
@@ -574,9 +574,6 @@
   </main>
 
   <script>
-    // -----------------------
-    // Données des fiches (pages HTML générées par Jekyll)
-    // -----------------------
     const FICHES = [
       {
         id: "S1",
@@ -720,7 +717,6 @@
       }
     ];
 
-    // Fiche "pivot" par catégorie quand on clique un sommet du cube
     const PRIMARY_FICHE_BY_CATEGORY = {
       "Strate": "S1",
       "Epistrate": "EPI-METR",
@@ -732,7 +728,7 @@
     let fiches = [];
     let filteredFiches = [];
     let currentFicheId = null;
-    let viewMode = "single"; // "single" ou "list"
+    let viewMode = "single";
 
     function categoryToTagClass(category) {
       switch (category) {
@@ -974,7 +970,6 @@
     // Tesseract / cube 3D cliquable
     // -----------------------
     let scene, camera, renderer, tesseractGroup;
-    let clickableSpheres = [];
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
@@ -1063,7 +1058,6 @@
       tesseractGroup.add(edges);
 
       const sphereGeo = new THREE.SphereGeometry(0.07, 16, 16);
-      clickableSpheres = [];
 
       vertices3D.forEach((v, idx) => {
         const colorIndex = idx % COLORS.length;
@@ -1080,7 +1074,6 @@
         const sphere = new THREE.Mesh(sphereGeo, mat);
         sphere.position.copy(v);
         sphere.userData.category = category;
-        clickableSpheres.push(sphere);
         tesseractGroup.add(sphere);
       });
 
@@ -1100,7 +1093,8 @@
         camera.updateProjectionMatrix();
       });
 
-      canvas.addEventListener("click", onTesseractClick);
+      // clic sur le canvas WebGL
+      renderer.domElement.addEventListener("click", onTesseractClick);
     }
 
     function onTesseractClick(event) {
@@ -1110,23 +1104,28 @@
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
       raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(clickableSpheres);
-      if (intersects.length > 0) {
-        const obj = intersects[0].object;
-        const category = obj.userData.category;
-        if (!category) return;
+      // On intersecte toute la hiérarchie du groupe
+      const intersects = raycaster.intersectObjects(tesseractGroup.children, true);
+      if (intersects.length === 0) return;
 
-        // Appliquer le filtre catégorie
-        const catSelect = document.getElementById("categoryFilter");
-        catSelect.value = category;
-        renderFicheList();
+      // On remonte à l'ancêtre qui porte userData.category
+      let obj = intersects[0].object;
+      while (obj && !obj.userData.category && obj.parent) {
+        obj = obj.parent;
+      }
+      const category = obj.userData && obj.userData.category;
+      if (!category) return;
 
-        // Charger la fiche "pivot" de cette catégorie si définie
-        const primaryId = PRIMARY_FICHE_BY_CATEGORY[category];
-        if (primaryId) {
-          setViewMode("single");
-          showFiche(primaryId);
-        }
+      // Appliquer le filtre catégorie
+      const catSelect = document.getElementById("categoryFilter");
+      catSelect.value = category;
+      renderFicheList();
+
+      // Charger la fiche "pivot" de cette catégorie si définie
+      const primaryId = PRIMARY_FICHE_BY_CATEGORY[category];
+      if (primaryId) {
+        setViewMode("single");
+        showFiche(primaryId);
       }
     }
 
