@@ -1,79 +1,72 @@
 ---
 id: S8
-type: strate
-label: Strate imaginale / science spéculative (SF)
+title: "S8 — Strate imaginale / science spéculative"
+family: "Strates"
+status: "draft"
+updated: 2025-12-17
+tags:
+  - hyperinvestigation
+  - science-fiction
+  - speculation
+  - hyperstition
+  - diagramme
+related:
+  - E3
+  - E5
+  - EPI-METR
+  - EPI-MOD
+  - S6
+  - S7
 ---
 
-# S8 · Strate imaginale / science spéculative (SF)
-
 ## Définition
-Strate des **ressources fictionnelles et poétiques** (science-fiction, anticipation, poésie, figures de mutants, récits d’archives totales).  
-La SF y est abordée non seulement comme littérature, mais comme **science spéculative** : un travail rigoureux sur des **mondes possibles** à partir de savoirs existants (techniques, géopolitiques, écologiques, médiatiques).
 
-## Exemples
-- Fictions d’archives totales et d’enquêtes distribuées dans des mondes planétaires (univers à la Liu Cixin, mondes-ruines, planètes-usines).  
-- Détectives de SF connectés à des hyper-archives, à des IA ou à des intelligences non humaines.  
-- Poétiques de la planétarité en crise (planètes-poubelles, écologies extraterrestres, migrations interplanétaires).  
-- Récits où la **preuve** et l’**archive** deviennent entités planétaires ou dispositifs autonomes.
+La strate S8 regroupe les **opérations imaginales** (science-fiction, anticipation, philo-fictions, scénarios, diagrammes narratifs) mobilisées comme **instruments de connaissance** — non comme “illustrations”.
+Dans HyperIon, S8 sert à **ouvrir des hypothèses**, tester des cohérences, mettre en variation des causalités, et rendre pensables des agencements où la preuve est lacunaire, conflictuelle, ou en cours de fabrication.
 
-## Fonction dans l’hyperinvestigation
+Point clé (issu des mails J.-M. Noyer) : **“SF = science spéculative”**. Il s’agit d’un régime de pensée qui *outille* l’enquête quand l’objet (planétarité en crise, infrastructures, catastrophes lentes) excède les formats ordinaires de preuve.
 
-### 1. Fonction heuristique
-La SF fournit un **répertoire de figures et de dispositifs d’enquête** :
+## Concepts opératoires (noyau)
 
-- enquêteurs collectifs, distribués, non anthropocentrés ;  
-- archives totales, mémoires planétaires, IA-enquêteurs ;  
-- scénarios de forensique automatisée ou de surveillance intégrale.
+### 1) Science-fiction comme science spéculative
+- **Stochastique / hasard** : la fiction comme laboratoire des bifurcations (variations d’avenirs, contingences).
+- **Mondes “hors-science” / extro-science** : déplacer les conditions de ce qui compte comme “explicable”.
+- **Philo-fiction** : la fiction comme protocole philosophique (et non comme récit décoratif).
 
-Elle sert de **laboratoire de scénarios** pour tester et déplacer nos concepts d’IA, de planétarité, de capitalisme, de guerre, d’enquête.
+> Ancrages (mails Noyer, “Autour de Boris Eizykman…”, 11/12/2025) : Eizykman ; Hottois ; Meillassoux (extro-science fiction) ; Laruelle (philo-fiction).
 
-### 2. Fonction d’expérimentation de mondes possibles
-Là où EPI-MOD propose des **modèles** et des **scénarios calculés**, la SF propose :
+### 2) Hyperstition (fiction → causalité)
+L’hyperstition désigne une **boucle de rétroaction** où une idée-fiction devient opératoire parce qu’elle équipe des pratiques, des capitaux, des dispositifs et des croyances (jusqu’à provoquer sa “réalité” sociale/technique).
 
-- des **configurations de vie et de pouvoir** (formes d’habiter, de gouverner, de détruire, de résister) ;  
-- des **expériences de pensée incarnées** : que devient l’enquête dans un monde où tout est tracé, où l’archive est totale, où les IA enquêtent sur les humains ?
+> Ancrage (mail Noyer, 16–17/12/2025) : reprise critique de Virilio + renvoi à Nick Land.
 
-La SF joue ainsi le rôle de **simulation qualitative** des futurs régimes de preuve, de surveillance et de domination.
+### 3) Diagramme / flux / vortex / spirales
+S8 inclut une grammaire diagrammatique : spirales, tourbillons, vortex, “flux” — comme manières de décrire des morphogenèses, des basculements et des reprises.
 
-### 3. Fonction critique / polémologique
-La SF met à nu les **logiques de guerre, de contrôle et d’extraction** :
+> Ancrage (mail Noyer, “POST FACE 24 pages”, 14/09/2020) : “documentation pour les flux et les tourbillons et les spirales”.
 
-- guerres froides étendues à l’espace, militarisation de l’orbite, guerres des données ;  
-- capitalisme intégralement automatisé, planétarité fracturée en zones-sacrifices et zones protégées ;  
-- figures de résistance, de fuite, de sabotage, de contre-enquête.
+## À quoi sert S8 dans l’hyperinvestigation ?
 
-Elle aide à penser chaque enquête HyperIon comme prise dans un **champ de conflits spéculatifs** : qui a le droit de projeter quels futurs, et pour qui ?
+1. **Produire des hypothèses robustes** (et falsifiables) quand les indices sont dispersés.
+2. **Fabriquer des scénarios** (EPI-MOD) sans les confondre avec des prédictions.
+3. **Débusquer les hyperstitions adverses** : propagandes, récits financiers, promesses techno-salvatrices, etc.
+4. **Relier planétarité / infrastructures / écologies** par des formes pensables (Stack, planète-machine, archive totale, etc.).
 
-## SF et technologies de la spéculation
+## Articulations dans la cartographie HyperIon
 
-La SF travaille sur les mêmes matériaux que les **technologies de la spéculation** :
+- Avec **S7** (technogenèse/IA/infrastructures) : S8 décrit les *récits opératoires* qui font tenir la Stack et ses promesses/menaces.
+- Avec **S6** (écologique/géologique) : S8 outille l’enquête sur la slow violence (catastrophes lentes) par scénarisation et variation.
+- Avec **EPI-METR** : S8 critique et ré-oriente les imaginaires métriques (ce que les chiffres font croire).
+- Avec **E3** : S8 est un composant des “technologies de la spéculation” (OSINT inclus).
 
-- extrapolation à partir de tendances actuelles (datafication, IA, militarisation, écocides) ;  
-- mise en scène de **régimes futurs de preuve et de surveillance** (sociétés intégralement tracées, IA forensiques, archives automatiques) ;  
-- exploration de **configurations extrêmes** des dispositifs que l’hyperinvestigation étudie déjà (hyperdocumentation, métriques, plateformes).
+## Pistes d’écriture (sections à ajouter si besoin)
 
-Elle fonctionne comme un **double spéculatif** des modèles et des algorithmes :
+- “Bibliothèque minimale” (Eizykman, Hottois, Meillassoux, Laruelle ; Bratton ; Land).
+- “Hyperstition et économie politique” (boucles confiance/capital).
+- “Protocoles S8” : carnet de scénarios, diagrammes, contre-fictions, red teaming narratif.
 
-- les modèles chiffrent des futurs ;  
-- la SF **met en récit** les formes de vie et les conflits qu’impliquent ces futurs.
-
-Dans HyperIon, S8 est donc le lieu où l’on assume la SF comme **science spéculative de l’enquête**, en tension permanente avec S3 (OSINT) et EPI-MOD (modélisation).
-
-## Face claire
-- Permet de **désaturer le présent** et de tester des hypothèses dans des mondes possibles.  
-- Sert de support à des formes pédagogiques (exercices, scénarios, jeux de rôle d’enquête).  
-- Rend plus visibles les **conséquences politiques** de choix techniques ou institutionnels (archivage, IA, surveillance).
-
-## Face dark
-- Peut **dissoudre le conflit réel** dans le pur imaginaire si l’articulation aux terrains se perd.  
-- Peut être récupérée par des logiques d’évasion (escapisme) ou par des récits technosolutionnistes.  
-- Risque de naturaliser certains futurs comme inévitables (technofatalisme).
-
-## Liens forts
-- Parastrates : PARA-MEME (culture memétique dérivée de la SF), PARA-MEDIA.  
-- Opérateurs : O2-LITERACY (pédagogie par la fiction).  
-- Plan E : E5 (généalogie fictionnelle), E1 (régimes de vérité dans la fiction), E3 (régimes de connaissance spéculatifs).  
-
-## Biblio indicative
-- Auteurs de SF et corpus à préciser en fonction des terrains (par ex. Liu Cixin, etc.).  
-- Sun-ha Hong, *Technologies of Speculation. The Limits of Knowledge in a Data-Driven Society*, NYU Press, 2020.
+## Sources (à formaliser)
+- Noyer, mails (11/12/2025 ; 14/09/2020 ; 16–17/12/2025).
+- Bratton, “The Black Stack” (e-flux, 2014).
+- Hong, *Technologies of Speculation* (NYU Press, 2020).
+---

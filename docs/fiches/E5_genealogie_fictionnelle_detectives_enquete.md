@@ -1,80 +1,80 @@
 ---
 id: E5
-type: planE
-label: Généalogie fictionnelle des détectives & de l’enquête
+title: "E5 — Généalogie fictionnelle des détectives & des formes d’enquête"
+family: "Plan E"
+status: "draft"
+updated: 2025-12-17
+tags:
+  - detectives
+  - fiction
+  - matrices-epistémiques
+  - sf
+  - dystopie
+related:
+  - E2
+  - E3
+  - S8
+  - EPI-METR
+  - EPI-MOD
 ---
 
-# E5 · Généalogie fictionnelle des détectives & de l’enquête
-
 ## Définition
-Plan qui relie l’hyperinvestigation aux **figures de détectives de fiction** (Dupin, Holmes, Rouletabille, Temple, détectives de SF), conçues comme **matrices épistémiques** :
 
-- elles ne sont pas seulement des héros, mais des **modèles de raisonnement** ;  
-- elles instituent des manières de **découper un espace**, de **lire des indices**, de **fabriquer une vérité** à partir d’éléments épars.
+E5 recense les **matrices fictionnelles** qui ont formé (et forment encore) nos manières d’enquêter :
+types d’indices, économie de la preuve, mise en scène du secret, dispositifs de révélation,
+figures de l’enquêteur, et dramaturgies de la démonstration.
 
-## Exemples
-- Dupin (Poe) : lecture de détails insignifiants, détection dans la ville moderne, articulation entre rationalité et imagination.  
-- Rouletabille (Leroux) : chambre close, complot, enquête journalistique, rôle de la presse et des publics.  
-- Figures de Temple, Rouletabille, et autres détectives-feuilletons articulés à des mondes médiatiques et politiques spécifiques.  
-- Détectives de science-fiction : enquêteurs collectifs, posthumains, connectés à des hyper-archives ou à des intelligences non humaines.
+HyperIon traite ces fictions comme des **outils épistémologiques** :
+elles donnent des formes aux hypothèses, aux preuves, aux erreurs — et aux aveuglements.
 
-## Fonction dans l’hyperinvestigation
-- Faire apparaître que nos enquêtes contemporaines sont prises dans des **formes narratives héritées** :  
-  on imagine encore l’enquête comme une trajectoire de détective, même lorsqu’il s’agit de collectifs, de plateformes, d’archives.  
-- Utiliser ces matrices fictionnelles comme **ressources** pour concevoir des scénarios d’enquête HyperIon (pédagogie, scénarisation, mise en récit).
+## Deux lignées à tenir ensemble
 
-## Détective cybernétique et observateur-participant
+### 1) Détectives classiques (matrices de preuve)
+- Dupin, Rouletabille, Gregory Temple, etc. : clôture, reconstitution, preuve finale, économie de l’indice.
 
-Les détectives de fiction peuvent être lus comme des **opérateurs quasi cybernétiques**, au sens de Bateson et de l’école de Palo Alto :
+(À maintenir conforme à votre contrainte : sources littéraires, romans/nouvelles.)
 
-- ils **découpent un système** (famille, maison, ville, complot) en éléments pertinents ;  
-- ils réduisent l’**espace de recherche** en testant des hypothèses, en introduisant des perturbations, en observant les boucles de rétroaction (réactions, mensonges, silences, fuites) ;  
-- ils sont des **observateurs-participants** : leur présence, leurs questions, leurs mises en scène transforment le système qu’ils prétendent observer.
+### 2) Enquête spéculative (SF/dystopies comme protocole)
+Les mails Noyer réactivent un corpus SF/dystopique comme banque de formes pour penser :
+- planétarité en crise,
+- infrastructures de calcul,
+- nouvelles castes dominantes,
+- violence processuelle,
+- tri métrique, striation, filtrage.
 
-Dans *Les Bijoux de la Castafiore*, l’erreur collective consiste à mal définir le **système pertinent** (soupçon porté sur les Tziganes, sur les domestiques, sur des ennemis imaginaires) : l’espace de l’enquête est mal découpé, tandis que la cause effective (le moineau et la bague) reste hors champ.  
+Exemples d’“opérateurs fictionnels” cités dans les mails :
+- Ballard (catastrophe, société, infrastructures),
+- Buzzelli (révolte des ratés),
+- Liu Cixin (*The Wandering Earth*) — imaginaire d’ingénierie planétaire.
 
-Pour l’hyperinvestigation, ces fictions invitent à :
+## Motifs épistémiques (grille d’analyse)
 
-- interroger le **découpage initial** des situations (qui est inclus / exclu de la scène du soupçon ?) ;  
-- repérer les **modélisations paranoïaques, racialisées ou complotistes** qui réduisent l’espace d’enquête de manière toxique ;  
-- assumer la dimension d’**intervention** : toute enquête sérieuse est aussi une façon de reconfigurer un système, d’y introduire de nouvelles boucles d’information et de responsabilité.
+1. **L’indice impossible** : trace ambiguë, surcharge de données, preuve contestée (↔ EPI-METR, E3).  
+2. **L’archive totale / indéfinie** : accumulation sans clôture (↔ E3, technologies de la spéculation).  
+3. **Le diagramme** : faire tenir ensemble des hétérogènes (↔ S8).  
+4. **Spirale / vortex / tourbillon** : dynamique non-linéaire, morphogenèse, retour du refoulé (↔ S6/S7/S8).  
+5. **Hyperstition** : la fiction comme causalité (↔ S8, PARA-MEDIA, PARA-ECONO).  
+6. **Le “grand striage”** : monde gouverné par score, tri, filtrage (↔ EPI-METR, S7, PARA-SECUR).  
 
-## Détectives et technologies de la spéculation
+## Observer-participant (pont E5 ↔ E2)
 
-Les détectives – surtout en contexte contemporain ou SF – fonctionnent comme des **techniciens de la spéculation** :
+Beaucoup de récits d’enquête reposent sur un mythe : l’enquêteur extérieur, neutre.
+HyperIon inverse ce point : l’enquêteur est un acteur, pris dans des boucles de rétroaction
+(médias, plateformes, adversaires, publics, institutions).
 
-- ils travaillent avec des **indices faibles, incomplets, trompeurs** ;  
-- ils fabriquent des **configurations provisoires** de la réalité (scénarios, coupables probables, réseaux de relations) qu’ils testent et révisent en continu ;  
-- ils incarnent, parfois de manière critique, la figure du sujet appelé à **faire confiance** à des dispositifs (archives, bases de données, IA, dispositifs de surveillance) dont il ne maîtrise pas entièrement le fonctionnement.
+E5 peut donc servir de “laboratoire” :
+- comment les fictions représentent (ou masquent) la participation de l’enquêteur ?
+- quelles ruses narratives simulent l’objectivité ?
+- quelles fictions montrent la capture par les dispositifs ?
 
-On retrouve ici la logique des **technologies de la spéculation** :
+## Ce que E5 apporte concrètement à HyperIon
 
-- l’enquêteur n’a jamais toutes les données ;  
-- il doit néanmoins produire des **hypothèses cohérentes**, comparables, actionnables ;  
-- ces hypothèses peuvent être rectifiées, mais elles produisent déjà des effets (soupçon, mobilisation, répression, légitimation).
+- Une typologie de **formes de preuve** (clôture / série / réseau / modèle / scénario).
+- Une banque de **tests narratifs** pour éprouver une hypothèse (contre-enquête fictionnelle).
+- Une grammaire de **mise en récit responsable** (ne pas confondre scénario et preuve).
 
-E5 devient ainsi le lieu où se construit une **épistémologie spéculative de l’enquête** :  
-comment travailler avec l’incertitude sans verser dans la pure conspiration, comment mettre la spéculation au service d’une hyperinvestigation située, réflexive et accountable.
-
-## Face claire
-- Permet de travailler des **formes pédagogiques** (enquêtes jouées, scénarios, fictions critiques).  
-- Ouvre à une **futurologie du concept d’hyperinvestigation**, à partir de figures déjà familières au public.  
-- Donne un vocabulaire pour analyser les **gestes d’enquête** (découper un espace, lire des indices, tester des hypothèses).
-
-## Face dark
-- Peut reconduire des **stéréotypes de l’enquêteur-héros**, solitaire, masculin, génial, déconnecté des collectifs et des infrastructures.  
-- Peut naturaliser des **modèles d’enquête toxiques** (profilage, suspicion généralisée, paranoïa) si la critique manque.  
-- Risque de faire oublier le rôle des **collectifs d’enquête** et des milieux matériels / institutionnels.
-
-## Liens forts
-- Strates : S8 (imaginal / science spéculative), S3.  
-- Parastrates : PARA-MEME, PARA-MEDIA.  
-- Épistrates : EPI-METR, EPI-MOD (détectives comme modélisateurs narratifs).  
-- Plan E : E1 (régimes de vérité), E3 (régimes de connaissance), E4 (généalogie historique).  
-- Opérateurs : O2-LITERACY (pédagogie de l’enquête).
-
-## Biblio indicative
-- Edgar Allan Poe, nouvelles avec C. Auguste Dupin.  
-- Gaston Leroux, *Le Mystère de la chambre jaune*, 1907.  
-- Gregory Bateson et école de Palo Alto (travaux sur la cybernétique, les systèmes familiaux, la communication).  
-- Travaux contemporains sur SF et enquête, à articuler avec HyperIon.
+## Sources (à formaliser)
+- Corpus de détectives (votre liste canonique).
+- Noyer, mail 29/06/2023 (striage, dystopies, castes dominantes) ; mail 11/12/2025 (SF science spéculative).
+- Noyer, mail 14/09/2020 (diagramme, flux, spirales).
+---
