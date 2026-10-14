@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Séance 5 — De l’hypothèse au corpus, du corpus aux opérations et aux paradata">
+<title>Construire un protocole d’enquête</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eee;font-family:Inter,Aptos,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}
+#deck{position:fixed;inset:0;overflow:hidden;background:#e9e7ea}
+.slide-wrap{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;display:none}
+.slide-wrap.active{display:block}
+.slide-wrap>section{position:absolute!important;inset:0!important;margin:0!important}
+.page-counter{position:absolute;right:28px;bottom:17px;color:var(--violet2,#7c7186);font-size:14px;z-index:20}
+.nav{position:fixed;z-index:1000;right:18px;bottom:18px;display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:999px;background:rgba(35,31,40,.72);backdrop-filter:blur(8px);opacity:.22;transition:opacity .2s}
+.nav:hover,.nav:focus-within{opacity:.95}
+.nav button{appearance:none;border:0;border-radius:999px;background:rgba(255,255,255,.14);color:white;width:34px;height:34px;font-size:18px;cursor:pointer}
+.nav button:hover{background:rgba(255,255,255,.25)}
+.nav .count{color:white;font-size:13px;min-width:58px;text-align:center;font-variant-numeric:tabular-nums}
+.nav .fs{font-size:15px}
+.help{position:fixed;left:18px;bottom:18px;z-index:1000;color:white;background:rgba(35,31,40,.65);border-radius:999px;padding:8px 12px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none}
+body.show-help .help{opacity:.95}
+@media print{html,body{overflow:visible;background:white}#deck{position:static;background:white}.slide-wrap{position:relative;display:block!important;left:auto;top:auto;transform:none!important;page-break-after:always}.nav,.help{display:none}}
+
+/* =========================================================
+   HYPERION / S05 — PROTOCOL BLUE + LAVENDER + CORAL
+   Fichier autonome pour VS Code / Marp Preview / export PDF.
+   ========================================================= */
+:root {
+  --paper: #fbfaf8;
+  --paper2: #f3f5f7;
+  --paper3: #ece9f1;
+  --lavender: #b7acc2;
+  --lavender2: #d9d2df;
+  --violet: #625671;
+  --violet2: #847691;
+  --blue: #718ca3;
+  --blue2: #dce7ee;
+  --ink: #2d3034;
+  --muted: #626870;
+  --line: #d7d9dd;
+  --signal: #ce7e67;
+  --signal2: #f2d9d1;
+  --sage: #dfe9e3;
+  --white: #ffffff;
+  --green: #59776b;
+  --red: #a35f5f;
+}
+section {
+  width: 1280px; height: 720px;
+  padding: 64px 76px 54px 84px;
+  background:
+    radial-gradient(circle at 91% 8%, rgba(183,172,194,.17), transparent 24%),
+    linear-gradient(135deg, var(--paper) 0%, #f7f8f9 100%);
+  color: var(--ink);
+  font-family: Inter, Aptos, "Segoe UI", Arial, sans-serif;
+  font-size: 27px; line-height: 1.30; letter-spacing: -.01em;
+  position: relative;
+}
+section::before {
+  content: ""; position: absolute; left: 0; top: 0;
+  width: 10px; height: 100%;
+  background: linear-gradient(180deg, var(--violet), var(--blue), var(--signal));
+}
+section h1, section h2, section h3 { color: var(--violet); font-weight: 680; letter-spacing: -.03em; margin-top: 0; }
+section h1 { font-size: 66px; line-height: 1.02; margin-bottom: 22px; }
+section h2 { font-size: 43px; line-height: 1.08; margin-bottom: 23px; }
+section h3 { font-size: 27px; margin-bottom: 9px; }
+section p { margin: .35em 0 .68em; }
+section strong { color: var(--violet); font-weight: 760; }
+section em { color: var(--muted); }
+section ul { margin-top: .3em; }
+section li { margin: .22em 0; }
+section li::marker { color: var(--signal); }
+section blockquote {
+  margin: 22px 0; padding: 17px 23px 17px 27px;
+  border-left: 5px solid var(--blue); background: rgba(243,245,247,.90);
+  border-radius: 0 14px 14px 0; font-family: Georgia, "Times New Roman", serif;
+  font-size: 29px; line-height: 1.28;
+}
+header, footer {
+  position: absolute; left: 84px; right: 58px; color: #747984;
+  font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+}
+header { top: 23px; } footer { bottom: 18px; }
+section::after { right: 28px; bottom: 17px; color: var(--violet2); font-size: 14px; }
+.kicker { color: var(--violet2); font-size: 16px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 13px; }
+.subtitle { max-width: 820px; color: var(--muted); font-size: 29px; line-height: 1.26; }
+.meta { margin-top: 30px; color: var(--muted); font-size: 18px; }
+.big { font-size: 39px; line-height: 1.16; letter-spacing: -.025em; }
+.huge { font-size: 57px; line-height: 1.05; letter-spacing: -.04em; }
+.small { font-size: 18px; color: var(--muted); }
+.tiny { font-size: 14px; color: var(--muted); }
+.muted { color: var(--muted); }
+.signal { color: #9b5847; }
+.blue { color: #58758d; }
+.rule { width: 82px; height: 4px; background: var(--signal); border-radius: 5px; margin: 16px 0 25px; }
+.sources { position: absolute; left: 84px; right: 70px; bottom: 39px; font-size: 11.5px; line-height: 1.23; color: #6f747a; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; }
+.grid5 { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+.card { background:rgba(255,255,255,.87); border:1px solid var(--line); border-radius:18px; padding:20px 22px; box-shadow:0 10px 24px rgba(78,65,88,.04); }
+.card.soft { background:var(--paper2); }
+.card.lav { background:#f3eff5; border-color:#d8cedd; }
+.card.blue { background:#f0f5f8; border-color:#cedce5; }
+.card.sage { background:#f0f5f2; border-color:#d1dfd6; }
+.card.signal { background:#fbf0ec; border-color:#e9c9bf; color:var(--ink); }
+.card h3 { font-size:24px; }
+.card p, .card li { font-size:20px; }
+.num { font-size:13px; font-weight:850; letter-spacing:.14em; color:var(--violet2); margin-bottom:7px; }
+.pill { display:inline-block; margin:3px 5px 3px 0; padding:7px 12px; border-radius:999px; background:var(--paper3); color:var(--violet); font-size:15px; font-weight:750; }
+.pill.hot { background:var(--signal2); color:#7e4b3d; }
+.pill.cool { background:var(--blue2); color:#48677e; }
+.callout { padding:16px 22px; border-radius:14px; background:var(--paper2); border:1px solid var(--lavender2); font-size:22px; }
+.quote-large { font-family:Georgia,"Times New Roman",serif; font-size:34px; line-height:1.28; max-width:990px; }
+.flow { display:flex; align-items:stretch; gap:8px; margin-top:27px; }
+.step { flex:1; min-width:0; padding:17px 12px; border-radius:14px; border:1px solid var(--line); background:rgba(255,255,255,.90); text-align:center; }
+.step b { display:block; color:var(--violet); font-size:20px; margin-bottom:5px; }
+.step span { display:block; color:var(--muted); font-size:14px; }
+.arrow { align-self:center; color:var(--lavender); font-size:27px; }
+section.cover { background:linear-gradient(135deg,#fbfaf8 0%,#f1f4f6 56%,#eee9f2 100%); padding-top:91px; }
+section.cover h1 { max-width:790px; font-size:72px; }
+section.cover::before { width:14px; }
+section.section { background:linear-gradient(135deg,#eef3f6,#f7f3f8); display:flex; flex-direction:column; justify-content:center; }
+section.section h1 { max-width:950px; font-size:70px; }
+.section-number { color:var(--violet2); font-size:16px; font-weight:850; letter-spacing:.17em; text-transform:uppercase; margin-bottom:10px; }
+section.activity { background:linear-gradient(135deg,#fbf2ed,#f5f3f7); }
+section.activity::before { background:linear-gradient(180deg,var(--signal),#d39a88); }
+.activity-label { display:inline-block; background:var(--signal2); color:#784a3d; border-radius:999px; padding:7px 12px; font-size:14px; font-weight:850; letter-spacing:.12em; text-transform:uppercase; margin-bottom:13px; }
+.logo-cover,.logo-section,.logo-end { position:absolute; object-fit:contain; pointer-events:none; user-select:none; }
+.logo-cover { right:76px; top:132px; width:270px; opacity:.72; }
+.logo-section { right:76px; bottom:70px; width:122px; opacity:.20; }
+.logo-end { right:82px; top:150px; width:235px; opacity:.28; }
+/* S05 specific */
+.ledger { display:grid; grid-template-columns: 115px 1fr 1fr; gap:0; border:1px solid var(--line); border-radius:15px; overflow:hidden; background:#fff; font-size:18px; }
+.ledger > div { padding:13px 15px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); }
+.ledger > div:nth-child(3n) { border-right:0; }
+.ledger .head { background:#edf2f6; color:var(--violet); font-weight:800; }
+.ledger .h { color:var(--violet); font-weight:800; background:#f6f3f7; }
+.matrix { width:100%; border-collapse:separate; border-spacing:0; font-size:18px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#fff; }
+.matrix th { background:#edf1f4; color:var(--violet); font-weight:780; }
+.matrix th,.matrix td { padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+.matrix tr:last-child td { border-bottom:0; }
+.package { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin-top:22px; }
+.package div { background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px; min-height:135px; }
+.package b { color:var(--violet); display:block; font-size:21px; margin-bottom:6px; }
+.package span { color:var(--muted); font-size:16px; }
+.record { display:grid; grid-template-columns:58px 1fr; gap:15px; align-items:start; margin:11px 0; }
+.record .icon { width:48px; height:48px; border-radius:14px; background:var(--blue2); color:#55758d; display:flex; align-items:center; justify-content:center; font-weight:900; }
+.record b { color:var(--violet); }
+.record p { margin:3px 0; font-size:19px; }
+.casefile { background:#fff; border:1px solid #d6d6db; border-radius:18px; padding:22px 25px; box-shadow:0 8px 18px rgba(70,80,90,.04); position:relative; }
+.casefile::before { content:"MÉTHODOLOGIE"; position:absolute; right:18px; top:14px; font-size:11px; font-weight:900; letter-spacing:.18em; color:#8a99a6; }
+.casefile h3 { margin-top:12px; }
+.risk { display:grid; grid-template-columns:130px repeat(3,1fr); gap:7px; margin-top:18px; }
+.risk div { padding:15px 12px; border-radius:12px; text-align:center; border:1px solid var(--line); font-size:17px; background:#fff; }
+.risk .label { border:0; background:transparent; text-align:left; color:var(--muted); font-weight:750; }
+.risk .low { background:#eff5f1; }
+.risk .med { background:#f8f3e9; }
+.risk .high { background:#f8ece9; }
+.stop { border:2px dashed #d1a193; background:#fff8f5; border-radius:16px; padding:18px 22px; }
+.stop b { color:#8f5548; }
+.codeish { background:#eef1f4; border:1px solid #d6dbe0; border-radius:15px; padding:17px 20px; font-family:"Cascadia Code",Consolas,monospace; font-size:17px; line-height:1.48; color:#47515a; }
+
+</style>
+</head>
+<body>
+<main id="deck" aria-live="polite">
+<div class="slide-wrap"><section class="cover" data-slide="1" aria-label="Diapositive 1 sur 47">
+
+<div class="kicker">Séance 05 · 13 octobre 2026</div>
+
+<h1>Construire un <strong>protocole d’enquête</strong></h1>
+<div class="subtitle">Passer d’une énigme et de quelques indices à une enquête délimitée, documentée, révisable et publiable.</div>
+
+<div class="rule"></div>
+<div class="meta">Olivier Le Deuff · BUT Information-Communication · parcours INO · Chaire HyperION</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-cover" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="2" aria-label="Diapositive 2 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">2</div>
+<div class="section-number">Question directrice</div>
+
+<h1>Comment décider <strong>à l’avance</strong> ce qui comptera comme une enquête solide ?</h1>
+<div class="big muted">Question · hypothèses · périmètre · corpus · opérations · paradata · risques · critères d’arrêt</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="3" aria-label="Diapositive 3 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">3</div>
+<h2>Où en sommes-nous ?</h2>
+<div class="flow">
+<div class="step"><b>S03</b><span>architectures et algorithmes</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>S04</b><span>traces, indices, inférences</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>S05</b><span>protocole et documentation</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Projet</b><span>enquête révisable</span></div>
+</div>
+
+<div class="callout" style="margin-top:28px;">Le paradigme indiciaire nous apprenait à <strong>voir</strong>. Le protocole doit maintenant nous apprendre à <strong>ne pas nous raconter d’histoire trop vite</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="4" aria-label="Diapositive 4 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">4</div>
+<h2>Aujourd’hui, vous devez savoir…</h2>
+<div class="grid2">
+<div class="card"><h3>Transformer</h3><p>Une intuition en question véritablement enquêtable.</p></div>
+<div class="card blue"><h3>Délimiter</h3><p>Un corpus, une période, des acteurs et des critères d’arrêt.</p></div>
+<div class="card lav"><h3>Documenter</h3><p>Les opérations qui transforment les sources en résultats.</p></div>
+<div class="card signal"><h3>Résister</h3><p>Au biais de confirmation, à la collecte infinie et au récit trop parfait.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="5" aria-label="Diapositive 5 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">5</div>
+<div class="section-number">1 · Formuler</div>
+
+<h1>Le protocole commence par une <strong>question qui peut échouer</strong></h1>
+<div class="big muted">Une bonne enquête doit laisser ouverte la possibilité que l’hypothèse de départ soit fausse.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="6" aria-label="Diapositive 6 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">6</div>
+<h2>Quatre pièges de départ</h2>
+<div class="grid4">
+<div class="card signal"><div class="num">01</div><h3>Accuser</h3><p>« X ment » avant même d’avoir défini ce qui permettrait de l’établir.</p></div>
+<div class="card"><div class="num">02</div><h3>Collectionner</h3><p>Accumuler des captures et des liens sans question structurante.</p></div>
+<div class="card blue"><div class="num">03</div><h3>Partir de l’outil</h3><p>« On va utiliser Gephi / Python / IA » au lieu de partir du problème.</p></div>
+<div class="card lav"><div class="num">04</div><h3>Conclure d’abord</h3><p>Ne chercher ensuite que les éléments compatibles avec le récit attendu.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="7" aria-label="Diapositive 7 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">7</div>
+<h2>Du soupçon à la question</h2>
+<table class="matrix">
+<tr><th>Formulation faible</th><th>Formulation enquêtable</th></tr>
+<tr><td>« Cette entreprise greenwashe-t-elle ? »</td><td>Quels écarts peut-on documenter entre ses engagements environnementaux publics et ses pratiques observables sur la période X ?</td></tr>
+<tr><td>« L’algorithme discrimine-t-il ? »</td><td>Quels groupes reçoivent des sorties différentes à entrées comparables, et quelles variables peuvent expliquer ces écarts ?</td></tr>
+<tr><td>« Cette vidéo est-elle fausse ? »</td><td>Quels éléments permettent d’établir l’origine, la date, le lieu et l’intégrité de cette séquence ?</td></tr>
+</table>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="8" aria-label="Diapositive 8 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">8</div>
+<h2>Un test simple : la question peut-elle produire plusieurs réponses ?</h2>
+<div class="grid3">
+<div class="card"><h3>Oui</h3><p>Les engagements sont globalement cohérents avec les traces accessibles.</p></div>
+<div class="card blue"><h3>Oui, mais</h3><p>Des écarts existent, mais ils sont partiels, contextualisés ou incertains.</p></div>
+<div class="card signal"><h3>Non</h3><p>Les documents disponibles contredisent systématiquement les engagements affichés.</p></div>
+</div>
+
+<div class="callout" style="margin-top:26px;">Si une seule réponse est acceptable avant même de commencer, ce n’est plus un protocole d’enquête : c’est une démonstration à charge.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="9" aria-label="Diapositive 9 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">9</div>
+<h2>Le registre d’hypothèses</h2>
+<div class="ledger">
+<div class="head">Hyp.</div><div class="head">Ce qui la soutiendrait</div><div class="head">Ce qui l’affaiblirait</div>
+<div class="h">H1</div><div>Des documents et observations convergents.</div><div>Des contre-exemples répétés et vérifiés.</div>
+<div class="h">H2</div><div>Une explication alternative compatible avec les traces.</div><div>Une chronologie ou un mécanisme qui ne tient pas.</div>
+<div class="h">H0</div><div>Aucun effet ou écart spécifique n’est observable.</div><div>Une différence robuste et reproductible apparaît.</div>
+</div>
+
+<div class="small" style="margin-top:15px;">H0 n’est pas réservée aux statistiques : elle force simplement à conserver une hypothèse de non-effet ou d’explication ordinaire.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="10" aria-label="Diapositive 10 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">10</div>
+<h2>Contre-hypothèse = hygiène de l’enquête</h2>
+<blockquote>
+<p>Pour chaque explication séduisante, prévoir au moins une explication concurrente que l’on cherchera réellement à tester.</p>
+</blockquote>
+<div class="grid3" style="margin-top:25px;">
+<div class="card"><h3>Erreur</h3><p>Une incohérence documentaire peut venir d’un défaut de mise à jour.</p></div>
+<div class="card blue"><h3>Contrainte</h3><p>Un résultat peut être produit par une règle ou une infrastructure non intentionnelle.</p></div>
+<div class="card signal"><h3>Stratégie</h3><p>Il peut aussi relever d’une décision, d’un arbitrage ou d’une dissimulation.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="11" aria-label="Diapositive 11 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">11</div>
+<div class="section-number">2 · Délimiter</div>
+
+<h1>Une enquête devient possible quand on accepte de <strong>laisser des choses dehors</strong></h1>
+<div class="big muted">Le périmètre n’est pas une faiblesse. C’est une condition de démonstration.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="12" aria-label="Diapositive 12 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">12</div>
+<h2>Le pentagone du périmètre</h2>
+<div class="grid5">
+<div class="card"><div class="num">QUI</div><h3>Acteurs</h3><p>Personnes, organisations, communautés.</p></div>
+<div class="card blue"><div class="num">QUOI</div><h3>Objets</h3><p>Documents, contenus, décisions, sorties.</p></div>
+<div class="card lav"><div class="num">OÙ</div><h3>Espaces</h3><p>Sites, plateformes, territoires.</p></div>
+<div class="card signal"><div class="num">QUAND</div><h3>Période</h3><p>Bornes et événements déclencheurs.</p></div>
+<div class="card sage"><div class="num">JUSQU’OÙ</div><h3>Arrêt</h3><p>Seuil de saturation ou de suffisance.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="13" aria-label="Diapositive 13 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">13</div>
+<h2>Les critères d’inclusion doivent être écrits</h2>
+<div class="grid2">
+<div class="card blue">
+<h3>Entre dans le corpus</h3>
+<ul>
+<li>document publié pendant la période ;</li>
+<li>acteur directement lié à la question ;</li>
+<li>source conservable et référencée ;</li>
+<li>élément dont la provenance peut être décrite.</li>
+</ul>
+</div>
+<div class="card signal">
+<h3>Reste hors corpus</h3>
+<ul>
+<li>rumeur sans origine identifiable ;</li>
+<li>capture impossible à contextualiser ;</li>
+<li>élément hors période sans justification ;</li>
+<li>donnée sensible sans nécessité analytique.</li>
+</ul>
+</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="14" aria-label="Diapositive 14 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">14</div>
+<h2>Définir aussi ce qui fera arrêter l’enquête</h2>
+<div class="stop">
+<b>Critères d’arrêt possibles</b>
+<ul>
+<li>les sources nouvelles ne modifient plus les catégories ni les hypothèses ;</li>
+<li>la question est suffisamment documentée pour être soumise à contradiction ;</li>
+<li>l’accès aux données devient disproportionné au regard de l’objectif ;</li>
+<li>un risque éthique ou juridique dépasse le bénéfice attendu ;</li>
+<li>le protocole est devenu impossible à exécuter dans le temps imparti.</li>
+</ul>
+</div>
+
+<div class="small" style="margin-top:13px;">Savoir s’arrêter fait partie de la méthode.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="15" aria-label="Diapositive 15 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">15</div>
+<div class="section-number">3 · Architecturer</div>
+
+<h1>Le protocole est une <strong>architecture documentaire</strong></h1>
+<div class="big muted">Il organise la relation entre question, corpus, opérations, décisions et résultats.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="16" aria-label="Diapositive 16 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">16</div>
+<h2>Le paquet documentaire minimal</h2>
+<div class="package">
+<div><b>1 · Protocole</b><span>Question, hypothèses, périmètre, méthode.</span></div>
+<div><b>2 · Registre des sources</b><span>URL, auteur, date, type, statut, archive.</span></div>
+<div><b>3 · Journal d’enquête</b><span>Ce qui a été fait, quand, par qui, avec quel résultat.</span></div>
+<div><b>4 · Registre d’hypothèses</b><span>Hypothèses, contre-hypothèses, niveau de confiance.</span></div>
+<div><b>5 · Registre de conservation</b><span>Copies, empreintes, dates, formats, versions.</span></div>
+<div><b>6 · Fiche de risques</b><span>Personnes, sécurité, droit, données sensibles.</span></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="17" aria-label="Diapositive 17 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">17</div>
+<h2>Le workflow comme mémoire de méthode</h2>
+<div class="flow">
+<div class="step"><b>Identifier</b><span>besoin / piste</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Collecter</b><span>source + contexte</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Préserver</b><span>copie + provenance</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Vérifier</b><span>authenticité / contexte</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Analyser</b><span>relations / motifs</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Publier</b><span>preuve + limites</span></div>
+</div>
+
+<div class="sources">Le workflow Bellingcat/Yemen Archive sépare explicitement identification, collecte et préservation, vérification, analyse, revue et présentation.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="18" aria-label="Diapositive 18 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">18</div>
+<h2>Ce que le Berkeley Protocol change</h2>
+<div class="grid2">
+<div>
+<p class="big">Une enquête numérique n’est pas seulement une recherche réussie.</p>
+<p>Elle doit intégrer dès sa conception <strong>professionnalisme, légalité, sécurité, préservation, vérification et traçabilité</strong>.</p>
+</div>
+<div class="card blue">
+<h3>Le déplacement important</h3>
+<p>La méthode n’arrive pas après la collecte pour « nettoyer » les résultats. Elle structure la collecte dès le départ.</p>
+</div>
+</div>
+
+<div class="sources">Human Rights Center, UC Berkeley & OHCHR, <em>Protocole de Berkeley sur l’utilisation de sources ouvertes numériques dans les enquêtes</em>, 2020, version française.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="19" aria-label="Diapositive 19 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">19</div>
+<h2>Métadonnées, provenance, paradata : trois niveaux</h2>
+<div class="grid3">
+<div class="card"><h3>Métadonnées</h3><p><strong>Qu’est-ce que c’est ?</strong><br/>Titre, date, auteur, format, coordonnées, identifiant…</p></div>
+<div class="card blue"><h3>Provenance</h3><p><strong>D’où vient-il ?</strong><br/>Origine, chaîne de transmission, version, transformations.</p></div>
+<div class="card lav"><h3>Paradata</h3><p><strong>Qu’avons-nous fait ?</strong><br/>Choix, opérations, outils, réglages, hésitations, exclusions.</p></div>
+</div>
+
+<div class="callout" style="margin-top:25px;">Pour HyperION, les paradata documentent la <strong>fabrique de l’enquête</strong>, pas seulement ses objets.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="20" aria-label="Diapositive 20 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">20</div>
+<h2>Pourquoi les paradata sont décisives</h2>
+<div class="record"><div class="icon">1</div><div><b>Prescrire</b><p>Définir à l’avance une procédure ou une règle.</p></div></div>
+<div class="record"><div class="icon">2</div><div><b>Garder la trace</b><p>Consigner ce qui a été fait au fil du travail.</p></div></div>
+<div class="record"><div class="icon">3</div><div><b>Décrire</b><p>Expliquer méthodes, décisions, structures et limitations.</p></div></div>
+<div class="record"><div class="icon">4</div><div><b>Signaler</b><p>Marquer incertitudes, problèmes, exceptions et anomalies.</p></div></div>
+
+<div class="sources">Huvila, Andersson & Sköld (2025), <em>Researchers’ data processing descriptions—Understanding paradata creation practices and their underpinning instrumentalities</em>, JASIST, 76(11), 1570–1590.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="21" aria-label="Diapositive 21 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">21</div>
+<h2>Le journal d’enquête : écrivez ce que vous oublieriez demain</h2>
+<div class="codeish">
+2026-10-13 11:08 · ODL<br/>
+Source : rapport RSE 2024, p. 37<br/>
+Action : extraction de l'indicateur « émissions »<br/>
+Décision : conserver valeur Scope 1+2 ; exclure Scope 3 pour comparaison initiale<br/>
+Motif : données Scope 3 non comparables sur 2022–2024<br/>
+À vérifier : changement de méthode de calcul en 2023 ?<br/>
+Confiance : moyenne
+</div>
+
+<div class="small" style="margin-top:15px;">Le journal n’est pas une dissertation : c’est une mémoire d’opérations et de décisions.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="22" aria-label="Diapositive 22 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">22</div>
+<h2>Nommez les fichiers comme si vous deviez les transmettre</h2>
+<div class="codeish">
+/projet-hyperinvestigation/<br/>
+├── 00_protocole/<br/>
+├── 01_sources_brutes/<br/>
+├── 02_archives/<br/>
+├── 03_donnees_travail/<br/>
+├── 04_scripts_operations/<br/>
+├── 05_resultats/<br/>
+├── 06_publication/<br/>
+└── journal-enquete.md
+</div>
+
+<div class="callout" style="margin-top:22px;">L’architecture de l’information revient ici sous forme de <strong>condition de vérifiabilité</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="23" aria-label="Diapositive 23 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">23</div>
+<div class="section-number">4 · Observer une méthodologie publiée</div>
+
+<h1>Une bonne enquête peut expliquer <strong>comment elle sait</strong></h1>
+<div class="big muted">Lighthouse Reports publie régulièrement des méthodologies séparées de ses récits d’enquête.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="24" aria-label="Diapositive 24 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">24</div>
+<h2>Cas 2026 · Transformer des reçus en preuve</h2>
+<div class="casefile">
+<h3>Lighthouse Reports · VFS Global</h3>
+<p><strong>Question :</strong> quelle place les services « additionnels » occupent-ils réellement dans les sommes payées par les demandeurs de visa ?</p>
+<p><strong>Corpus :</strong> plus de 2 000 demandes, issues de 16 pays, obtenues via des demandes d’accès à l’information.</p>
+<p><strong>Problème :</strong> des reçus scannés, hétérogènes, difficilement comparables.</p>
+</div>
+
+<div class="sources">Lighthouse Reports, « How we turned visa receipts into evidence of VFS’s add-on business », 28 mai 2026.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="25" aria-label="Diapositive 25 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">25</div>
+<h2>Le protocole est visible dans les opérations</h2>
+<div class="flow">
+<div class="step"><b>Obtenir</b><span>FOI / échantillons</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>OCRiser</b><span>images → texte</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Parser</b><span>demandeur / frais</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Normaliser</b><span>noms / devises</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Calculer</b><span>fréquences / revenus</span></div>
+<div class="arrow">→</div>
+<div class="step"><b>Limiter</b><span>caveats explicites</span></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="26" aria-label="Diapositive 26 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">26</div>
+<h2>Ce qui rend cette méthodologie exemplaire</h2>
+<div class="grid2">
+<div class="card blue"><h3>Les transformations sont décrites</h3><p>OCR, extraction, règles spécifiques par pays, standardisation des services et des monnaies.</p></div>
+<div class="card"><h3>Le corpus est situé</h3><p>Origine des reçus, périodes, pays couverts, manière de les obtenir.</p></div>
+<div class="card signal"><h3>Les limites sont publiées</h3><p>L’échantillon n’est pas présenté comme représentatif de tous les demandeurs.</p></div>
+<div class="card lav"><h3>Les données ne parlent pas seules</h3><p>Les reçus sont articulés aux témoignages d’employés et d’usagers.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="27" aria-label="Diapositive 27 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">27</div>
+<h2>Une méthodologie peut devenir un objet publié</h2>
+<div class="grid2">
+<div>
+<p class="big">Le récit répond : <strong>qu’avons-nous découvert ?</strong></p>
+<p>La méthodologie répond : <strong>comment avons-nous pu l’établir ?</strong></p>
+</div>
+<div class="card blue">
+<h3>Pour votre projet</h3>
+<p>Vous devrez pouvoir isoler, même brièvement, un bloc « méthode » indépendant du récit final.</p>
+</div>
+</div>
+
+<div class="callout" style="margin-top:24px;">L’hyperinvestigation cherche précisément à rendre cette couche méthodologique plus visible et plus réutilisable.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="28" aria-label="Diapositive 28 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">28</div>
+<div class="section-number">5 · Risques et responsabilités</div>
+
+<h1>Tout ce qui est accessible n’est pas nécessairement <strong>légitime à collecter</strong></h1>
+<div class="big muted">Le protocole doit prévoir ce que l’enquête pourrait faire aux personnes qu’elle observe.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="29" aria-label="Diapositive 29 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">29</div>
+<h2>Principe de minimisation</h2>
+<div class="grid3">
+<div class="card"><h3>Nécessaire ?</h3><p>Cette donnée répond-elle réellement à la question ?</p></div>
+<div class="card blue"><h3>Proportionné ?</h3><p>Le niveau de détail est-il justifié par l’enjeu ?</p></div>
+<div class="card signal"><h3>Publiable ?</h3><p>Devons-nous montrer ce que nous avons eu besoin de consulter ?</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:31px;">Collecter, analyser et publier sont trois décisions distinctes.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="30" aria-label="Diapositive 30 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">30</div>
+<h2>Cartographier le risque avant la collecte</h2>
+<div class="risk">
+<div class="label"></div><div class="label">Faible impact</div><div class="label">Impact moyen</div><div class="label">Impact fort</div>
+<div class="label">Peu probable</div><div class="low">surveiller</div><div class="low">encadrer</div><div class="med">réduire</div>
+<div class="label">Possible</div><div class="low">encadrer</div><div class="med">réduire</div><div class="high">repenser</div>
+<div class="label">Probable</div><div class="med">réduire</div><div class="high">repenser</div><div class="high">ne pas faire</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="31" aria-label="Diapositive 31 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">31</div>
+<h2>Qui peut être exposé ?</h2>
+<div class="grid4">
+<div class="card"><h3>Sources</h3><p>Identification involontaire, représailles, harcèlement.</p></div>
+<div class="card blue"><h3>Enquêteurs</h3><p>Traçage, comptes personnels, exposition à des contenus violents.</p></div>
+<div class="card lav"><h3>Tiers</h3><p>Personnes visibles mais non pertinentes pour l’enquête.</p></div>
+<div class="card signal"><h3>Public</h3><p>Surinterprétation ou reprise d’un résultat insuffisamment stabilisé.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="32" aria-label="Diapositive 32 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">32</div>
+<h2>Et l’IA dans le protocole ?</h2>
+<div class="grid2">
+<div class="card blue">
+<h3>Usage possible</h3>
+<p>Explorer des copies de travail, assister une extraction, suggérer des catégories, aider à coder — à condition de conserver les originaux et de vérifier les sorties.</p>
+</div>
+<div class="card signal">
+<h3>Usage à proscrire</h3>
+<p>Déposer des données sensibles ou confidentielles dans un service non maîtrisé, ou transformer une sortie générative en preuve.</p>
+</div>
+</div>
+
+<div class="callout" style="margin-top:25px;">Tout usage d’IA qui transforme le corpus doit être inscrit dans le journal d’enquête : outil, version, entrée, opération, contrôle.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="33" aria-label="Diapositive 33 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">33</div>
+<h2>Puissance méthodologique, humilité épistémique</h2>
+<blockquote>
+<p>Une enquête numérique gagne en légitimité lorsqu’elle explicite ses asymétries, ses angles morts et ce qu’elle n’a pas pu savoir.</p>
+</blockquote>
+<div class="grid2" style="margin-top:24px;">
+<div class="card"><h3>Pouvoir</h3><p>Qui définit la question ? Qui peut collecter ? Qui possède les infrastructures et les données ?</p></div>
+<div class="card lav"><h3>Humilité</h3><p>Quels acteurs et quelles expériences restent absents du corpus ? Que faut-il laisser indéterminé ?</p></div>
+</div>
+
+<div class="sources">Voir Koenig, Peake & Falcón, <em>Power and Humility in Open Source Investigations</em>, Berkeley Human Rights Center, 2026.</div>
+
+
+</section></div><div class="slide-wrap"><section class="activity" data-slide="34" aria-label="Diapositive 34 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">34</div>
+<div class="activity-label">Atelier · 35 à 40 min</div>
+
+<h1>Construisez votre protocole v0.1</h1>
+<div class="big">Pas de collecte supplémentaire pendant les 20 premières minutes.</div>
+<div class="muted">Vous devez d’abord décider ce que vous cherchez, ce que vous accepterez comme réponse et comment vous documenterez les opérations.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="35" aria-label="Diapositive 35 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">35</div>
+<h2>Le livrable de la séance</h2>
+<div class="grid2">
+<div>
+<p class="big">Une <strong>fiche-protocole</strong> de 1 à 2 pages.</p>
+<p>Elle doit pouvoir être comprise et critiquée par un autre groupe sans explication orale supplémentaire.</p>
+</div>
+<div class="card blue">
+<h3>Elle contient</h3>
+<ul>
+<li>question + hypothèses concurrentes ;</li>
+<li>périmètre + corpus pressenti ;</li>
+<li>opérations prévues ;</li>
+<li>journalisation / paradata ;</li>
+<li>risques + critères d’arrêt.</li>
+</ul>
+</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="36" aria-label="Diapositive 36 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">36</div>
+<h2>Étape 1 · Question + hypothèses — 8 min</h2>
+<div class="grid2">
+<div class="card"><h3>Écrivez</h3><ul><li>1 question en une phrase ;</li><li>H1 : explication principale ;</li><li>H2 : explication concurrente ;</li><li>H0 : absence d’effet / explication ordinaire.</li></ul></div>
+<div class="card signal"><h3>Testez</h3><ul><li>qu’est-ce qui vous ferait changer d’avis ?</li><li>la question peut-elle produire plusieurs réponses ?</li><li>avez-vous déjà écrit la conclusion dans la question ?</li></ul></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="37" aria-label="Diapositive 37 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">37</div>
+<h2>Étape 2 · Périmètre + corpus — 8 min</h2>
+<table class="matrix">
+<tr><th>Dimension</th><th>Décision</th></tr>
+<tr><td>Acteurs</td><td>Qui est inclus ? Qui est volontairement hors champ ?</td></tr>
+<tr><td>Période</td><td>Quelles bornes et pourquoi ?</td></tr>
+<tr><td>Espaces</td><td>Quels sites, plateformes, bases, documents ?</td></tr>
+<tr><td>Inclusion</td><td>Quelles conditions minimales pour intégrer une source ?</td></tr>
+<tr><td>Arrêt</td><td>À quel moment le corpus sera-t-il suffisant ?</td></tr>
+</table>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="38" aria-label="Diapositive 38 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">38</div>
+<h2>Étape 3 · Opérations + paradata — 8 min</h2>
+<div class="grid2">
+<div class="card blue"><h3>Opérations prévues</h3><p>Comparer, extraire, coder, géolocaliser, chronolocaliser, mesurer, classer, tester, cartographier…</p></div>
+<div class="card lav"><h3>Paradata à conserver</h3><p>Date, personne, outil, version, paramètres, décision, résultat, erreur, exclusion, niveau de confiance.</p></div>
+</div>
+
+<div class="callout" style="margin-top:24px;">Écrivez une ligne de journal fictive pour votre toute première opération.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="39" aria-label="Diapositive 39 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">39</div>
+<h2>Étape 4 · Risques + limites — 6 min</h2>
+<div class="grid2">
+<div class="card signal"><h3>Le risque principal</h3><p>Quelle personne, donnée ou source pourrait être exposée par votre méthode ?</p></div>
+<div class="card"><h3>La limite principale</h3><p>Qu’est-ce que votre protocole ne permettra probablement pas d’établir ?</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="40" aria-label="Diapositive 40 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">40</div>
+<h2>Étape 5 · Red team — 8 min</h2>
+<div class="grid2">
+<div>
+<p class="big">Échangez votre protocole avec un autre groupe.</p>
+<p>Le rôle du groupe lecteur n’est pas de « donner des idées », mais d’essayer de <strong>faire tomber la méthode</strong>.</p>
+</div>
+<div class="card signal">
+<h3>Trois attaques</h3>
+<ul>
+<li>une hypothèse alternative oubliée ;</li>
+<li>un biais de corpus ;</li>
+<li>une opération impossible à reproduire.</li>
+</ul>
+</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="41" aria-label="Diapositive 41 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">41</div>
+<h2>Le test des cinq questions</h2>
+<div class="grid5">
+<div class="card"><h3>1</h3><p>Que cherchez-vous exactement ?</p></div>
+<div class="card blue"><h3>2</h3><p>Qu’est-ce qui pourrait vous contredire ?</p></div>
+<div class="card lav"><h3>3</h3><p>Pourquoi ce corpus ?</p></div>
+<div class="card signal"><h3>4</h3><p>Comment retracer vos opérations ?</p></div>
+<div class="card sage"><h3>5</h3><p>Quand déciderez-vous d’arrêter ?</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="42" aria-label="Diapositive 42 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">42</div>
+<h2>Gabarit minimal du protocole</h2>
+<div class="codeish">
+# Protocole d'enquête — v0.1<br/>
+## 1. Question<br/>
+## 2. Hypothèses H1 / H2 / H0<br/>
+## 3. Périmètre et critères d'inclusion<br/>
+## 4. Corpus pressenti<br/>
+## 5. Opérations prévues<br/>
+## 6. Registre des paradata<br/>
+## 7. Risques et minimisation<br/>
+## 8. Critères d'arrêt<br/>
+## 9. Limites anticipées<br/>
+## 10. Répartition des rôles
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="43" aria-label="Diapositive 43 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">43</div>
+<div class="section-number">Lecture obligatoire</div>
+
+<h1>Le Protocole de Berkeley</h1>
+<div class="big muted">À lire : introduction, principes professionnels et parties consacrées à la collecte, la préservation et la vérification.</div>
+
+<div class="callout" style="margin-top:28px;">Version française en accès libre : Haut-Commissariat des Nations unies aux droits de l’homme / Human Rights Center, UC Berkeley.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="44" aria-label="Diapositive 44 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">44</div>
+<h2>Document exemplaire à consulter</h2>
+<div class="grid2">
+<div class="card blue">
+<h3>Lighthouse Reports · 2026</h3>
+<p><strong>How we turned visa receipts into evidence of VFS’s add-on business</strong></p>
+<p class="small">Regardez surtout : construction du corpus, transformations OCR, standardisation, calculs, caveats.</p>
+</div>
+<div class="card lav">
+<h3>Bellingcat / Yemen Archive</h3>
+<p><strong>Workflow & Collection Protocol</strong></p>
+<p class="small">Regardez surtout : séparation collecte/préservation, traçabilité et revue.</p>
+</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="45" aria-label="Diapositive 45 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">45</div>
+<h2>Pour approfondir</h2>
+<div class="grid2">
+<div class="card">
+<h3>Paradata</h3>
+<p>Huvila, I., Andersson, L., & Sköld, O. (2025). « Researchers’ data processing descriptions… », <em>JASIST</em>, 76(11), 1570–1590.</p>
+</div>
+<div class="card blue">
+<h3>Réflexivité</h3>
+<p>Koenig, A., Peake, J., & Falcón, S. (2026). <em>Power and Humility in Open Source Investigations</em>. Human Rights Center, UC Berkeley.</p>
+</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="46" aria-label="Diapositive 46 sur 47">
+<header>Hyperinvestigation · S05</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">46</div>
+<h2>Ce qu’il faut retenir</h2>
+<div class="grid4">
+<div class="card"><h3>Question</h3><p>Une enquête doit pouvoir vous décevoir.</p></div>
+<div class="card blue"><h3>Périmètre</h3><p>Le hors-champ est une décision méthodologique.</p></div>
+<div class="card lav"><h3>Paradata</h3><p>Documentez la transformation, pas seulement la source.</p></div>
+<div class="card signal"><h3>Limites</h3><p>Dire ce qu’on ne sait pas renforce la preuve.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="cover" data-slide="47" aria-label="Diapositive 47 sur 47">
+
+<div class="kicker">HyperION · S05</div>
+
+<h1>Un protocole est une <strong>promesse de méthode</strong></h1>
+<div class="subtitle">Il ne garantit pas que l’enquête trouvera quelque chose. Il garantit que l’on pourra comprendre comment elle a cherché, choisi, transformé et conclu.</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-end" alt="" /></p>
+
+</section></div>
+</main>
+<div class="nav" aria-label="Navigation des diapositives">
+<button type="button" id="prev" aria-label="Diapositive précédente">‹</button>
+<div class="count" id="count"></div>
+<button type="button" id="next" aria-label="Diapositive suivante">›</button>
+<button type="button" id="fullscreen" class="fs" aria-label="Plein écran">⛶</button>
+</div>
+<div class="help">← → naviguer · F plein écran · H aide · Home/End début/fin</div>
+<script>
+(() => {
+ const wraps=[...document.querySelectorAll('.slide-wrap')];
+ let index=0;
+ const clamp=i=>Math.max(0,Math.min(wraps.length-1,i));
+ function fromHash(){const n=parseInt(location.hash.slice(1),10);if(Number.isFinite(n)) index=clamp(n-1)}
+ function scale(){const s=Math.min(innerWidth/1280,innerHeight/720);for(const w of wraps) w.style.transform=`translate(-50%,-50%) scale(${s})`}
+ function show(i,push=true){index=clamp(i);wraps.forEach((w,j)=>w.classList.toggle('active',j===index));document.getElementById('count').textContent=`${index+1} / ${wraps.length}`;if(push) history.replaceState(null,'',`#${index+1}`);document.title=`${wraps[index].querySelector('h1,h2')?.textContent?.trim() || 'Construire un protocole d’enquête'} · Construire un protocole d’enquête`}
+ function next(){show(index+1)} function prev(){show(index-1)}
+ addEventListener('resize',scale);addEventListener('hashchange',()=>{fromHash();show(index,false)});
+ document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;
+ document.getElementById('fullscreen').onclick=()=>{if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+ addEventListener('keydown',e=>{
+   if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+   else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();prev()}
+   else if(e.key==='Home'){e.preventDefault();show(0)}
+   else if(e.key==='End'){e.preventDefault();show(wraps.length-1)}
+   else if(e.key.toLowerCase()==='f'){document.getElementById('fullscreen').click()}
+   else if(e.key.toLowerCase()==='h'){document.body.classList.toggle('show-help')}
+ });
+ let sx=null;addEventListener('touchstart',e=>sx=e.changedTouches[0].clientX,{passive:true});addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60) dx<0?next():prev();sx=null},{passive:true});
+ fromHash();scale();show(index,false);
+})();
+</script>
+</body>
+</html>

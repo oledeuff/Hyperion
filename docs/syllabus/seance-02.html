@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Séance 2 — Responsabilité sociétale, communication, preuves et greenwashing">
+<title>RSO : documenter la responsabilité</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eee;font-family:Inter,Aptos,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}
+#deck{position:fixed;inset:0;overflow:hidden;background:#e9e7ea}
+.slide-wrap{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;display:none}
+.slide-wrap.active{display:block}
+.slide-wrap>section{position:absolute!important;inset:0!important;margin:0!important}
+.page-counter{position:absolute;right:28px;bottom:17px;color:var(--violet2,#7c7186);font-size:14px;z-index:20}
+.nav{position:fixed;z-index:1000;right:18px;bottom:18px;display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:999px;background:rgba(35,31,40,.72);backdrop-filter:blur(8px);opacity:.22;transition:opacity .2s}
+.nav:hover,.nav:focus-within{opacity:.95}
+.nav button{appearance:none;border:0;border-radius:999px;background:rgba(255,255,255,.14);color:white;width:34px;height:34px;font-size:18px;cursor:pointer}
+.nav button:hover{background:rgba(255,255,255,.25)}
+.nav .count{color:white;font-size:13px;min-width:58px;text-align:center;font-variant-numeric:tabular-nums}
+.nav .fs{font-size:15px}
+.help{position:fixed;left:18px;bottom:18px;z-index:1000;color:white;background:rgba(35,31,40,.65);border-radius:999px;padding:8px 12px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none}
+body.show-help .help{opacity:.95}
+@media print{html,body{overflow:visible;background:white}#deck{position:static;background:white}.slide-wrap{position:relative;display:block!important;left:auto;top:auto;transform:none!important;page-break-after:always}.nav,.help{display:none}}
+
+/* =========================================================
+   HYPERION / S02 — SAGE + LAVENDER LIGHT
+   Tout est volontairement contenu dans ce fichier .md.
+   Couleurs principales à modifier ici :
+   --paper / --lavender / --violet / --ink / --signal
+   ========================================================= */
+:root {
+  --paper: #fbfaf8;
+  --paper2: #f2f4ef;
+  --paper3: #e5e9df;
+  --lavender: #afa8bc;
+  --lavender2: #d6d8d0;
+  --violet: #5f5968;
+  --violet2: #7f7988;
+  --ink: #2c2930;
+  --muted: #625c67;
+  --line: #d8d1dc;
+  --signal: #cf8956;
+  --signal2: #efd9c8;
+  --mint: #dce7da;
+  --sky: #e1e8ed;
+  --white: #ffffff;
+}
+
+section {
+  width: 1280px;
+  height: 720px;
+  padding: 64px 76px 54px 84px;
+  background:
+    radial-gradient(circle at 91% 8%, rgba(185,175,194,.16), transparent 24%),
+    linear-gradient(135deg, var(--paper) 0%, #f8f6f8 100%);
+  color: var(--ink);
+  font-family: Inter, Aptos, "Segoe UI", Arial, sans-serif;
+  font-size: 27px;
+  line-height: 1.30;
+  letter-spacing: -.01em;
+  position: relative;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 10px; height: 100%;
+  background: linear-gradient(180deg, var(--violet), var(--lavender), var(--signal));
+}
+
+section h1, section h2, section h3 {
+  color: var(--violet);
+  font-weight: 680;
+  letter-spacing: -.03em;
+  margin-top: 0;
+}
+section h1 { font-size: 66px; line-height: 1.02; margin-bottom: 22px; }
+section h2 { font-size: 43px; line-height: 1.08; margin-bottom: 23px; }
+section h3 { font-size: 27px; margin-bottom: 9px; }
+section p { margin: .35em 0 .68em; }
+section strong { color: var(--violet); font-weight: 760; }
+section em { color: var(--muted); }
+section ul { margin-top: .3em; }
+section li { margin: .22em 0; }
+section li::marker { color: var(--signal); }
+section blockquote {
+  margin: 22px 0;
+  padding: 17px 23px 17px 27px;
+  border-left: 5px solid var(--violet2);
+  background: rgba(244,241,246,.82);
+  border-radius: 0 14px 14px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  line-height: 1.28;
+}
+header, footer {
+  position: absolute;
+  left: 84px; right: 58px;
+  color: #7a727e;
+  font-size: 13px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+header { top: 23px; }
+footer { bottom: 18px; }
+section::after { right: 28px; bottom: 17px; color: var(--violet2); font-size: 14px; }
+
+/* typographie et repères */
+.kicker { color: var(--violet2); font-size: 16px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 13px; }
+.subtitle { max-width: 800px; color: var(--muted); font-size: 29px; line-height: 1.26; }
+.meta { margin-top: 30px; color: var(--muted); font-size: 18px; }
+.big { font-size: 39px; line-height: 1.16; letter-spacing: -.025em; }
+.huge { font-size: 57px; line-height: 1.05; letter-spacing: -.04em; }
+.small { font-size: 18px; color: var(--muted); }
+.tiny { font-size: 14px; color: var(--muted); }
+.muted { color: var(--muted); }
+.signal { color: #9c6239; }
+.rule { width: 82px; height: 4px; background: var(--signal); border-radius: 5px; margin: 16px 0 25px; }
+.sources { position: absolute; left: 84px; right: 70px; bottom: 39px; font-size: 12.5px; line-height: 1.23; color: #716a75; }
+
+/* cartes */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+.grid5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.card {
+  background: rgba(255,255,255,.82);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px 22px;
+  box-shadow: 0 10px 24px rgba(78,65,88,.045);
+}
+.card.soft { background: var(--paper2); }
+.card.mint { background: #f1f7f5; border-color: #ceded8; }
+.card.sky { background: #f2f6f9; border-color: #cedbe4; }
+.card.signal { background: #fbf3ed; border-color: #e6cdbc; color: var(--ink); }
+.card h3 { font-size: 24px; }
+.card p, .card li { font-size: 20px; }
+.num { font-size: 13px; font-weight: 850; letter-spacing: .14em; color: var(--violet2); margin-bottom: 7px; }
+
+.pill { display: inline-block; margin: 3px 5px 3px 0; padding: 7px 12px; border-radius: 999px; background: var(--paper3); color: var(--violet); font-size: 15px; font-weight: 750; }
+.pill.hot { background: var(--signal2); color: #7d4f2d; }
+.callout { padding: 16px 22px; border-radius: 14px; background: var(--paper2); border: 1px solid var(--lavender2); font-size: 22px; }
+.quote-large { font-family: Georgia, "Times New Roman", serif; font-size: 34px; line-height: 1.28; max-width: 990px; }
+
+/* chaînes / flux */
+.flow { display: flex; align-items: stretch; gap: 8px; margin-top: 27px; }
+.step { flex: 1; min-width: 0; padding: 17px 12px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.86); text-align: center; }
+.step b { display: block; color: var(--violet); font-size: 20px; margin-bottom: 5px; }
+.step span { display: block; color: var(--muted); font-size: 14px; }
+.arrow { align-self: center; color: var(--lavender); font-size: 27px; }
+.axis { display: grid; grid-template-columns: 60px 1fr; gap: 17px; align-items: start; margin: 13px 0; }
+.axis .n { width: 49px; height: 49px; border-radius: 50%; display:flex; align-items:center; justify-content:center; background: var(--violet); color:white; font-weight:800; font-size:18px; }
+.axis b { color: var(--violet); }
+.axis p { margin: 2px 0; font-size: 20px; }
+
+/* mini-terminal : touche fun mais lisible */
+.terminal { background: #f0edf2; border: 1px solid #d2cbd7; border-radius: 16px; padding: 18px 21px; font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; font-size: 18px; line-height: 1.42; color: #514858; box-shadow: inset 0 1px 0 rgba(255,255,255,.8); }
+.terminal .prompt { color: #9b633c; font-weight: 700; }
+
+/* section / activity */
+section.cover { background: linear-gradient(135deg, #fbfaf8 0%, #f5f2f7 58%, #eee9f1 100%); padding-top: 91px; }
+section.cover h1 { max-width: 770px; font-size: 72px; }
+section.cover::before { width: 14px; }
+section.section { background: linear-gradient(135deg, #f2eef5, #faf9f7); display:flex; flex-direction:column; justify-content:center; }
+section.section h1 { max-width: 930px; font-size: 70px; }
+.section-number { color: var(--violet2); font-size: 16px; font-weight: 850; letter-spacing: .17em; text-transform: uppercase; margin-bottom: 10px; }
+section.activity { background: linear-gradient(135deg, #faf5ef, #f8f5f7); }
+section.activity::before { background: linear-gradient(180deg, var(--signal), #d6aa83); }
+.activity-label { display:inline-block; background: var(--signal2); color:#785038; border-radius:999px; padding:7px 12px; font-size:14px; font-weight:850; letter-spacing:.12em; text-transform:uppercase; margin-bottom:13px; }
+
+/* logo HyperION : tesseract pastel PNG, fiable en Preview Marp et export PDF */
+.logo-cover, .logo-section, .logo-end {
+  position: absolute;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+.logo-cover { right: 76px; top: 132px; width: 270px; opacity: .72; }
+.logo-section { right: 76px; bottom: 70px; width: 122px; opacity: .22; }
+.logo-end { right: 82px; top: 150px; width: 235px; opacity: .28; }
+
+/* grille "struggle over traces" */
+.trace-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:24px; }
+.trace-grid div { padding:18px 12px; text-align:center; border-radius:14px; border:1px solid var(--line); background:white; font-weight:720; color:var(--violet); font-size:19px; }
+.trace-grid div:nth-child(2n) { background:var(--paper2); }
+
+/* tableau */
+table { width:100%; border-collapse:separate; border-spacing:0; font-size:19px; border:1px solid var(--line); border-radius:13px; overflow:hidden; background:rgba(255,255,255,.8); }
+th { background: var(--paper3); color:var(--violet); font-weight:780; }
+th, td { padding:11px 13px; border-bottom:1px solid var(--line); vertical-align:top; }
+tr:last-child td { border-bottom:0; }
+
+/* écran "résultat de recherche" */
+.research { border: 1.5px solid #c8bbcF; background: linear-gradient(135deg,#f7f4f8,#fff); border-radius:20px; padding:25px 28px; position:relative; }
+.research::after { content:"HYPERION · RECHERCHE EN COURS"; position:absolute; right:20px; top:15px; font-size:11px; letter-spacing:.15em; font-weight:850; color:#9a8da3; }
+.research h3 { margin-top:16px; }
+
+/* S02 — responsabilité sociétale / audit documentaire */
+.rso7 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:20px; }
+.rso7 .q { min-height:92px; padding:15px 13px; border:1px solid var(--line); border-radius:15px; background:rgba(255,255,255,.84); font-size:16px; font-weight:720; color:var(--violet); display:flex; align-items:center; justify-content:center; text-align:center; }
+.rso7 .q:nth-child(2n) { background:#f2f6f0; }
+.washer { width:270px; height:270px; margin:0 auto; border-radius:30px; border:8px solid #b9b2c0; background:#f5f3f1; position:relative; box-shadow:0 12px 26px rgba(50,40,50,.08); }
+.washer:before { content:""; position:absolute; width:142px; height:142px; border-radius:50%; border:12px solid #9b93a4; left:52px; top:76px; background:radial-gradient(circle,#eef1ed 0 33%,#d8ddd5 34% 52%,#f8f7f4 53%); }
+.washer:after { content:"washing"; position:absolute; top:20px; left:25px; color:#6b6571; font:700 14px/1 Inter,Arial,sans-serif; letter-spacing:.13em; text-transform:uppercase; }
+.dotline { display:flex; align-items:center; gap:10px; margin:12px 0; }
+.dotline .dot { width:12px; height:12px; border-radius:50%; background:var(--signal); flex:0 0 12px; }
+.doclink { display:block; padding:12px 14px; margin:9px 0; border:1px solid var(--line); border-radius:12px; background:white; color:var(--violet); text-decoration:none; font-size:17px; }
+.doclink:hover { background:var(--paper2); }
+.badge { display:inline-block; padding:5px 9px; border-radius:8px; background:#e5eadf; color:#576552; font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.badge.orange { background:#f3ddcc; color:#8c5d38; }
+.checklist { display:grid; grid-template-columns:1fr 1fr; gap:11px 18px; margin-top:18px; }
+.checkitem { padding:12px 14px; border-radius:12px; background:white; border:1px solid var(--line); font-size:18px; }
+.checkitem b { color:var(--violet); }
+
+</style>
+</head>
+<body>
+<main id="deck" aria-live="polite">
+<div class="slide-wrap"><section class="cover" data-slide="1" aria-label="Diapositive 1 sur 36">
+
+<div class="kicker">Séance 02 · 2026–2027</div>
+
+<h1>RSO : <strong>documenter la responsabilité</strong></h1>
+<div class="subtitle">Quand une organisation affirme être responsable, qu’est-ce qui permet de la croire — ou de la contredire ?</div>
+
+<div class="rule"></div>
+<div class="meta">Responsabilité sociétale · communication · rapports · preuves · greenwashing</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-cover" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="2" aria-label="Diapositive 2 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">2</div>
+<div class="section-number">Question directrice</div>
+
+<h1>Comment passer du <strong>discours responsable</strong> à des engagements <strong>vérifiables</strong> ?</h1>
+<div class="big muted">Promesse · document · indicateur · preuve · contre-source</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="3" aria-label="Diapositive 3 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">3</div>
+<h2>Retour sur la séance 1</h2>
+<div class="flow">
+<div class="step"><b>Trace</b><span>ce qui subsiste</span></div><div class="arrow">→</div>
+<div class="step"><b>Indice</b><span>ce qui devient signifiant</span></div><div class="arrow">→</div>
+<div class="step"><b>Document</b><span>ce qui est stabilisé</span></div><div class="arrow">→</div>
+<div class="step"><b>Preuve</b><span>ce qui est étayé</span></div><div class="arrow">→</div>
+<div class="step"><b>Récit</b><span>ce qui devient intelligible</span></div>
+</div>
+
+<div class="callout" style="margin-top:28px;">Aujourd’hui, on ajoute une question très simple : <strong>qui doit répondre de quoi, devant qui, et avec quels documents ?</strong></div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="4" aria-label="Diapositive 4 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">4</div>
+<h2>Pourquoi commencer Hyperinvestigation par la RSO ?</h2>
+<div class="grid3">
+<div class="card"><div class="num">01</div><h3>Les organisations promettent</h3><p>Valeurs, engagements, raison d’être, politiques sociales ou environnementales.</p></div>
+<div class="card mint"><div class="num">02</div><h3>Elles documentent</h3><p>Rapports, chartes, indicateurs, bilans, pages web, certifications.</p></div>
+<div class="card signal"><div class="num">03</div><h3>Elles peuvent être enquêtées</h3><p>Leurs affirmations peuvent être recoupées, comparées et contestées.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:26px;">La RSO fournit une excellente école de lecture critique des <strong>documents produits par les organisations sur elles-mêmes</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="5" aria-label="Diapositive 5 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">5</div>
+<div class="section-number">1 · Retrouver les bases</div>
+
+<h1>De la RSO à l’enquête documentaire</h1>
+<div class="big muted">Responsabilité · impacts · parties prenantes · communication</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="6" aria-label="Diapositive 6 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">6</div>
+<h2>RSE ou RSO ?</h2>
+<div class="grid2">
+<div class="card soft"><h3>RSE</h3><p><strong>Responsabilité sociétale des entreprises</strong>.</p><p class="small">Le terme est fréquent dans les rapports d’entreprise et les politiques publiques.</p></div>
+<div class="card mint"><h3>RSO</h3><p><strong>Responsabilité sociétale des organisations</strong>.</p><p class="small">Le périmètre inclut entreprises, médias, associations, universités, collectivités ou institutions.</p></div>
+</div>
+
+<div class="callout" style="margin-top:24px;">Dans le cours, on conserve <strong>RSO</strong> : l’objet est la responsabilité de toute organisation qui produit des effets et doit pouvoir en rendre compte.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="7" aria-label="Diapositive 7 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">7</div>
+<h2>ISO 26000 : sept questions centrales</h2>
+<div class="rso7">
+<div class="q">Gouvernance de l’organisation</div>
+<div class="q">Droits humains</div>
+<div class="q">Relations et conditions de travail</div>
+<div class="q">Environnement</div>
+<div class="q">Loyauté des pratiques</div>
+<div class="q">Questions relatives aux consommateurs</div>
+<div class="q">Communautés et développement local</div>
+</div>
+
+<div class="small" style="margin-top:18px;">ISO 26000 est une norme de lignes directrices : elle fournit un cadre pour penser et intégrer la responsabilité sociétale, sans constituer une certification ISO.</div>
+
+<div class="small">ISO 26000:2010 — https://www.iso.org/fr/standard/42546.html · AFNOR — https://www.afnor.org/developpement-durable/demarche-iso-26000/</div>
+
+<div class="sources">Voir aussi l'ouvrage de Pomerantz & Griffey  sur les standards (MIT editions).</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="8" aria-label="Diapositive 8 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">8</div>
+<h2>Une organisation n’est jamais isolée</h2>
+<div class="grid3">
+<div class="card"><h3>Parties prenantes internes</h3><p>Salariés, direction, représentants, actionnaires, services.</p></div>
+<div class="card"><h3>Parties prenantes externes</h3><p>Clients, lecteurs, fournisseurs, associations, territoires, régulateurs.</p></div>
+<div class="card mint"><h3>Publics affectés</h3><p>Personnes ou groupes touchés par une décision, même s’ils ne disposent pas d’un pouvoir direct.</p></div>
+</div>
+
+<div class="callout" style="margin-top:25px;">Pour enquêter sur la responsabilité, il faut donc sortir du seul document de l’organisation et <strong>cartographier ceux qui peuvent confirmer, nuancer ou contester son récit</strong>.</div>
+
+<div class="sources">Pensez à lire les travaux de la revue Communication & Organisation</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="9" aria-label="Diapositive 9 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">9</div>
+<h2>La responsabilité ne se réduit pas à la conformité</h2>
+<div class="grid3">
+<div class="card"><h3>Conformité</h3><p>Respecter une règle, un seuil, une obligation ou un référentiel.</p></div>
+<div class="card"><h3>Responsabilité</h3><p>Assumer les effets d’une activité et la manière dont elle affecte autrui.</p></div>
+<div class="card mint"><h3>Rendre compte</h3><p>Expliquer ses choix et fournir des éléments qui puissent être examinés.</p></div>
+</div>
+
+<div class="small" style="margin-top:23px;">Le terme anglais <em>accountability</em> sera utilisé ponctuellement, mais la question restera concrète : <strong>qu’est-ce qui permet effectivement de demander des comptes ?</strong></div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="10" aria-label="Diapositive 10 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">10</div>
+<h2>Les organisations produisent des documents sur elles-mêmes</h2>
+<div class="grid4">
+<div class="card"><h3>Rapports</h3><p>RSE, durabilité, activité, vigilance, bilan carbone.</p></div>
+<div class="card"><h3>Chartes</h3><p>Déontologie, IA, environnement, diversité, données.</p></div>
+<div class="card"><h3>Indicateurs</h3><p>Chiffres clés, objectifs, tableaux, trajectoires.</p></div>
+<div class="card mint"><h3>Communication</h3><p>Site web, campagnes, réseaux sociaux, communiqués.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:24px;">Ces documents sont des <strong>sources</strong>. Ils ne sont jamais, à eux seuls, la preuve que l’organisation fait ce qu’elle affirme.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="11" aria-label="Diapositive 11 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">11</div>
+<h2>Le travail d’hyperinvestigation</h2>
+<div class="flow">
+<div class="step"><b>Affirmation</b><span>ce qui est dit</span></div><div class="arrow">→</div>
+<div class="step"><b>Document</b><span>où cela est dit</span></div><div class="arrow">→</div>
+<div class="step"><b>Indicateur</b><span>ce qui est mesuré</span></div><div class="arrow">→</div>
+<div class="step"><b>Méthode</b><span>comment c’est produit</span></div><div class="arrow">→</div>
+<div class="step"><b>Contre-source</b><span>ce qui résiste</span></div>
+</div>
+
+<div class="callout" style="margin-top:28px;">La bonne question n’est pas « est-ce vrai ? » au premier coup d’œil. C’est : <strong>comment cette affirmation est-elle construite et que faudrait-il vérifier ?</strong></div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="12" aria-label="Diapositive 12 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">12</div>
+<div class="section-number">2 · Cas fil rouge</div>
+
+<h1>Ouest-France : lire une organisation à travers ses documents</h1>
+<div class="big muted">Identité · chartes · rapport RSE · indicateurs · contradictions possibles</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="13" aria-label="Diapositive 13 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">13</div>
+<h2>Pourquoi Ouest-France ?</h2>
+<div class="grid2">
+<div>
+<p class="big">Un média est à la fois une <strong>organisation</strong> et un <strong>producteur d’information</strong>.</p>
+<p>Sa responsabilité concerne donc le social et l’environnemental, mais aussi la qualité, la traçabilité et l’indépendance de l’information.</p>
+</div>
+<div class="card mint">
+<h3>Un cas pédagogique riche</h3>
+<p>Le même acteur publie un rapport RSE, des chartes journalistiques, des indicateurs et une présentation de sa gouvernance.</p>
+</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="14" aria-label="Diapositive 14 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">14</div>
+<h2>Le corpus Ouest-France à ouvrir</h2>
+<p><a class="doclink" href="https://www.ouest-france.fr/qui-sommes-nous/">① <strong>Qui sommes-nous ?</strong> — identité, gouvernance, chiffres clés, accès au rapport RSE 2024</a>
+<a class="doclink" href="https://media.ouest-france.fr/v1/documents/cfcb15d650ab2d44ffe544497fe211ba-rse2024-v96.pdf">② <strong>Rapport RSE 2025</strong> — document central de la séance</a>
+<a class="doclink" href="https://www.ouest-france.fr/medias/une-charte-de-la-tracabilite-de-linformation-4d351862-f0cc-11ee-b9d6-e26e1f1545b0">③ <strong>Charte de la traçabilité de l’information</strong> — 2024</a>
+<a class="doclink" href="https://www.ouest-france.fr/environnement/ouest-france-se-dote-d-une-charte-pour-un-journalisme-au-niveau-de-l-enjeu-ecologique-ef705d7e-9bcf-11ed-ad46-93836c73937c">④ <strong>Charte pour un journalisme au niveau de l’enjeu écologique</strong> — 2023</a></p>
+<div class="sources">La page institutionnelle Ouest-France présente explicitement le rapport RSE 2024 et ces chartes : https://www.ouest-france.fr/qui-sommes-nous/</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="15" aria-label="Diapositive 15 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">15</div>
+<h2>Un rapport RSE est aussi une architecture de l’information</h2>
+<div class="grid2">
+<div class="card"><h3>Ce qui est hiérarchisé</h3><p>Quels thèmes arrivent d’abord ? Quels sujets occupent le plus d’espace ?</p></div>
+<div class="card mint"><h3>Ce qui est mis en scène</h3><p>Quels chiffres deviennent des « chiffres clés » ? Quels témoignages incarnent les engagements ?</p></div>
+<div class="card"><h3>Ce qui est relié</h3><p>Y a-t-il des sources, annexes, méthodes, renvois, séries temporelles ?</p></div>
+<div class="card signal"><h3>Ce qui reste hors champ</h3><p>Quelles difficultés, controverses ou limites ne sont pas documentées ?</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="16" aria-label="Diapositive 16 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">16</div>
+<h2>Première lecture : ne pas chercher immédiatement « les fautes »</h2>
+<div class="checklist">
+<div class="checkitem"><b>1.</b> Comprendre le périmètre du rapport.</div>
+<div class="checkitem"><b>2.</b> Identifier les grands engagements.</div>
+<div class="checkitem"><b>3.</b> Repérer les indicateurs et leurs unités.</div>
+<div class="checkitem"><b>4.</b> Chercher les méthodes de calcul.</div>
+<div class="checkitem"><b>5.</b> Noter les comparaisons dans le temps.</div>
+<div class="checkitem"><b>6.</b> Repérer les acteurs cités ou absents.</div>
+</div>
+
+<div class="callout" style="margin-top:23px;">On commence par <strong>décrire correctement le document</strong>. La critique vient ensuite.</div>
+
+
+</section></div><div class="slide-wrap"><section class="activity" data-slide="17" aria-label="Diapositive 17 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">17</div>
+<div class="activity-label">Atelier · 20 minutes</div>
+
+<h1>Disséquer une double page du rapport RSE</h1>
+<div class="grid2">
+<div class="card">
+<h3>Relevez</h3>
+<ul><li>une promesse ou un engagement ;</li><li>un chiffre ;</li><li>une source ou méthode ;</li><li>un élément graphique ;</li><li>une formulation qui mérite vérification.</li></ul>
+</div>
+<div class="card mint">
+<h3>À la fin</h3>
+<p>Formulez une seule question d’enquête qui pourrait être traitée à partir d’une <strong>contre-source externe</strong>.</p>
+</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="18" aria-label="Diapositive 18 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">18</div>
+<h2>Un chiffre n’est pas encore une preuve</h2>
+<div class="grid3">
+<div class="card"><h3>Définition</h3><p>Que mesure exactement l’indicateur ?</p></div>
+<div class="card"><h3>Périmètre</h3><p>Quelle entité, quelle période, quels sites, quelles populations ?</p></div>
+<div class="card"><h3>Méthode</h3><p>Comment le chiffre est-il calculé ? Par qui ?</p></div>
+<div class="card"><h3>Comparaison</h3><p>Existe-t-il une série dans le temps ou un point de référence ?</p></div>
+<div class="card"><h3>Source</h3><p>Interne, auditée, indépendante, publique ?</p></div>
+<div class="card mint"><h3>Interprétation</h3><p>Le chiffre soutient-il réellement la conclusion qui l’accompagne ?</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="19" aria-label="Diapositive 19 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">19</div>
+<h2>Le rapport dit aussi quelque chose par ses absences</h2>
+<div class="grid2">
+<div class="card signal"><h3>Absence documentaire</h3><p>Un sujet important est mentionné sans données, méthode ou série temporelle.</p></div>
+<div class="card"><h3>Absence de contrepoint</h3><p>Seule la voix de l’organisation est présente sur un enjeu controversé.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:30px;">Une absence n’est pas automatiquement une dissimulation. Elle devient un <strong>indice</strong> lorsqu’on peut montrer qu’elle empêche de vérifier une affirmation importante.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="20" aria-label="Diapositive 20 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">20</div>
+<h2>Une grille très simple : promesse → preuve → contrepoint</h2>
+<table>
+<thead><tr><th>Ce que vous relevez</th><th>Question documentaire</th><th>Question d’enquête</th></tr></thead>
+<tbody>
+<tr><td><strong>Promesse</strong></td><td>Quelle formulation exacte ?</td><td>Est-elle précise et vérifiable ?</td></tr>
+<tr><td><strong>Indicateur</strong></td><td>Quel chiffre, quelle période ?</td><td>La méthode est-elle explicitée ?</td></tr>
+<tr><td><strong>Preuve</strong></td><td>Quelle source soutient l’affirmation ?</td><td>Peut-elle être contrôlée ?</td></tr>
+<tr><td><strong>Contrepoint</strong></td><td>Quelle source externe consulter ?</td><td>Que devient l’affirmation après recoupement ?</td></tr>
+</tbody>
+</table>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="21" aria-label="Diapositive 21 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">21</div>
+<div class="section-number">3 · Quand la communication prend le dessus</div>
+
+<h1>Greenwashing, ethics-washing et autres machines à laver</h1>
+<div class="big muted">Le problème n’est pas le mot « vert » : c’est l’écart entre l’allégation et ce qui peut être établi.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="22" aria-label="Diapositive 22 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">22</div>
+<h2>La machine à laver des bonnes intentions</h2>
+<div class="grid2">
+<div class="washer"></div>
+<div>
+<div class="dotline"><span class="dot"></span><span><strong>Greenwashing</strong> — embellissement environnemental</span></div>
+<div class="dotline"><span class="dot"></span><span><strong>Ethics-washing</strong> — discours éthique sans dispositifs solides</span></div>
+<div class="dotline"><span class="dot"></span><span><strong>Purpose-washing</strong> — raison d’être surtout communicationnelle</span></div>
+<div class="dotline"><span class="dot"></span><span><strong>Data-washing</strong> — chiffres impressionnants mais peu auditables</span></div>
+</div>
+</div>
+
+<div class="small" style="margin-top:15px;">Ces catégories sont des <strong>hypothèses critiques</strong>, pas des verdicts automatiques. Il faut documenter l’écart.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="23" aria-label="Diapositive 23 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">23</div>
+<h2>Greenwashing : partir d’une définition opératoire</h2>
+<div class="quote-large">Une allégation environnementale devient problématique lorsqu’elle est <strong>infondée, trompeuse, disproportionnée, trop générale ou insuffisamment justifiée</strong>.</div>
+
+<div class="grid3" style="margin-top:26px;">
+<div class="card"><h3>Trop global</h3><p>« éco-responsable », « bon pour la planète »… sans objet précis.</p></div>
+<div class="card"><h3>Non justifié</h3><p>Un bénéfice annoncé sans preuve disponible.</p></div>
+<div class="card mint"><h3>Ambigu</h3><p>Un vocabulaire qui suggère une performance plus forte que la réalité documentée.</p></div>
+</div>
+
+<div class="sources">DGCCRF, fiche et enquête sur les allégations vertes, 2025 — https://www.economie.gouv.fr/dgccrf/laction-de-la-dgccrf/les-enquetes-et-les-controles/produits-non-alimentaires-et-services</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="24" aria-label="Diapositive 24 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">24</div>
+<h2>Un terrain massif : les contrôles de la DGCCRF</h2>
+<div class="grid3">
+<div class="card mint"><div class="huge">1 317</div><p>établissements contrôlés lors de l’enquête 2023 sur les allégations environnementales.</p></div>
+<div class="card signal"><div class="huge">1 / 4</div><p>présentait des anomalies.</p></div>
+<div class="card"><div class="big">181 · 198 · 25</div><p>avertissements · injonctions · procès-verbaux.</p></div>
+</div>
+
+<div class="callout" style="margin-top:28px;">Le greenwashing n’est donc pas seulement un thème de communication : c’est aussi un <strong>objet d’enquête, de preuve et de régulation</strong>.</div>
+
+<div class="sources">DGCCRF, 7 octobre 2025 — https://www.economie.gouv.fr/dgccrf/laction-de-la-dgccrf/les-enquetes-et-les-controles/produits-non-alimentaires-et-services</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="25" aria-label="Diapositive 25 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">25</div>
+<h2>Document exemplaire : « GreenFakes » de Mediapart</h2>
+<div class="grid2">
+<div>
+<span class="badge orange">Enquête journalistique</span>
+<h3 style="margin-top:15px;">Des rapports environnementaux comme objets de contre-enquête</h3>
+<p>La série <em>GreenFakes</em> s’appuie sur des documents confidentiels pour examiner la manière dont de grands projets industriels obtiennent des évaluations environnementales présentées comme rassurantes.</p>
+</div>
+<div class="card signal">
+<h3>À observer</h3>
+<ul><li>qui commande l’expertise ;</li><li>qui produit le rapport ;</li><li>quelles dépendances existent ;</li><li>quelles sources permettent la contradiction.</li></ul>
+</div>
+</div>
+
+<div class="sources">Mediapart, série « GreenFakes », février 2025 — https://www.mediapart.fr/journal/dossier/ecologie/greenfakes-les-permis-de-detruire-des-multinationales</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="26" aria-label="Diapositive 26 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">26</div>
+<h2>Document exemplaire : TotalEnergies au Mozambique</h2>
+<div class="grid2">
+<div class="card">
+<h3>Le récit institutionnel</h3>
+<p>Un grand projet énergétique peut être accompagné de documents de sûreté, d’impact, de responsabilité et de communication.</p>
+</div>
+<div class="card signal">
+<h3>La contre-enquête</h3>
+<p><em>Le Monde</em> et SourceMaterial ont croisé témoignages, rapports inédits et enquête vidéo sur les violences commises autour du projet Mozambique LNG.</p>
+</div>
+</div>
+
+<div class="callout" style="margin-top:24px;">Une enquête de RSO peut donc devenir une enquête sur les <strong>droits humains, la chaîne de responsabilité et les documents internes</strong>.</div>
+
+<div class="sources">Le Monde / SourceMaterial, 28 janvier 2025 — https://www.lemonde.fr/afrique/video/2025/01/28/comment-des-soldats-payes-par-totalenergies-ont-sequestre-des-civils-au-mozambique_6520247_3212.html</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="27" aria-label="Diapositive 27 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">27</div>
+<h2>Les ONG produisent aussi des contre-documents</h2>
+<div class="grid3">
+<div class="card mint"><h3>ClientEarth</h3><p>Mobilise le droit et les documents d’entreprise pour contester des communications climatiques.</p></div>
+<div class="card"><h3>Reclaim Finance</h3><p>Produit des bases et méthodologies sur le financement bancaire des énergies fossiles.</p></div>
+<div class="card"><h3>Amis de la Terre / Notre Affaire à Tous</h3><p>Développent recours, analyses et documentation sur la responsabilité climatique.</p></div>
+</div>
+
+<div class="sources">ClientEarth 2026 — https://www.clientearth.org/latest/press-office/documents/lettre-a-lamf-relative-a-la-possible-diffusion-d-informations-trompeuses-par-la-societe-totalenergies-se-en-lien-avec-le-climat-et-les-energies-fossiles/ · Reclaim Finance — https://reclaimfinance.org/site/2026/06/09/edition-2026-du-rapport-banking-on-climate-chaos/</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="28" aria-label="Diapositive 28 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">28</div>
+<h2>Ce qui change lorsqu’une ONG publie sa méthode</h2>
+<div class="grid2">
+<div class="card"><h3>Résultat</h3><p>Un classement, un chiffre global, une liste d’acteurs ou une accusation.</p></div>
+<div class="card mint"><h3>Méthode</h3><p>Définition du corpus, règles de calcul, sources, exclusions, période, limites.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:30px;">Pour Hyperinvestigation, une conclusion devient beaucoup plus intéressante lorsque l’on peut <strong>inspecter la manière dont elle a été produite</strong>.</div>
+
+<div class="sources">Exemple : méthodologie Banking on Climate Chaos — https://reclaimfinance.org/site/2025/06/13/financement-aux-energies-fossiles-la-methodologie-du-rapport-banking-on-climate-chaos/</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="29" aria-label="Diapositive 29 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">29</div>
+<div class="section-number">4 · Faire l’enquête</div>
+
+<h1>Du rapport de communication à la mini-enquête</h1>
+<div class="big muted">Lire · extraire · recouper · qualifier</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="30" aria-label="Diapositive 30 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">30</div>
+<h2>Le workflow RSO du cours</h2>
+<div class="flow">
+<div class="step"><b>1 · Cadrer</b><span>organisation + enjeu</span></div><div class="arrow">→</div>
+<div class="step"><b>2 · Extraire</b><span>promesses + chiffres</span></div><div class="arrow">→</div>
+<div class="step"><b>3 · Documenter</b><span>méthodes + sources</span></div><div class="arrow">→</div>
+<div class="step"><b>4 · Recouper</b><span>contre-documents</span></div><div class="arrow">→</div>
+<div class="step"><b>5 · Qualifier</b><span>ce que l’on peut conclure</span></div>
+</div>
+
+<div class="callout" style="margin-top:26px;">le but est  construire une <strong>méthode transférable</strong> à n’importe quelle organisation.</div>
+
+
+</section></div><div class="slide-wrap"><section class="activity" data-slide="31" aria-label="Diapositive 31 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">31</div>
+<div class="activity-label">Atelier · 30 minutes</div>
+
+<h1>Mini-audit documentaire d’un engagement Ouest-France</h1>
+<div class="grid2">
+<div class="card">
+<h3>Choisissez un axe</h3>
+<p>Environnement · conditions de travail · diversité · territoire · déontologie · traçabilité de l’information · accessibilité…</p>
+</div>
+<div class="card mint">
+<h3>Construisez 4 cases</h3>
+<p><strong>Promesse</strong> → <strong>document interne</strong> → <strong>indicateur</strong> → <strong>contre-source à rechercher</strong></p>
+</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="32" aria-label="Diapositive 32 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">32</div>
+<h2>Quelles contre-sources ?</h2>
+<div class="grid4">
+<div class="card"><h3>Régulateur</h3><p>Décisions, contrôles, données officielles.</p></div>
+<div class="card"><h3>Presse</h3><p>Enquêtes, controverses, faits documentés.</p></div>
+<div class="card"><h3>ONG</h3><p>Rapports, méthodologies, bases de données.</p></div>
+<div class="card mint"><h3>Parties prenantes</h3><p>Syndicats, usagers, associations, territoires.</p></div>
+</div>
+
+<div class="small" style="margin-top:22px;">Une bonne contre-source n’est pas forcément « hostile » : elle est <strong>indépendante du document que l’on cherche à vérifier</strong> et pertinente pour la question.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="33" aria-label="Diapositive 33 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">33</div>
+<h2>Qualifier sans surinterpréter</h2>
+<div class="grid4">
+<div class="card"><div class="num">NIVEAU 1</div><h3>Déclaré</h3><p>L’organisation l’affirme.</p></div>
+<div class="card"><div class="num">NIVEAU 2</div><h3>Documenté</h3><p>Des éléments internes sont fournis.</p></div>
+<div class="card mint"><div class="num">NIVEAU 3</div><h3>Recoupé</h3><p>Une source externe converge.</p></div>
+<div class="card signal"><div class="num">NIVEAU 4</div><h3>Contesté</h3><p>Des éléments sérieux conduisent à nuancer ou contredire.</p></div>
+</div>
+
+<div class="callout" style="margin-top:24px;">Le but est de savoir dire <strong>ce que les documents permettent de conclure — et ce qu’ils ne permettent pas de conclure</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="34" aria-label="Diapositive 34 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">34</div>
+<h2>Sites à garder dans vos favoris</h2>
+<div class="grid3">
+<div class="card"><span class="badge">Régulation</span><h3>DGCCRF</h3><p>Enquêtes, contrôles, allégations environnementales.</p><p class="tiny">economie.gouv.fr/dgccrf</p></div>
+<div class="card mint"><span class="badge">ONG</span><h3>ClientEarth</h3><p>Droit, responsabilité climatique, greenwashing.</p><p class="tiny">clientearth.org</p></div>
+<div class="card"><span class="badge">ONG</span><h3>Reclaim Finance</h3><p>Finance, climat, bases de données et méthodologies.</p><p class="tiny">reclaimfinance.org</p></div>
+<div class="card"><span class="badge orange">Enquête</span><h3>Mediapart</h3><p>GreenFakes, TotalEnergies, documents confidentiels.</p><p class="tiny">mediapart.fr</p></div>
+<div class="card"><span class="badge orange">Enquête</span><h3>Le Monde</h3><p>Enquêtes vidéo, données, multinationales.</p><p class="tiny">lemonde.fr/enquetes-video</p></div>
+<div class="card mint"><span class="badge">Méthode</span><h3>ISO / AFNOR</h3><p>Cadres de la responsabilité sociétale.</p><p class="tiny">iso.org · afnor.org</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="35" aria-label="Diapositive 35 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">35</div>
+<h2>Ce qu’il faut retenir</h2>
+<div class="grid4">
+<div class="card"><div class="num">01</div><h3>RSO</h3><p>Étudier les effets d’une organisation sur la société et l’environnement.</p></div>
+<div class="card"><div class="num">02</div><h3>Document</h3><p>Un rapport organise un récit, des catégories et des preuves.</p></div>
+<div class="card mint"><div class="num">03</div><h3>Enquête</h3><p>Comparer les affirmations à des sources externes.</p></div>
+<div class="card signal"><div class="num">04</div><h3>Prudence</h3><p>Qualifier les écarts sans transformer le soupçon en conclusion.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:28px;">La responsabilité commence à devenir "enquêtable" lorsque la communication laisse derrière elle des <strong>documents, des indicateurs et des traces</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="36" aria-label="Diapositive 36 sur 36">
+<header>Hyperinvestigation · S02</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">36</div>
+<div class="section-number">Séance 03</div>
+
+<h1>Hyperlittératie, architecture de l’information et <strong>premiers algorithmes</strong></h1>
+<div class="big muted">Ce que moteurs, classements, métadonnées et systèmes de recommandation font à la visibilité de l’information.</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-section" alt="" /></p>
+
+</section></div>
+</main>
+<div class="nav" aria-label="Navigation des diapositives">
+<button type="button" id="prev" aria-label="Diapositive précédente">‹</button>
+<div class="count" id="count"></div>
+<button type="button" id="next" aria-label="Diapositive suivante">›</button>
+<button type="button" id="fullscreen" class="fs" aria-label="Plein écran">⛶</button>
+</div>
+<div class="help">← → naviguer · F plein écran · H aide · Home/End début/fin</div>
+<script>
+(() => {
+ const wraps=[...document.querySelectorAll('.slide-wrap')];
+ let index=0;
+ const clamp=i=>Math.max(0,Math.min(wraps.length-1,i));
+ function fromHash(){const n=parseInt(location.hash.slice(1),10);if(Number.isFinite(n)) index=clamp(n-1)}
+ function scale(){const s=Math.min(innerWidth/1280,innerHeight/720);for(const w of wraps) w.style.transform=`translate(-50%,-50%) scale(${s})`}
+ function show(i,push=true){index=clamp(i);wraps.forEach((w,j)=>w.classList.toggle('active',j===index));document.getElementById('count').textContent=`${index+1} / ${wraps.length}`;if(push) history.replaceState(null,'',`#${index+1}`);document.title=`${wraps[index].querySelector('h1,h2')?.textContent?.trim() || 'RSO : documenter la responsabilité'} · RSO : documenter la responsabilité`}
+ function next(){show(index+1)} function prev(){show(index-1)}
+ addEventListener('resize',scale);addEventListener('hashchange',()=>{fromHash();show(index,false)});
+ document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;
+ document.getElementById('fullscreen').onclick=()=>{if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+ addEventListener('keydown',e=>{
+   if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+   else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();prev()}
+   else if(e.key==='Home'){e.preventDefault();show(0)}
+   else if(e.key==='End'){e.preventDefault();show(wraps.length-1)}
+   else if(e.key.toLowerCase()==='f'){document.getElementById('fullscreen').click()}
+   else if(e.key.toLowerCase()==='h'){document.body.classList.toggle('show-help')}
+ });
+ let sx=null;addEventListener('touchstart',e=>sx=e.changedTouches[0].clientX,{passive:true});addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60) dx<0?next():prev();sx=null},{passive:true});
+ fromHash();scale();show(index,false);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Séance 4 — De Ginzburg à la culture de l’enquête et au paradigme inquisitorial">
+<title>Traces, indices et enquête : le paradigme indiciaire</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eee;font-family:Inter,Aptos,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}
+#deck{position:fixed;inset:0;overflow:hidden;background:#e9e7ea}
+.slide-wrap{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;display:none}
+.slide-wrap.active{display:block}
+.slide-wrap>section{position:absolute!important;inset:0!important;margin:0!important}
+.page-counter{position:absolute;right:28px;bottom:17px;color:var(--violet2,#7c7186);font-size:14px;z-index:20}
+.nav{position:fixed;z-index:1000;right:18px;bottom:18px;display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:999px;background:rgba(35,31,40,.72);backdrop-filter:blur(8px);opacity:.22;transition:opacity .2s}
+.nav:hover,.nav:focus-within{opacity:.95}
+.nav button{appearance:none;border:0;border-radius:999px;background:rgba(255,255,255,.14);color:white;width:34px;height:34px;font-size:18px;cursor:pointer}
+.nav button:hover{background:rgba(255,255,255,.25)}
+.nav .count{color:white;font-size:13px;min-width:58px;text-align:center;font-variant-numeric:tabular-nums}
+.nav .fs{font-size:15px}
+.help{position:fixed;left:18px;bottom:18px;z-index:1000;color:white;background:rgba(35,31,40,.65);border-radius:999px;padding:8px 12px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none}
+body.show-help .help{opacity:.95}
+@media print{html,body{overflow:visible;background:white}#deck{position:static;background:white}.slide-wrap{position:relative;display:block!important;left:auto;top:auto;transform:none!important;page-break-after:always}.nav,.help{display:none}}
+
+/* =========================================================
+   HYPERION / S04 — ARCHIVE LAVENDER + OCRE
+   Fichier autonome pour VS Code / Marp Preview / export PDF.
+   ========================================================= */
+:root {
+  --paper: #fcfaf5;
+  --paper2: #f4f0ea;
+  --paper3: #ebe5ee;
+  --lavender: #b5a8bc;
+  --lavender2: #d9d0dc;
+  --violet: #66576f;
+  --violet2: #84738d;
+  --ink: #302d30;
+  --muted: #696167;
+  --line: #ddd4d7;
+  --signal: #c18151;
+  --signal2: #efd9c7;
+  --sage: #dfe8df;
+  --blue: #e1e8ee;
+  --white: #ffffff;
+  --red: #a85d56;
+}
+section {
+  width: 1280px; height: 720px;
+  padding: 64px 76px 54px 84px;
+  background:
+    radial-gradient(circle at 91% 8%, rgba(181,168,188,.16), transparent 24%),
+    linear-gradient(135deg, var(--paper) 0%, #faf8f5 100%);
+  color: var(--ink);
+  font-family: Inter, Aptos, "Segoe UI", Arial, sans-serif;
+  font-size: 27px; line-height: 1.30; letter-spacing: -.01em;
+  position: relative;
+}
+section::before {
+  content: ""; position: absolute; left: 0; top: 0;
+  width: 10px; height: 100%;
+  background: linear-gradient(180deg, var(--violet), var(--lavender), var(--signal));
+}
+section h1, section h2, section h3 { color: var(--violet); font-weight: 680; letter-spacing: -.03em; margin-top: 0; }
+section h1 { font-size: 66px; line-height: 1.02; margin-bottom: 22px; }
+section h2 { font-size: 43px; line-height: 1.08; margin-bottom: 23px; }
+section h3 { font-size: 27px; margin-bottom: 9px; }
+section p { margin: .35em 0 .68em; }
+section strong { color: var(--violet); font-weight: 760; }
+section em { color: var(--muted); }
+section ul { margin-top: .3em; }
+section li { margin: .22em 0; }
+section li::marker { color: var(--signal); }
+section blockquote {
+  margin: 22px 0; padding: 17px 23px 17px 27px;
+  border-left: 5px solid var(--violet2); background: rgba(244,240,234,.82);
+  border-radius: 0 14px 14px 0; font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px; line-height: 1.28;
+}
+header, footer {
+  position: absolute; left: 84px; right: 58px; color: #7a7278;
+  font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+}
+header { top: 23px; } footer { bottom: 18px; }
+section::after { right: 28px; bottom: 17px; color: var(--violet2); font-size: 14px; }
+.kicker { color: var(--violet2); font-size: 16px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 13px; }
+.subtitle { max-width: 810px; color: var(--muted); font-size: 29px; line-height: 1.26; }
+.meta { margin-top: 30px; color: var(--muted); font-size: 18px; }
+.big { font-size: 39px; line-height: 1.16; letter-spacing: -.025em; }
+.huge { font-size: 57px; line-height: 1.05; letter-spacing: -.04em; }
+.small { font-size: 18px; color: var(--muted); }
+.tiny { font-size: 14px; color: var(--muted); }
+.muted { color: var(--muted); }
+.signal { color: #98603a; }
+.rule { width: 82px; height: 4px; background: var(--signal); border-radius: 5px; margin: 16px 0 25px; }
+.sources { position: absolute; left: 84px; right: 70px; bottom: 39px; font-size: 11.5px; line-height: 1.23; color: #716a70; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; }
+.card { background:rgba(255,255,255,.84); border:1px solid var(--line); border-radius:18px; padding:20px 22px; box-shadow:0 10px 24px rgba(78,65,88,.04); }
+.card.soft { background:var(--paper2); }
+.card.lav { background:#f3eff5; border-color:#d8cedd; }
+.card.sage { background:#f1f5f0; border-color:#d2dfd2; }
+.card.blue { background:#f1f5f8; border-color:#d2dde5; }
+.card.signal { background:#fbf1e9; border-color:#e8cbb7; color:var(--ink); }
+.card h3 { font-size:24px; }
+.card p, .card li { font-size:20px; }
+.num { font-size:13px; font-weight:850; letter-spacing:.14em; color:var(--violet2); margin-bottom:7px; }
+.pill { display:inline-block; margin:3px 5px 3px 0; padding:7px 12px; border-radius:999px; background:var(--paper3); color:var(--violet); font-size:15px; font-weight:750; }
+.pill.hot { background:var(--signal2); color:#7d4f2d; }
+.callout { padding:16px 22px; border-radius:14px; background:var(--paper2); border:1px solid var(--lavender2); font-size:22px; }
+.quote-large { font-family:Georgia,"Times New Roman",serif; font-size:34px; line-height:1.28; max-width:990px; }
+.flow { display:flex; align-items:stretch; gap:8px; margin-top:27px; }
+.step { flex:1; min-width:0; padding:17px 12px; border-radius:14px; border:1px solid var(--line); background:rgba(255,255,255,.88); text-align:center; }
+.step b { display:block; color:var(--violet); font-size:20px; margin-bottom:5px; }
+.step span { display:block; color:var(--muted); font-size:14px; }
+.arrow { align-self:center; color:var(--lavender); font-size:27px; }
+.axis { display:grid; grid-template-columns:60px 1fr; gap:17px; align-items:start; margin:13px 0; }
+.axis .n { width:49px; height:49px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--violet); color:white; font-weight:800; font-size:18px; }
+.axis b { color:var(--violet); }
+.axis p { margin:2px 0; font-size:20px; }
+section.cover { background:linear-gradient(135deg,#fcfaf5 0%,#f5f0f3 58%,#eee6e8 100%); padding-top:91px; }
+section.cover h1 { max-width:780px; font-size:72px; }
+section.cover::before { width:14px; }
+section.section { background:linear-gradient(135deg,#f1ebf2,#fbf9f5); display:flex; flex-direction:column; justify-content:center; }
+section.section h1 { max-width:940px; font-size:70px; }
+.section-number { color:var(--violet2); font-size:16px; font-weight:850; letter-spacing:.17em; text-transform:uppercase; margin-bottom:10px; }
+section.activity { background:linear-gradient(135deg,#fbf3ea,#f7f3f4); }
+section.activity::before { background:linear-gradient(180deg,var(--signal),#d6aa83); }
+.activity-label { display:inline-block; background:var(--signal2); color:#785038; border-radius:999px; padding:7px 12px; font-size:14px; font-weight:850; letter-spacing:.12em; text-transform:uppercase; margin-bottom:13px; }
+.logo-cover,.logo-section,.logo-end { position:absolute; object-fit:contain; pointer-events:none; user-select:none; }
+.logo-cover { right:76px; top:132px; width:270px; opacity:.72; }
+.logo-section { right:76px; bottom:70px; width:122px; opacity:.20; }
+.logo-end { right:82px; top:150px; width:235px; opacity:.28; }
+/* S04 */
+.triptych { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:24px; }
+.triptych .item { background:#fff; border:1px solid var(--line); border-radius:18px; padding:22px; min-height:200px; }
+.triptych .item b { color:var(--violet); font-size:25px; display:block; margin-bottom:8px; }
+.triptych .item span { color:var(--muted); font-size:18px; }
+.clue { display:grid; grid-template-columns:64px 1fr; gap:16px; align-items:center; background:#fff; border:1px solid var(--line); border-radius:15px; padding:14px 17px; margin:9px 0; }
+.clue .dot { width:50px; height:50px; border-radius:50%; background:var(--paper3); border:5px solid #fff; box-shadow:0 0 0 1px var(--lavender); display:flex; align-items:center; justify-content:center; color:var(--violet); font-weight:900; }
+.clue b { color:var(--violet); }
+.clue span { color:var(--muted); font-size:18px; }
+.casefile { background:#fffdf8; border:1px solid #dbcdbf; border-radius:18px; padding:22px 25px; box-shadow:0 8px 18px rgba(100,70,40,.04); position:relative; }
+.casefile::before { content:"DOSSIER"; position:absolute; right:18px; top:14px; font-size:11px; font-weight:900; letter-spacing:.18em; color:#a98a71; }
+.casefile h3 { margin-top:12px; }
+.matrix { width:100%; border-collapse:separate; border-spacing:0; font-size:18px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#fff; }
+.matrix th { background:#eee8f0; color:var(--violet); font-weight:780; }
+.matrix th,.matrix td { padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+.matrix tr:last-child td { border-bottom:0; }
+.confidence { display:flex; gap:10px; margin-top:20px; }
+.confidence div { flex:1; border-radius:14px; padding:17px 14px; text-align:center; border:1px solid var(--line); background:#fff; }
+.confidence b { display:block; color:var(--violet); font-size:21px; }
+.confidence span { font-size:14px; color:var(--muted); }
+.infer { display:grid; grid-template-columns:1fr 70px 1fr; gap:12px; align-items:center; margin-top:20px; }
+.infer .box { background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px; min-height:120px; }
+.infer .box b { color:var(--violet); display:block; margin-bottom:8px; }
+.infer .box span { font-size:18px; color:var(--muted); }
+.infer .arr { text-align:center; color:var(--signal); font-size:38px; }
+
+</style>
+</head>
+<body>
+<main id="deck" aria-live="polite">
+<div class="slide-wrap"><section class="cover" data-slide="1" aria-label="Diapositive 1 sur 50">
+
+<div class="kicker">Séance 04 · 2026–2027</div>
+
+<h1>Traces, indices et <strong>enquête</strong></h1>
+<div class="subtitle">Le paradigme indiciaire, la culture de l’enquête et le versant inquisitorial de la production du vrai.</div>
+
+<div class="rule"></div>
+<div class="meta">Olivier Le Deuff · BUT Information-Communication · parcours INO · Chaire HyperION</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-cover" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="2" aria-label="Diapositive 2 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">2</div>
+<div class="section-number">Question directrice</div>
+
+<h1>Comment une <strong>trace</strong> devient-elle un indice — puis éventuellement une preuve ?</h1>
+<div class="big muted">Et à quelles conditions peut-on raconter ce que l’on croit avoir compris ?</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="3" aria-label="Diapositive 3 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">3</div>
+<h2>Où en sommes-nous ?</h2>
+<div class="flow">
+<div class="step"><b>S01</b><span>Hyperinvestigation</span></div><div class="arrow">→</div>
+<div class="step"><b>S02</b><span>Documenter la responsabilité</span></div><div class="arrow">→</div>
+<div class="step"><b>S03</b><span>Catégories, architectures, algorithmes</span></div><div class="arrow">→</div>
+<div class="step"><b>S04</b><span>Indices, hypothèses, preuve</span></div>
+</div>
+
+<div class="callout" style="margin-top:28px">Après avoir appris à <strong>déplier un système</strong>, nous allons apprendre à <strong>raisonner à partir de ce qu’il laisse voir</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="4" aria-label="Diapositive 4 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">4</div>
+<h2>Objectifs de la séance</h2>
+<p>À la fin des deux heures, vous devrez pouvoir :</p>
+<ul>
+<li>distinguer <strong>trace, indice, hypothèse et preuve</strong> ;</li>
+<li>expliquer le <strong>paradigme indiciaire</strong> de Carlo Ginzburg ;</li>
+<li>utiliser l’<strong>abduction</strong> sans la confondre avec une démonstration ;</li>
+<li>comprendre ce que Dominique Kalifa appelle une <strong>culture de l’enquête</strong> ;</li>
+<li>saisir le versant <strong>inquisitorial</strong> de l’enquête comme dispositif de production du vrai ;</li>
+<li>qualifier le <strong>niveau de confiance</strong> d’une inférence.</li>
+</ul>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="5" aria-label="Diapositive 5 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">5</div>
+<h2>Le fil de la séance</h2>
+<div class="grid4">
+<div class="card"><div class="num">01</div><h3>Trace</h3><p>Ce qui subsiste.</p></div>
+<div class="card lav"><div class="num">02</div><h3>Indice</h3><p>Ce qui devient pertinent.</p></div>
+<div class="card signal"><div class="num">03</div><h3>Enquête</h3><p>Ce qui relie.</p></div>
+<div class="card sage"><div class="num">04</div><h3>Preuve</h3><p>Ce qui résiste à la mise à l’épreuve.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="6" aria-label="Diapositive 6 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">6</div>
+<div class="section-number">1 · Première distinction</div>
+
+<h1>Une trace n’est pas encore un <strong>indice</strong></h1>
+<p><img src="../assets/tesseract-couleurs.png" class="logo-section" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="7" aria-label="Diapositive 7 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">7</div>
+<h2>Trace, indice, preuve : trois statuts différents</h2>
+<div class="triptych">
+<div class="item"><b>Trace</b><span>Un reste, une inscription, un signal, une empreinte, une donnée produite par une action ou un dispositif.</span></div>
+<div class="item"><b>Indice</b><span>Une trace <strong>sélectionnée et interprétée</strong> parce qu’elle devient pertinente pour une question.</span></div>
+<div class="item"><b>Preuve</b><span>Un assemblage argumenté qui soutient une proposition face à des hypothèses concurrentes.</span></div>
+</div>
+
+<div class="callout" style="margin-top:22px">Le changement de statut dépend de la <strong>question d’enquête</strong>, du corpus, du contexte et du recoupement.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="8" aria-label="Diapositive 8 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">8</div>
+<h2>La même trace peut ne rien « dire »… puis devenir décisive</h2>
+<div class="clue"><div class="dot">1</div><div><b>Une heure dans les métadonnées</b><br><span>Simple information technique dans un fichier.</span></div></div>
+<div class="clue"><div class="dot">2</div><div><b>Une incohérence temporelle</b><br><span>Elle devient un indice si elle contredit le récit annoncé.</span></div></div>
+<div class="clue"><div class="dot">3</div><div><b>Un recoupement indépendant</b><br><span>Elle gagne du poids si une seconde source situe le même événement au même moment.</span></div></div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="9" aria-label="Diapositive 9 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">9</div>
+<h2>L’indice est une <strong>relation</strong></h2>
+<div class="big">Il n’existe pas « dans » le document comme une étiquette cachée.</div>
+
+<div class="grid2" style="margin-top:30px">
+<div class="card"><h3>Il faut une question</h3><p>Qu’est-ce que je cherche à établir ?</p></div>
+<div class="card signal"><h3>Il faut une comparaison</h3><p>À quoi cette trace est-elle confrontée ?</p></div>
+</div>
+
+<div class="callout" style="margin-top:24px">Une donnée ne devient un indice qu’au sein d’une <strong>architecture de relations</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="10" aria-label="Diapositive 10 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">10</div>
+<h2>Notre chaîne de travail</h2>
+<div class="flow">
+<div class="step"><b>Trace</b><span>repérée</span></div><div class="arrow">→</div>
+<div class="step"><b>Indice</b><span>qualifié</span></div><div class="arrow">→</div>
+<div class="step"><b>Hypothèse</b><span>formulée</span></div><div class="arrow">→</div>
+<div class="step"><b>Recoupement</b><span>testé</span></div><div class="arrow">→</div>
+<div class="step"><b>Preuve</b><span>argumentée</span></div><div class="arrow">→</div>
+<div class="step"><b>Récit</b><span>documenté</span></div>
+</div>
+
+<div class="small" style="margin-top:25px">Cette chaîne est itérative : une hypothèse peut renvoyer vers de nouvelles traces ou conduire à abandonner une piste.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="11" aria-label="Diapositive 11 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">11</div>
+<div class="section-number">2 · Carlo Ginzburg</div>
+
+<h1>Le <strong>paradigme indiciaire</strong></h1>
+<div class="big muted">Lire le détail, l’anomalie, le symptôme, la piste.</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-section" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="12" aria-label="Diapositive 12 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">12</div>
+<h2>Un texte devenu classique</h2>
+<div class="grid2">
+<div class="card lav">
+<h3>Carlo Ginzburg (1939–2026)</h3>
+<p>« Signes, traces, pistes. Racines d’un paradigme de l’indice », <em>Le Débat</em>, 1980, n° 6, p. 3–44.</p>
+<p class="small">DOI : 10.3917/deba.006.0003</p>
+</div>
+<div class="card">
+<h3>Le problème</h3>
+<p>Comment connaître une réalité qui n’est plus directement accessible et dont il ne reste que des signes partiels ?</p>
+</div>
+</div>
+
+<div class="sources">Texte en ligne : philosophie.univ-tours.fr/documents/1980_Carlo_Ginzburg.pdf · Éd. française reprise dans <em>Mythes, emblèmes, traces</em>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="13" aria-label="Diapositive 13 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">13</div>
+<h2>Trois figures : Morelli, Freud, Holmes</h2>
+<div class="grid3">
+<div class="card"><div class="num">MORELLI</div><h3>L’attribution</h3><p>Regarder les détails peu imités : oreilles, doigts, ongles.</p></div>
+<div class="card lav"><div class="num">FREUD</div><h3>Le symptôme</h3><p>Partir d’un détail marginal pour remonter à un processus latent.</p></div>
+<div class="card signal"><div class="num">HOLMES</div><h3>La piste</h3><p>Reconstituer une action absente à partir de traces minuscules.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="14" aria-label="Diapositive 14 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">14</div>
+<h2>Morelli : regarder là où l’imitation se relâche</h2>
+<div class="big">Le détail « secondaire » peut être plus discriminant que le trait spectaculaire.</div>
+
+<div class="grid2" style="margin-top:30px">
+<div class="card"><h3>Le visible évident</h3><p>Style général, composition, motifs célèbres.</p><p class="muted">Faciles à imiter.</p></div>
+<div class="card signal"><h3>Le détail négligé</h3><p>Oreille, lobe, doigt, geste répétitif.</p><p class="muted">Plus révélateur d’une pratique.</p></div>
+</div>
+
+<div class="callout" style="margin-top:22px">Réflexe d’hyperinvestigation : <strong>chercher aussi ce que personne n’avait prévu de rendre significatif</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="15" aria-label="Diapositive 15 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">15</div>
+<h2>Holmes : reconstruire l’absent</h2>
+<div class="infer">
+<div class="box"><b>Ce que l’on observe</b><span>Une empreinte, une poussière, une usure, un horaire, un détail matériel.</span></div>
+<div class="arr">→</div>
+<div class="box"><b>Ce que l’on infère</b><span>Une action passée, un trajet, une présence, une chronologie possible.</span></div>
+</div>
+
+<div class="callout" style="margin-top:28px">L’enquête ne « voit » pas directement l’événement mais elle en construit une <strong>représentation rétrospective</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="16" aria-label="Diapositive 16 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">16</div>
+<h2>Une connaissance de chasseurs</h2>
+<p>Ginzburg remonte beaucoup plus loin que le XIXe siècle :</p>
+<div class="grid2">
+<div class="card soft"><h3>Ce qui manque</h3><p>La proie n’est plus là.</p></div>
+<div class="card"><h3>Ce qui reste</h3><p>Empreinte, branche cassée, odeur, plume, direction.</p></div>
+</div>
+
+<div class="big" style="margin-top:30px">Connaître, c’est parfois reconstruire l’invisible à partir du visible.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="17" aria-label="Diapositive 17 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">17</div>
+<h2>Le détail n’est pas le contraire de la rigueur</h2>
+<div class="quote-large">« Si la réalité est opaque, il existe des zones privilégiées — des indices — qui permettent de la déchiffrer. »</div>
+
+<div class="callout" style="margin-top:26px">Mais un indice n’est pas tout à fait une révélation.  il ouvre une <strong>hypothèse qui doit encore être testée</strong>.</div>
+
+<div class="sources">Carlo Ginzburg, « Signes, traces, pistes », <em>Le Débat</em>, 1980/6, n° 6.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="18" aria-label="Diapositive 18 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">18</div>
+<h2>Une épistémologie du <strong>singulier</strong></h2>
+<div class="grid3">
+<div class="card"><h3>Cas</h3><p>Un événement précis.</p></div>
+<div class="card lav"><h3>Détail</h3><p>Une anomalie ou une différence.</p></div>
+<div class="card signal"><h3>Contexte</h3><p>Une série qui donne sens au détail.</p></div>
+</div>
+
+<div class="callout" style="margin-top:25px">Le singulier ne dispense jamais de la série : <strong>un indice isolé peut être accidentel</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="19" aria-label="Diapositive 19 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">19</div>
+<h2>Ginzburg touche déjà à l’architecture de l’information</h2>
+<p>Dans les dernières pages du texte, il évoque les dispositifs modernes d’<strong>identification</strong> : photographie judiciaire, anthropométrie, empreintes digitales, archives.</p>
+<div class="flow">
+<div class="step"><b>Corps</b><span>mesurer</span></div><div class="arrow">→</div>
+<div class="step"><b>Fiche</b><span>décrire</span></div><div class="arrow">→</div>
+<div class="step"><b>Classement</b><span>retrouver</span></div><div class="arrow">→</div>
+<div class="step"><b>Identité</b><span>attribuer</span></div>
+</div>
+
+<div class="callout" style="margin-top:25px">L’indice devient aussi une **technologie administrative de classement des personnes**.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="20" aria-label="Diapositive 20 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">20</div>
+<div class="section-number">3 · Raisonner par hypothèses</div>
+
+<h1>L’<strong>abduction</strong> : une piste, pas une conclusion</h1>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="21" aria-label="Diapositive 21 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">21</div>
+<h2>Trois gestes de raisonnement</h2>
+<table class="matrix">
+<tr><th>Geste</th><th>Point de départ</th><th>Mouvement</th><th>Question</th></tr>
+<tr><td><strong>Déduction</strong></td><td>Une règle</td><td>Vers un cas attendu</td><td>Qu’est-ce qui doit suivre ?</td></tr>
+<tr><td><strong>Induction</strong></td><td>Plusieurs cas</td><td>Vers une régularité</td><td>Qu’est-ce qui se répète ?</td></tr>
+<tr><td><strong>Abduction</strong></td><td>Un fait surprenant</td><td>Vers une explication possible</td><td>Qu’est-ce qui pourrait l’expliquer ?</td></tr>
+</table>
+
+<div class="callout" style="margin-top:24px">L’abduction produit une <strong>hypothèse à mettre à l’épreuve</strong>, jamais une preuve automatique.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="22" aria-label="Diapositive 22 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">22</div>
+<h2>Toujours construire des hypothèses concurrentes</h2>
+<div class="grid2">
+<div class="card signal"><h3>Erreur classique</h3><p>Collecter uniquement ce qui confirme la première intuition.</p></div>
+<div class="card sage"><h3>Réflexe d’enquête</h3><p>Demander : « qu’observerais-je si mon hypothèse était fausse ? »</p></div>
+</div>
+
+<div class="callout" style="margin-top:25px">Le recoupement sert autant à <strong>éliminer</strong> des explications qu’à conforter celle que l’on préfère.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="23" aria-label="Diapositive 23 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">23</div>
+<h2>Qualifier son niveau de confiance</h2>
+<div class="confidence">
+<div><b>Faible</b><span>une trace ambiguë</span></div>
+<div><b>Possible</b><span>plusieurs éléments compatibles</span></div>
+<div><b>Probable</b><span>recoupements indépendants</span></div>
+<div><b>Élevé</b><span>sources convergentes + alternatives testées</span></div>
+</div>
+
+<div class="callout" style="margin-top:26px">Le vocabulaire exact dépend des organisations. L’essentiel : expliciter ce qui fonde le niveau de confiance.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="24" aria-label="Diapositive 24 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">24</div>
+<div class="section-number">4 · Dominique Kalifa</div>
+
+<h1>Une <strong>culture de l’enquête</strong></h1>
+<p><img src="../assets/tesseract-couleurs.png" class="logo-section" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="25" aria-label="Diapositive 25 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">25</div>
+<h2>Au XIXe siècle, l’enquête déborde la police</h2>
+<p>Dominique Kalifa montre l’expansion d’un même imaginaire méthodologique dans :</p>
+<div class="grid3">
+<div class="card"><h3>État</h3><p>Enquêtes administratives et parlementaires.</p></div>
+<div class="card lav"><h3>Sciences & société</h3><p>Enquêtes sociales, médicales, statistiques.</p></div>
+<div class="card signal"><h3>Médias & fiction</h3><p>Journalisme, littérature, roman policier.</p></div>
+</div>
+
+<div class="sources">Dominique Kalifa, « Enquête et “culture de l’enquête” au XIXe siècle », <em>Romantisme</em>, 2010, n° 149, p. 3–23, DOI 10.3917/rom.149.0003.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="26" aria-label="Diapositive 26 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">26</div>
+<h2>Trois moments chez Kalifa</h2>
+<div class="flow">
+<div class="step"><b>Exploration</b><span>aller voir</span></div><div class="arrow">→</div>
+<div class="step"><b>Induction</b><span>faire émerger un ordre</span></div><div class="arrow">→</div>
+<div class="step"><b>Récit rétrospectif</b><span>rendre intelligible</span></div>
+</div>
+
+<div class="callout" style="margin-top:28px">L’enquête est donc à la fois une <strong>pratique de connaissance</strong> et une <strong>forme de récit</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="27" aria-label="Diapositive 27 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">27</div>
+<h2>Le récit arrive après… mais il reconfigure tout</h2>
+<div class="grid2">
+<div class="card"><h3>Pendant l’enquête</h3><p>Doutes, impasses, bifurcations, répétitions, informations contradictoires.</p></div>
+<div class="card signal"><h3>Dans la publication</h3><p>Une séquence ordonnée où les éléments paraissent souvent mener naturellement à la conclusion.</p></div>
+</div>
+
+<div class="callout" style="margin-top:24px">Une hyperinvestigation doit rendre visible une partie de cette <strong>histoire de la preuve</strong>, pas seulement son résultat final.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="28" aria-label="Diapositive 28 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">28</div>
+<h2>La culture de l’enquête est aussi démocratique… et ambivalente</h2>
+<div class="grid2">
+<div class="card sage"><h3>Puissance</h3><p>Chacun peut apprendre à questionner, comparer, vérifier, contribuer à la production du vrai.</p></div>
+<div class="card signal"><h3>Risque</h3><p>L’enquête peut devenir posture permanente, soupçon sans fin ou mise en intrigue de toute anomalie.</p></div>
+</div>
+
+<div class="small" style="margin-top:24px">C’est l’une des raisons pour lesquelles il faut des règles d’arrêt, des niveaux de confiance et des hypothèses concurrentes.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="29" aria-label="Diapositive 29 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">29</div>
+<div class="section-number">5 · Contrepoint foucaldien</div>
+
+<h1>Le <strong>paradigme inquisitorial</strong> : enquêter, c’est aussi gouverner</h1>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="30" aria-label="Diapositive 30 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">30</div>
+<h2>L’enquête n’est pas seulement une méthode intellectuelle</h2>
+<p>Chez Michel Foucault, l’enquête est aussi une <strong>forme historique de production du vrai</strong>, liée aux pratiques juridiques et administratives.</p>
+<div class="grid2" style="margin-top:24px">
+<div class="card"><h3>Questionner</h3><p>Qui sait ? Qui a vu ? Que s’est-il passé ?</p></div>
+<div class="card lav"><h3>Enregistrer</h3><p>Témoignages, actes, dossiers, procédures, archives.</p></div>
+</div>
+
+<div class="sources">Michel Foucault, <em>La vérité et les formes juridiques</em> (conférences de 1973) ; voir aussi <em>Théories et institutions pénales</em>, Collège de France, 1971–1972.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="31" aria-label="Diapositive 31 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">31</div>
+<h2>Du paradigme inquisitorial au savoir administratif</h2>
+<div class="flow">
+<div class="step"><b>Autorité</b><span>pose la question</span></div><div class="arrow">→</div>
+<div class="step"><b>Témoignage</b><span>est recueilli</span></div><div class="arrow">→</div>
+<div class="step"><b>Écrit</b><span>stabilise</span></div><div class="arrow">→</div>
+<div class="step"><b>Archive</b><span>accumule</span></div><div class="arrow">→</div>
+<div class="step"><b>Savoir</b><span>administre</span></div>
+</div>
+
+<div class="callout" style="margin-top:25px">L’enquête produit donc simultanément de la **connaissance** et une capacité à **ordonner le monde**.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="32" aria-label="Diapositive 32 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">32</div>
+<h2>Pour nous : une question essentielle</h2>
+<div class="huge"> Qui a le droit de poser les questions  ?</div>
+
+<div class="grid3" style="margin-top:30px">
+<div class="card"><h3>Qui collecte ?</h3><p>Institution, journaliste, ONG, plateforme, chercheur.</p></div>
+<div class="card lav"><h3>Qui classe ?</h3><p>Catégories, fichiers, scores, dossiers.</p></div>
+<div class="card signal"><h3>Qui peut répondre ?</h3><p>Droit de contradiction, contestation, recours.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="33" aria-label="Diapositive 33 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">33</div>
+<h2>L’enquête peut elle-même devenir un objet d’enquête</h2>
+<div class="big">Interroger les <strong>conditions de production de la preuve</strong>.</div>
+
+<div class="grid2" style="margin-top:28px">
+<div class="card"><h3>Épistémologie</h3><p>Pourquoi cet élément compte-t-il comme indice ?</p></div>
+<div class="card signal"><h3>Politique</h3><p>Qui a produit les catégories, l’archive et les conditions d’accès ?</p></div>
+</div>
+
+<div class="callout" style="margin-top:24px">C’est ici que l’hyperinvestigation rejoint directement l’architecture de l’information et la responsabilité.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="34" aria-label="Diapositive 34 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">34</div>
+<div class="section-number">6 · Cas contemporain</div>
+
+<h1>Bellingcat : des drones Shahed filmés au <strong>Mali</strong></h1>
+<div class="big muted">Lire l’enquête comme une chaîne d’inférences.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="35" aria-label="Diapositive 35 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">35</div>
+<h2>Ce que l’enquête cherche à établir</h2>
+<div class="casefile">
+<h3>Question</h3>
+<p>Des drones de type Shahed ont-ils été utilisés lors de frappes contre des villages du nord du Mali en juillet 2026 ?</p>
+</div>
+
+<div class="callout" style="margin-top:24px">Bellingcat distingue soigneusement ce qui est <strong>vérifié</strong> de ce qui reste <strong>probable ou indéterminé</strong>.</div>
+
+<div class="sources">Bellingcat, « Shahed-Type Drones Filmed During Mali Village Attacks », 24 juillet 2026.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="36" aria-label="Diapositive 36 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">36</div>
+<h2>Les matériaux de l’enquête</h2>
+<div class="grid4">
+<div class="card"><h3>Vidéos</h3><p>Images des frappes et de leurs suites.</p></div>
+<div class="card lav"><h3>Satellite</h3><p>Comparaison avant / après.</p></div>
+<div class="card blue"><h3>Géolocalisation</h3><p>Correspondance avec le bâti et le terrain.</p></div>
+<div class="card signal"><h3>Expertise</h3><p>Analyse du type de drone et de son origine possible.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="37" aria-label="Diapositive 37 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">37</div>
+<h2>Une même enquête contient plusieurs niveaux de conclusion</h2>
+<table class="matrix">
+<tr><th>Proposition</th><th>Statut</th><th>Pourquoi ?</th></tr>
+<tr><td>Les vidéos correspondent aux villages étudiés.</td><td><strong>Établi</strong></td><td>Géolocalisation + correspondance satellite.</td></tr>
+<tr><td>Des drones de type Shahed-136 sont visibles.</td><td><strong>Fortement étayé</strong></td><td>Analyse des images + expertise.</td></tr>
+<tr><td>Le modèle exact est identifié.</td><td><strong>Non établi</strong></td><td>Les éléments disponibles ne suffisent pas.</td></tr>
+<tr><td>Ils sont de fabrication russe.</td><td><strong>Probable / hypothétique</strong></td><td>Expertise + contexte, mais attribution non certaine.</td></tr>
+</table>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="38" aria-label="Diapositive 38 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">38</div>
+<h2>Ce cas est exemplaire pour le paradigme indiciaire</h2>
+<div class="flow">
+<div class="step"><b>Détail</b><span>forme visible</span></div><div class="arrow">→</div>
+<div class="step"><b>Indice</b><span>type de drone</span></div><div class="arrow">→</div>
+<div class="step"><b>Contexte</b><span>frappes / acteurs</span></div><div class="arrow">→</div>
+<div class="step"><b>Recoupement</b><span>satellite + experts</span></div><div class="arrow">→</div>
+<div class="step"><b>Conclusion</b><span>graduée</span></div>
+</div>
+
+<div class="callout" style="margin-top:25px">La rigueur se lit autant dans ce que l’enquête <strong>affirme</strong> que dans ce qu’elle <strong>refuse d’affirmer</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="39" aria-label="Diapositive 39 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">39</div>
+<div class="section-number">7 · Du forensic à l’hyperinvestigation</div>
+
+<h1>Une preuve est une <strong>architecture de relations</strong></h1>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="40" aria-label="Diapositive 40 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">40</div>
+<h2>Forensic Architecture : le « complexe image-données »</h2>
+<p>Lorsqu’un événement est documenté par fragments, Forensic Architecture organise différentes pièces dans un <strong>modèle spatial et temporel commun</strong>.</p>
+<div class="grid3" style="margin-top:28px">
+<div class="card"><h3>Synchroniser</h3><p>Mettre les sources sur une même chronologie.</p></div>
+<div class="card lav"><h3>Géolocaliser</h3><p>Établir leurs relations dans l’espace.</p></div>
+<div class="card signal"><h3>Recouper</h3><p>Faire apparaître des relations invisibles dans chaque document isolé.</p></div>
+</div>
+
+<div class="sources">Forensic Architecture, « Image Data Complex », rubrique Methodology, forensic-architecture.org.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="41" aria-label="Diapositive 41 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">41</div>
+<h2>La preuve n’est pas « contenue » dans une image</h2>
+<div class="big">Elle émerge d’un <strong>agencement contrôlé</strong> de documents, traces, métadonnées et hypothèses.</div>
+
+<div class="flow">
+<div class="step"><b>Source A</b><span>vidéo</span></div><div class="arrow">+</div>
+<div class="step"><b>Source B</b><span>satellite</span></div><div class="arrow">+</div>
+<div class="step"><b>Source C</b><span>témoignage</span></div><div class="arrow">+</div>
+<div class="step"><b>Opérations</b><span>temps / espace</span></div><div class="arrow">→</div>
+<div class="step"><b>Proposition</b><span>mise à l’épreuve</span></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="42" aria-label="Diapositive 42 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">42</div>
+<h2>Hypothèse de travail HyperION : la <strong>preuve relationnelle</strong></h2>
+<div class="grid2">
+<div class="card lav"><h3>Un document isolé</h3><p>Possède une provenance, un contenu et des limites.</p></div>
+<div class="card signal"><h3>Un système probatoire</h3><p>Rend explicites les relations qui permettent de soutenir une conclusion.</p></div>
+</div>
+
+<div class="callout" style="margin-top:26px">Pour être critiquable, une preuve doit conserver la mémoire des <strong>opérations qui la constituent</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="43" aria-label="Diapositive 43 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">43</div>
+<h2>Et si les traces étaient produites par des adversaires (volontairement) ?</h2>
+<div class="grid4">
+<div class="card"><h3>Effacer</h3><p>Supprimer.</p></div>
+<div class="card lav"><h3>Noyer</h3><p>Saturer.</p></div>
+<div class="card signal"><h3>Fabriquer</h3><p>Simuler.</p></div>
+<div class="card sage"><h3>Détourner</h3><p>Recontextualiser.</p></div>
+</div>
+
+<div class="callout" style="margin-top:24px">Nous y reviendrons avec la <strong>lutte des traces</strong> : enquêter dans un milieu où la trace peut être activement produite pour tromper l’enquêteur.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="44" aria-label="Diapositive 44 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">44</div>
+<h2>Jalon pour votre projet : une matrice de preuve</h2>
+<table class="matrix">
+<tr><th>Proposition à établir</th><th>Traces disponibles</th><th>Hypothèses concurrentes</th><th>Recoupements</th><th>Confiance</th></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>faible / moyen / élevé</td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td>...</td></tr>
+</table>
+
+<div class="callout" style="margin-top:24px"><strong>À rendre dans le journal d’enquête :</strong> au moins trois propositions et les éléments qui pourraient les confirmer ou les invalider.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="45" aria-label="Diapositive 45 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">45</div>
+<h2>Lecture obligatoire</h2>
+<div class="card lav">
+<h3>Carlo Ginzburg</h3>
+<p>« <strong>Signes, traces, pistes. Racines d’un paradigme de l’indice</strong> », <em>Le Débat</em>, 1980/6, n° 6, p. 3–44.</p>
+<p><strong>À lire en priorité :</strong> le début du texte et la séquence Morelli–Freud–Holmes ; extrait indiqué sur l’espace de cours.</p>
+<p class="small">DOI : 10.3917/deba.006.0003 · Version en ligne repérée via l’Université de Tours.</p>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="46" aria-label="Diapositive 46 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">46</div>
+<h2>Document exemplaire obligatoire</h2>
+<div class="casefile">
+<h3>Bellingcat · 24 juillet 2026</h3>
+<p><strong>« Shahed-Type Drones Filmed During Mali Village Attacks »</strong></p>
+<p>À lire non pour apprendre la géolocalisation, mais pour repérer :</p>
+<ul><li>les degrés d’affirmation ;</li><li>les recoupements ;</li><li>les hypothèses laissées ouvertes ;</li><li>la manière dont le récit expose la chaîne de preuve.</li></ul>
+</div>
+
+<div class="sources">bellingcat.com/news/2026/07/24/shahed-type-drones-filmed-during-attack-on-mali-villages/</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="47" aria-label="Diapositive 47 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">47</div>
+<h2>À voir : acteurs et laboratoires</h2>
+<div class="grid4">
+<div class="card"><h3>Forensic Architecture</h3><p>Forensic spatial et architecture de la preuve.</p></div>
+<div class="card lav"><h3>Bellingcat</h3><p>Enquêtes ouvertes et méthodologies publiées.</p></div>
+<div class="card signal"><h3>Criminocorpus</h3><p>Histoire de la justice, de l’enquête et de ses documents.</p></div>
+<div class="card sage"><h3>WITNESS / HRC Berkeley</h3><p>Preuve audiovisuelle et investigation numérique.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="48" aria-label="Diapositive 48 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">48</div>
+<h2>Pour approfondir</h2>
+<ul>
+<li>Dominique Kalifa, « Enquête et “culture de l’enquête” au XIXe siècle », <em>Romantisme</em>, 2010, n° 149, p. 3–23.</li>
+<li>Luc Boltanski, <em>Énigmes et complots. Une enquête à propos d’enquêtes</em>, Gallimard, 2012.</li>
+<li>Michel Foucault, <em>La vérité et les formes juridiques</em> ; <em>Théories et institutions pénales</em>.</li>
+<li>Eyal Weizman, <em>Forensic Architecture: Violence at the Threshold of Detectability</em>, Zone Books, 2017.</li>
+</ul>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="49" aria-label="Diapositive 49 sur 50">
+<header>Hyperinvestigation · S04</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">49</div>
+<h2>À retenir</h2>
+<div class="axis"><div class="n">1</div><div><b>Une trace n’est jamais une conclusion.</b><p>Elle doit être qualifiée dans une question et un contexte.</p></div></div>
+<div class="axis"><div class="n">2</div><div><b>L’indice ouvre une hypothèse.</b><p>Une hypothèse gagne en force par recoupement et comparaison.</p></div></div>
+<div class="axis"><div class="n">3</div><div><b>L’enquête produit aussi une forme de récit.</b><p>Il faut éviter que le récit efface les doutes et les bifurcations.</p></div></div>
+<div class="axis"><div class="n">4</div><div><b>La preuve est une architecture relationnelle.</b><p>Sa force dépend aussi de la visibilité de ses opérations.</p></div></div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="50" aria-label="Diapositive 50 sur 50">
+
+<div class="section-number">Prochaine séance</div>
+
+<h1>Transformer les indices en <strong>protocole</strong></h1>
+<div class="big muted">Question · hypothèses · corpus · provenance · règles d’arrêt · journal d’enquête.</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-end" alt="" /></p>
+
+</section></div>
+</main>
+<div class="nav" aria-label="Navigation des diapositives">
+<button type="button" id="prev" aria-label="Diapositive précédente">‹</button>
+<div class="count" id="count"></div>
+<button type="button" id="next" aria-label="Diapositive suivante">›</button>
+<button type="button" id="fullscreen" class="fs" aria-label="Plein écran">⛶</button>
+</div>
+<div class="help">← → naviguer · F plein écran · H aide · Home/End début/fin</div>
+<script>
+(() => {
+ const wraps=[...document.querySelectorAll('.slide-wrap')];
+ let index=0;
+ const clamp=i=>Math.max(0,Math.min(wraps.length-1,i));
+ function fromHash(){const n=parseInt(location.hash.slice(1),10);if(Number.isFinite(n)) index=clamp(n-1)}
+ function scale(){const s=Math.min(innerWidth/1280,innerHeight/720);for(const w of wraps) w.style.transform=`translate(-50%,-50%) scale(${s})`}
+ function show(i,push=true){index=clamp(i);wraps.forEach((w,j)=>w.classList.toggle('active',j===index));document.getElementById('count').textContent=`${index+1} / ${wraps.length}`;if(push) history.replaceState(null,'',`#${index+1}`);document.title=`${wraps[index].querySelector('h1,h2')?.textContent?.trim() || 'Traces, indices et enquête : le paradigme indiciaire'} · Traces, indices et enquête : le paradigme indiciaire`}
+ function next(){show(index+1)} function prev(){show(index-1)}
+ addEventListener('resize',scale);addEventListener('hashchange',()=>{fromHash();show(index,false)});
+ document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;
+ document.getElementById('fullscreen').onclick=()=>{if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+ addEventListener('keydown',e=>{
+   if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+   else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();prev()}
+   else if(e.key==='Home'){e.preventDefault();show(0)}
+   else if(e.key==='End'){e.preventDefault();show(wraps.length-1)}
+   else if(e.key.toLowerCase()==='f'){document.getElementById('fullscreen').click()}
+   else if(e.key.toLowerCase()==='h'){document.body.classList.toggle('show-help')}
+ });
+ let sx=null;addEventListener('touchstart',e=>sx=e.changedTouches[0].clientX,{passive:true});addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60) dx<0?next():prev();sx=null},{passive:true});
+ fromHash();scale();show(index,false);
+})();
+</script>
+</body>
+</html>

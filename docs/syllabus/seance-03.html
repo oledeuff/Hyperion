@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Séance 3 — Organiser, classer, chercher, trier, scorer, recommander">
+<title>Hyperlittératie, architecture de l’information et premiers algorithmes</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eee;font-family:Inter,Aptos,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}
+#deck{position:fixed;inset:0;overflow:hidden;background:#e9e7ea}
+.slide-wrap{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;display:none}
+.slide-wrap.active{display:block}
+.slide-wrap>section{position:absolute!important;inset:0!important;margin:0!important}
+.page-counter{position:absolute;right:28px;bottom:17px;color:var(--violet2,#7c7186);font-size:14px;z-index:20}
+.nav{position:fixed;z-index:1000;right:18px;bottom:18px;display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:999px;background:rgba(35,31,40,.72);backdrop-filter:blur(8px);opacity:.22;transition:opacity .2s}
+.nav:hover,.nav:focus-within{opacity:.95}
+.nav button{appearance:none;border:0;border-radius:999px;background:rgba(255,255,255,.14);color:white;width:34px;height:34px;font-size:18px;cursor:pointer}
+.nav button:hover{background:rgba(255,255,255,.25)}
+.nav .count{color:white;font-size:13px;min-width:58px;text-align:center;font-variant-numeric:tabular-nums}
+.nav .fs{font-size:15px}
+.help{position:fixed;left:18px;bottom:18px;z-index:1000;color:white;background:rgba(35,31,40,.65);border-radius:999px;padding:8px 12px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none}
+body.show-help .help{opacity:.95}
+@media print{html,body{overflow:visible;background:white}#deck{position:static;background:white}.slide-wrap{position:relative;display:block!important;left:auto;top:auto;transform:none!important;page-break-after:always}.nav,.help{display:none}}
+
+
+/* =========================================================
+   HYPERION / S01 — LAVENDER LIGHT
+   Tout est volontairement contenu dans ce fichier .md.
+   Couleurs principales à modifier ici :
+   --paper / --lavender / --violet / --ink / --signal
+   ========================================================= */
+:root {
+  --paper: #fbfbf9;
+  --paper2: #f1f4f7;
+  --paper3: #e6ebf2;
+  --lavender: #aeb7cc;
+  --lavender2: #d2d9e5;
+  --violet: #58657d;
+  --violet2: #74839c;
+  --ink: #29303a;
+  --muted: #5b6470;
+  --line: #d3dae4;
+  --signal: #c9865b;
+  --signal2: #edd8c8;
+  --mint: #dfece8;
+  --sky: #dbe7f0;
+  --white: #ffffff;
+}
+
+section {
+  width: 1280px;
+  height: 720px;
+  padding: 64px 76px 54px 84px;
+  background:
+    radial-gradient(circle at 91% 8%, rgba(185,175,194,.16), transparent 24%),
+    linear-gradient(135deg, var(--paper) 0%, #f5f7fa 100%);
+  color: var(--ink);
+  font-family: Inter, Aptos, "Segoe UI", Arial, sans-serif;
+  font-size: 27px;
+  line-height: 1.30;
+  letter-spacing: -.01em;
+  position: relative;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 10px; height: 100%;
+  background: linear-gradient(180deg, var(--violet), var(--lavender), var(--signal));
+}
+
+section h1, section h2, section h3 {
+  color: var(--violet);
+  font-weight: 680;
+  letter-spacing: -.03em;
+  margin-top: 0;
+}
+section h1 { font-size: 66px; line-height: 1.02; margin-bottom: 22px; }
+section h2 { font-size: 43px; line-height: 1.08; margin-bottom: 23px; }
+section h3 { font-size: 27px; margin-bottom: 9px; }
+section p { margin: .35em 0 .68em; }
+section strong { color: var(--violet); font-weight: 760; }
+section em { color: var(--muted); }
+section ul { margin-top: .3em; }
+section li { margin: .22em 0; }
+section li::marker { color: var(--signal); }
+section blockquote {
+  margin: 22px 0;
+  padding: 17px 23px 17px 27px;
+  border-left: 5px solid var(--violet2);
+  background: rgba(244,241,246,.82);
+  border-radius: 0 14px 14px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  line-height: 1.28;
+}
+header, footer {
+  position: absolute;
+  left: 84px; right: 58px;
+  color: #7a727e;
+  font-size: 13px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+header { top: 23px; }
+footer { bottom: 18px; }
+section::after { right: 28px; bottom: 17px; color: var(--violet2); font-size: 14px; }
+
+/* typographie et repères */
+.kicker { color: var(--violet2); font-size: 16px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 13px; }
+.subtitle { max-width: 800px; color: var(--muted); font-size: 29px; line-height: 1.26; }
+.meta { margin-top: 30px; color: var(--muted); font-size: 18px; }
+.big { font-size: 39px; line-height: 1.16; letter-spacing: -.025em; }
+.huge { font-size: 57px; line-height: 1.05; letter-spacing: -.04em; }
+.small { font-size: 18px; color: var(--muted); }
+.tiny { font-size: 14px; color: var(--muted); }
+.muted { color: var(--muted); }
+.signal { color: #9c6239; }
+.rule { width: 82px; height: 4px; background: var(--signal); border-radius: 5px; margin: 16px 0 25px; }
+.sources { position: absolute; left: 84px; right: 70px; bottom: 39px; font-size: 11.5px; line-height: 1.23; color: #716a75; }
+
+/* cartes */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+.grid5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.card {
+  background: rgba(255,255,255,.82);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px 22px;
+  box-shadow: 0 10px 24px rgba(78,65,88,.045);
+}
+.card.soft { background: var(--paper2); }
+.card.mint { background: #f1f7f5; border-color: #ceded8; }
+.card.sky { background: #f2f6f9; border-color: #cedbe4; }
+.card.signal { background: #fbf3ed; border-color: #e6cdbc; color: var(--ink); }
+.card h3 { font-size: 24px; }
+.card p, .card li { font-size: 20px; }
+.num { font-size: 13px; font-weight: 850; letter-spacing: .14em; color: var(--violet2); margin-bottom: 7px; }
+
+.pill { display: inline-block; margin: 3px 5px 3px 0; padding: 7px 12px; border-radius: 999px; background: var(--paper3); color: var(--violet); font-size: 15px; font-weight: 750; }
+.pill.hot { background: var(--signal2); color: #7d4f2d; }
+.callout { padding: 16px 22px; border-radius: 14px; background: var(--paper2); border: 1px solid var(--lavender2); font-size: 22px; }
+.quote-large { font-family: Georgia, "Times New Roman", serif; font-size: 34px; line-height: 1.28; max-width: 990px; }
+
+/* chaînes / flux */
+.flow { display: flex; align-items: stretch; gap: 8px; margin-top: 27px; }
+.step { flex: 1; min-width: 0; padding: 17px 12px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.86); text-align: center; }
+.step b { display: block; color: var(--violet); font-size: 20px; margin-bottom: 5px; }
+.step span { display: block; color: var(--muted); font-size: 14px; }
+.arrow { align-self: center; color: var(--lavender); font-size: 27px; }
+.axis { display: grid; grid-template-columns: 60px 1fr; gap: 17px; align-items: start; margin: 13px 0; }
+.axis .n { width: 49px; height: 49px; border-radius: 50%; display:flex; align-items:center; justify-content:center; background: var(--violet); color:white; font-weight:800; font-size:18px; }
+.axis b { color: var(--violet); }
+.axis p { margin: 2px 0; font-size: 20px; }
+
+/* mini-terminal : touche fun mais lisible */
+.terminal { background: #f0edf2; border: 1px solid #d2cbd7; border-radius: 16px; padding: 18px 21px; font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; font-size: 18px; line-height: 1.42; color: #514858; box-shadow: inset 0 1px 0 rgba(255,255,255,.8); }
+.terminal .prompt { color: #9b633c; font-weight: 700; }
+
+/* section / activity */
+section.cover { background: linear-gradient(135deg, #fbfbf9 0%, #f0f4f8 58%, #e8edf4 100%); padding-top: 91px; }
+section.cover h1 { max-width: 770px; font-size: 72px; }
+section.cover::before { width: 14px; }
+section.section { background: linear-gradient(135deg, #edf1f6, #fafaf8); display:flex; flex-direction:column; justify-content:center; }
+section.section h1 { max-width: 930px; font-size: 70px; }
+.section-number { color: var(--violet2); font-size: 16px; font-weight: 850; letter-spacing: .17em; text-transform: uppercase; margin-bottom: 10px; }
+section.activity { background: linear-gradient(135deg, #faf5ef, #f3f5f8); }
+section.activity::before { background: linear-gradient(180deg, var(--signal), #d6aa83); }
+.activity-label { display:inline-block; background: var(--signal2); color:#785038; border-radius:999px; padding:7px 12px; font-size:14px; font-weight:850; letter-spacing:.12em; text-transform:uppercase; margin-bottom:13px; }
+
+/* logo HyperION : tesseract pastel PNG, fiable en Preview Marp et export PDF */
+.logo-cover, .logo-section, .logo-end {
+  position: absolute;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+.logo-cover { right: 76px; top: 132px; width: 270px; opacity: .72; }
+.logo-section { right: 76px; bottom: 70px; width: 122px; opacity: .22; }
+.logo-end { right: 82px; top: 150px; width: 235px; opacity: .28; }
+
+/* grille "struggle over traces" */
+.trace-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:24px; }
+.trace-grid div { padding:18px 12px; text-align:center; border-radius:14px; border:1px solid var(--line); background:white; font-weight:720; color:var(--violet); font-size:19px; }
+.trace-grid div:nth-child(2n) { background:var(--paper2); }
+
+/* tableau */
+table { width:100%; border-collapse:separate; border-spacing:0; font-size:19px; border:1px solid var(--line); border-radius:13px; overflow:hidden; background:rgba(255,255,255,.8); }
+th { background: var(--paper3); color:var(--violet); font-weight:780; }
+th, td { padding:11px 13px; border-bottom:1px solid var(--line); vertical-align:top; }
+tr:last-child td { border-bottom:0; }
+
+/* écran "résultat de recherche" */
+.research { border: 1.5px solid #c8bbcF; background: linear-gradient(135deg,#f7f4f8,#fff); border-radius:20px; padding:25px 28px; position:relative; }
+.research::after { content:"HYPERION · RECHERCHE EN COURS"; position:absolute; right:20px; top:15px; font-size:11px; letter-spacing:.15em; font-weight:850; color:#9a8da3; }
+.research h3 { margin-top:16px; }
+
+
+/* S03 — architecture de l'information + premiers algorithmes */
+.four-systems { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:22px; }
+.four-systems .sys { min-height:150px; border:1px solid var(--line); border-radius:17px; padding:18px; background:rgba(255,255,255,.88); }
+.four-systems .sys:nth-child(2n) { background:#f1f5f8; }
+.four-systems .sys b { display:block; font-size:22px; color:var(--violet); margin-bottom:9px; }
+.four-systems .sys span { font-size:17px; color:var(--muted); line-height:1.32; }
+
+.stack3 { display:flex; flex-direction:column; gap:8px; margin-top:22px; }
+.stack3 .layer3 { display:grid; grid-template-columns:180px 1fr 120px; gap:18px; align-items:center; border:1px solid var(--line); border-radius:13px; padding:13px 17px; background:rgba(255,255,255,.88); }
+.stack3 .layer3:nth-child(2n) { background:#f0f4f8; }
+.stack3 .layer3 b { color:var(--violet); font-size:19px; }
+.stack3 .layer3 span { color:var(--muted); font-size:16px; }
+.stack3 .layer3 em { color:#77849a; text-align:right; font-size:12px; font-style:normal; font-weight:850; letter-spacing:.09em; }
+
+.io { display:grid; grid-template-columns:1fr 70px 1.2fr 70px 1fr; align-items:stretch; gap:7px; margin-top:28px; }
+.io .box { padding:20px 17px; border:1px solid var(--line); border-radius:16px; background:white; text-align:center; }
+.io .box b { display:block; color:var(--violet); font-size:22px; margin-bottom:6px; }
+.io .box span { font-size:15px; color:var(--muted); }
+.io .arr { display:flex; align-items:center; justify-content:center; font-size:30px; color:var(--lavender); }
+
+.ops { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:24px; }
+.ops .op { border-radius:18px; padding:21px 18px; border:1px solid var(--line); background:#fff; min-height:175px; }
+.ops .op:nth-child(2) { background:#f1f5f8; }
+.ops .op:nth-child(3) { background:#f7f2ed; }
+.ops .op:nth-child(4) { background:#f1f6f4; }
+.ops .op h3 { font-size:25px; }
+.ops .op p { font-size:18px; }
+
+.auditgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:20px; }
+.audit { background:white; border:1px solid var(--line); border-radius:15px; padding:17px; min-height:130px; }
+.audit b { display:block; color:var(--violet); font-size:19px; margin-bottom:6px; }
+.audit span { color:var(--muted); font-size:15px; line-height:1.3; }
+
+.casebox { border:1.5px solid #c6d0df; background:linear-gradient(135deg,#f4f7fa,#fff); border-radius:20px; padding:25px 28px; position:relative; }
+.casebox::after { content:"CAS D’ENQUÊTE"; position:absolute; top:14px; right:18px; color:#8290a8; font-size:11px; font-weight:850; letter-spacing:.15em; }
+.casebox h3 { margin-top:13px; }
+
+.document-chain { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:25px; }
+.document-chain div { padding:15px 10px; border-radius:13px; border:1px solid var(--line); background:white; text-align:center; font-size:16px; font-weight:760; color:var(--violet); }
+.document-chain div:nth-child(2n) { background:#f0f4f8; }
+
+.minimap { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:18px; }
+.minimap div { background:white; border:1px solid var(--line); border-radius:12px; padding:13px 15px; font-size:17px; }
+.minimap b { color:var(--violet); }
+
+.retro { display:grid; grid-template-columns:1fr 80px 1fr; gap:15px; align-items:center; margin-top:25px; }
+.retro .side { border:1px solid var(--line); border-radius:17px; padding:22px; background:white; min-height:190px; }
+.retro .middle { display:flex; align-items:center; justify-content:center; font-size:38px; color:var(--signal); }
+
+/* léger motif de grille, uniquement sur certaines slides */
+section.grid-bg { background-image: linear-gradient(rgba(88,101,125,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(88,101,125,.05) 1px, transparent 1px), linear-gradient(135deg,var(--paper),#f5f7fa); background-size:32px 32px,32px 32px,auto; }
+
+
+</style>
+</head>
+<body>
+<main id="deck" aria-live="polite">
+<div class="slide-wrap"><section class="cover" data-slide="1" aria-label="Diapositive 1 sur 46">
+
+<div class="kicker">Séance 03 · 2026–2027</div>
+
+<h1>Hyperlittératie, architecture de l’information et <strong>premiers algorithmes</strong></h1>
+<div class="subtitle">Organiser, nommer, chercher, classer… puis trier, scorer et recommander.</div>
+
+<div class="rule"></div>
+<div class="meta">Architecture de l’information · littératie algorithmique · rétro-ingénierie documentaire</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-cover" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="2" aria-label="Diapositive 2 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">2</div>
+<div class="section-number">Question directrice</div>
+
+<h1>Que faut-il apprendre à <strong>lire</strong> lorsque l’accès à l’information dépend de catégories, d’interfaces et d’algorithmes ?</h1>
+<div class="big muted">Organisation · trouvabilité · classement · calcul · visibilité</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="3" aria-label="Diapositive 3 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">3</div>
+<h2>Où en sommes-nous ?</h2>
+<div class="grid3">
+<div class="card soft"><div class="num">S01</div><h3>Hyperinvestigation</h3><p>Passer des traces à des éléments de preuve en documentant les opérations.</p></div>
+<div class="card mint"><div class="num">S02</div><h3>RSO</h3><p>Mettre à l’épreuve les documents qu’une organisation produit sur elle-même.</p></div>
+<div class="card sky"><div class="num">S03</div><h3>Architecture + algorithmes</h3><p>Observer comment un système organise l’accès, le classement et la visibilité.</p></div>
+</div>
+
+<div class="callout" style="margin-top:27px;">Il s'agit autant d'enquêter sur les documents que <strong>mécanismes qui les organisent et les hiérarchisent</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="4" aria-label="Diapositive 4 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">4</div>
+<h2>Objectifs de la séance</h2>
+<div class="grid2">
+<div class="card"><h3>Déplier</h3><p>Passer d’une interface à ses systèmes d’organisation, de navigation, de recherche et d’étiquetage.</p></div>
+<div class="card sky"><h3>Distinguer</h3><p>Architecture documentaire, règle de classement, score, recommandation et système algorithmique.</p></div>
+<div class="card sky"><h3>Questionner</h3><p>Identifier les catégories, entrées, sorties et effets d’un dispositif de calcul.</p></div>
+<div class="card"><h3>Tester</h3><p>Formuler un premier protocole de rétro-ingénierie documentaire sans disposer de tout le code.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="5" aria-label="Diapositive 5 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">5</div>
+<h2>Le fil de la séance</h2>
+<div class="flow">
+<div class="step"><b>Organiser</b><span>architecture de l’information</span></div><div class="arrow">→</div>
+<div class="step"><b>Lire</b><span>hyperlittératie</span></div><div class="arrow">→</div>
+<div class="step"><b>Calculer</b><span>premiers algorithmes</span></div><div class="arrow">→</div>
+<div class="step"><b>Démonter</b><span>CNAF / Lighthouse</span></div><div class="arrow">→</div>
+<div class="step"><b>Tester</b><span>mini-audit</span></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="6" aria-label="Diapositive 6 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">6</div>
+<div class="section-number">1 · Architecture de l’information</div>
+
+<h1>Avant de calculer, il faut déjà <strong>organiser</strong></h1>
+<div class="big muted">Catégories · labels · navigation · recherche</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-section" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="7" aria-label="Diapositive 7 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">7</div>
+<h2>L’architecture de l’information n’est pas décorative</h2>
+<div class="grid2">
+<div>
+<p class="big">Elle détermine comment un environnement informationnel devient <strong>compréhensible</strong> et <strong>trouvable</strong>.</p>
+<p>Elle distribue les contenus dans des catégories, des parcours, des systèmes de recherche et des vocabulaires.</p>
+</div>
+<div class="card sky">
+<h3>Réflexe d’enquête</h3>
+<p>Devant une interface, demander : <strong>qui a choisi cette structure, ces catégories et ces chemins ?</strong></p>
+</div>
+</div>
+
+<div class="sources">Référence : Rosenfeld, Morville & Arango, <em>Information Architecture: For the Web and Beyond</em>, O’Reilly, 4e éd., 2015.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="8" aria-label="Diapositive 8 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">8</div>
+<h2>Quatre systèmes classiques</h2>
+<div class="four-systems">
+<div class="sys"><b>Organiser</b><span>Comment les contenus sont-ils groupés, hiérarchisés ou reliés ?</span></div>
+<div class="sys"><b>Étiqueter</b><span>Quels mots nomment les catégories, fonctions et objets ?</span></div>
+<div class="sys"><b>Naviguer</b><span>Quels parcours sont proposés ou empêchés ?</span></div>
+<div class="sys"><b>Rechercher</b><span>Que peut-on requêter et comment les résultats sont-ils ordonnés ?</span></div>
+</div>
+
+<div class="callout" style="margin-top:25px;">Ces quatre mode sont des bases en architecture de l’information. En Hyperinvestigation, ils deviennent des <strong>objets à interroger</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="9" aria-label="Diapositive 9 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">9</div>
+<h2>Organiser, c’est déjà produire un point de vue</h2>
+<div class="grid3">
+<div class="card"><h3>Exact</h3><p>Alphabet, date, géographie, nombre : critères relativement stabilisés.</p></div>
+<div class="card sky"><h3>Ambigu</h3><p>Thème, public, tâche, genre : la frontière dépend d’une interprétation.</p></div>
+<div class="card signal"><h3>Hybride</h3><p>Plusieurs logiques se superposent et peuvent devenir difficiles à lire.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:28px;">Classer, ce n'est pas seulement « ranger ».<strong>Classer rend certaines relations visibles et en efface d’autres</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="10" aria-label="Diapositive 10 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">10</div>
+<h2>Nommer, c’est cadrer</h2>
+<div class="grid2">
+<div class="card soft"><h3>Un label paraît simple</h3><p>« Actualités », « tendances », « pour vous », « fraude », « risque », « recommandé »…</p></div>
+<div class="card sky"><h3>Mais il intègre une définition</h3><p>Qu’est-ce qui compte comme tendance ? Quels comportements entrent dans la catégorie « risque » ?</p></div>
+</div>
+
+<div class="callout" style="margin-top:28px;">Une catégorie documentaire peut devenir une <strong>variable calculable</strong>. C’est l’un des passages essentiels vers l’analyse des algorithmes.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="11" aria-label="Diapositive 11 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">11</div>
+<h2>Naviguer : proposer des chemins</h2>
+<div class="grid3">
+<div class="card"><h3>Navigation globale</h3><p>Les grands espaces disponibles dans un système.</p></div>
+<div class="card sky"><h3>Navigation locale</h3><p>Les options propres à une rubrique ou à un sous-ensemble.</p></div>
+<div class="card"><h3>Navigation contextuelle</h3><p>Les liens et relations proposés à partir de l’objet consulté.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:30px;">Une interface ne montre jamais intégralement tous les chemins possibles. Elle <strong>va orienter</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="12" aria-label="Diapositive 12 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">12</div>
+<h2>Rechercher : indexer avant de répondre</h2>
+<div class="stack3">
+<div class="layer3"><b>Collecte</b><span>Quels objets entrent dans le système ?</span><em>CORPUS</em></div>
+<div class="layer3"><b>Indexation</b><span>Quels champs, mots, identifiants ou attributs décrivent les objets ?</span><em>STRUCTURE</em></div>
+<div class="layer3"><b>Requête</b><span>Qu’est-ce que l’utilisateur peut effectivement demander ?</span><em>ACCÈS</em></div>
+<div class="layer3"><b>Classement</b><span>Dans quel ordre les réponses sont-elles présentées ?</span><em>PERTINENCE</em></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="13" aria-label="Diapositive 13 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">13</div>
+<h2>La trouvabilité est construite</h2>
+<div class="grid2">
+<div>
+<p class="huge">Trouvable ≠ existant</p>
+<p>Un document peut exister sans être indexé, correctement décrit, interrogeable ou suffisamment haut dans un classement.</p>
+</div>
+<div class="card signal"><h3>Question d’hyperinvestigation</h3><p>Quelles décisions documentaires et algorithmiques expliquent qu’un objet apparaisse — ou n’apparaisse pas ?</p></div>
+</div>
+
+<div class="sources">Pour approfondir : Peter Morville, <em>Ambient Findability</em>, O’Reilly, 2005.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="14" aria-label="Diapositive 14 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">14</div>
+<div class="section-number">2 · Hyperlittératie</div>
+
+<h1>Lire l’interface, mais aussi ce qui la <strong>fait fonctionner</strong></h1>
+<div class="big muted">Documents · données · catégories · calculs · infrastructures</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="15" aria-label="Diapositive 15 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">15</div>
+<h2>Pourquoi parler d’hyperlittératie ?</h2>
+<div>
+<span class="pill">information literacy</span>
+<span class="pill">media literacy</span>
+<span class="pill">digital literacy</span>
+<span class="pill">data literacy</span>
+<span class="pill hot">algorithmic literacy</span>
+<span class="pill">AI literacy</span>
+</div>
+
+<div class="grid2" style="margin-top:30px;">
+<div class="card"><h3>Le risque du catalogue</h3><p>Ajouter une nouvelle « literacy » à chaque technologie produit vite une liste interminable de compétences.</p></div>
+<div class="card sky"><h3>Le choix du cours</h3><p>Apprendre à <strong>articuler</strong> plusieurs régimes de lecture dans une situation d’enquête.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="16" aria-label="Diapositive 16 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">16</div>
+<h2>Littératie algorithmique : votre lecture obligatoire</h2>
+<div class="research">
+<h3>Le Deuff & Roumanos</h3>
+<p class="big">Comprendre les algorithmes suppose de relier <strong>culture critique</strong>, compréhension des mécanismes et <strong>documentation des traitements</strong>.</p>
+<p>La rétro-ingénierie documentaire consiste à reconstruire ce que l’on peut du fonctionnement d’un système à partir de ses traces, de sa documentation, de ses interfaces, de ses entrées et de ses sorties.</p>
+</div>
+
+<div class="sources">O. Le Deuff & R. Roumanos, « Enjeux définitionnels et scientifiques de la littératie algorithmique : entre mécanologie et rétro-ingénierie documentaire », <em>tic&société</em>, vol. 15, 2022 — DOI : 10.4000/ticetsociete.7105.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="17" aria-label="Diapositive 17 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">17</div>
+<h2>Une approche mécanologique</h2>
+<div class="grid2">
+<div class="card soft"><h3>Ne pas rester à la surface</h3><p>Comprendre la fonction du dispositif, ses pièces, ses dépendances, son environnement.</p></div>
+<div class="card sky"><h3>Ne pas réduire au code</h3><p>Un système algorithmique articule données, règles, modèles, interfaces, organisations et usages.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:34px;">La question n’est pas seulement « quel algorithme ? », mais <strong>quel système sociotechnique produit ce résultat ?</strong></div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="18" aria-label="Diapositive 18 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">18</div>
+<h2>Algorithme ≠ système algorithmique</h2>
+<div class="io">
+<div class="box"><b>Entrées</b><span>données, variables, catégories</span></div>
+<div class="arr">→</div>
+<div class="box"><b>Traitement</b><span>règles, modèle, calcul, pondérations</span></div>
+<div class="arr">→</div>
+<div class="box"><b>Sorties</b><span>score, ordre, recommandation, décision</span></div>
+</div>
+
+<div class="callout" style="margin-top:28px;">Autour du calcul : <strong>objectifs institutionnels, documentation, interfaces, agents humains, procédures de recours et publics affectés</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="19" aria-label="Diapositive 19 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">19</div>
+<h2>Déplier les couches sous une interface</h2>
+<div class="stack3">
+<div class="layer3"><b>Interface</b><span>Ce qui est affiché, cliquable ou demandé.</span><em>VISIBLE</em></div>
+<div class="layer3"><b>Classement</b><span>Ordre, filtres, scores, recommandations.</span><em>MÉDIATION</em></div>
+<div class="layer3"><b>Données</b><span>Variables, historiques, catégories, profils.</span><em>MATIÈRE</em></div>
+<div class="layer3"><b>Modèle / règles</b><span>Calcul qui transforme les entrées en sorties.</span><em>CALCUL</em></div>
+<div class="layer3"><b>Infrastructure</b><span>API, bases, standards, prestataires, permissions.</span><em>CONDITIONS</em></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="20" aria-label="Diapositive 20 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">20</div>
+<h2>Les documents font partie du système</h2>
+<div class="document-chain">
+<div>Notice</div><div>Code source</div><div>Rapport technique</div><div>Journal / log</div><div>Interface</div>
+<div>Marché public</div><div>FAQ</div><div>Base de données</div><div>Audit</div><div>Recours</div>
+</div>
+
+<div class="callout" style="margin-top:24px;">Une enquête algorithmique est très souvent une <strong>enquête documentaire</strong> avant d’être une enquête informatique.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="21" aria-label="Diapositive 21 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">21</div>
+<div class="section-number">3 · Premiers algorithmes</div>
+
+<h1>Quatre opérations à apprendre à reconnaître</h1>
+<div class="big muted">Trier · filtrer · recommander · scorer</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="22" aria-label="Diapositive 22 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">22</div>
+<h2>Quatre opérations, quatre questions</h2>
+<div class="ops">
+<div class="op"><h3>Trier</h3><p>Dans quel ordre les objets sont-ils présentés ?</p><span class="pill">ranking</span></div>
+<div class="op"><h3>Filtrer</h3><p>Qu’est-ce qui disparaît avant même l’affichage ?</p><span class="pill">filtering</span></div>
+<div class="op"><h3>Recommander</h3><p>Qu’est-ce que le système estime pertinent pour moi ?</p><span class="pill">recommendation</span></div>
+<div class="op"><h3>Scorer</h3><p>Comment une situation ou une personne reçoit-elle une note ?</p><span class="pill hot">risk score</span></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="23" aria-label="Diapositive 23 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">23</div>
+<h2>Le classement est une opération éditoriale</h2>
+<div class="grid2">
+<div>
+<p class="big">Mettre un résultat en premier lui donne une <strong>visibilité supérieure</strong>.</p>
+<p>Ce choix peut dépendre de la pertinence calculée, de la popularité, de la personnalisation, d’un objectif commercial ou d’une règle institutionnelle.</p>
+</div>
+<div class="card sky"><h3>Question</h3><p>Quels critères de pertinence sont utilisés et lesquels restent invisibles ?</p></div>
+</div>
+
+<div class="sources">Approfondissement : Taina Bucher, <em>If...Then: Algorithmic Power and Politics</em>, Oxford University Press, 2018.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="24" aria-label="Diapositive 24 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">24</div>
+<h2>La recommandation produit un environnement</h2>
+<div class="grid3">
+<div class="card"><h3>Historique</h3><p>Le système observe des comportements antérieurs.</p></div>
+<div class="card sky"><h3>Prédiction</h3><p>Il estime ce qui pourrait retenir l’attention ou susciter une action.</p></div>
+<div class="card"><h3>Boucle</h3><p>La recommandation influence les comportements qui alimentent ensuite le système.</p></div>
+</div>
+
+<div class="callout" style="margin-top:28px;">L’algorithme décrit des préférences tout en participant à leur <strong>formation</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="25" aria-label="Diapositive 25 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">25</div>
+<h2>Le score transforme des catégories en nombre</h2>
+<div class="grid2">
+<div class="card soft"><h3>Avant</h3><p>Situation familiale, revenu, emploi, historique, territoire, comportement…</p></div>
+<div class="card signal"><h3>Après</h3><p>Une valeur synthétique : risque, priorité, solvabilité, pertinence, suspicion.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:33px;">Le nombre semble objectif. L’enquête doit remonter vers les <strong>catégories, pondérations et choix qui l’ont produit</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section grid-bg" data-slide="26" aria-label="Diapositive 26 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">26</div>
+<div class="section-number">4 · Cas d’enquête</div>
+
+<h1>Ouvrir la « boîte noire » de l’algorithme des CAF</h1>
+<div class="big muted">Le Monde × Lighthouse Reports</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="27" aria-label="Diapositive 27 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">27</div>
+<h2>Le problème étudié</h2>
+<div class="casebox">
+<h3>Un score pour orienter les contrôles</h3>
+<p>La CNAF utilise un modèle de ciblage pour attribuer un score de risque aux dossiers d’allocataires et prioriser certains contrôles.</p>
+<p class="big">L’enquête pose une question très simple : <strong>quels critères produisent ce score et quels publics sont le plus exposés au contrôle ?</strong></p>
+</div>
+
+<div class="sources">Le Monde, 4 décembre 2023 ; Lighthouse Reports, <em>How We Investigated France’s Mass Profiling Machine</em>, 2023.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="28" aria-label="Diapositive 28 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">28</div>
+<h2>Comment enquêter sans « deviner » l’algorithme ?</h2>
+<div class="document-chain">
+<div>Demandes de documents</div><div>Code / modèle</div><div>Documentation technique</div><div>Entretiens</div><div>Contre-expertise</div>
+</div>
+
+<div class="callout" style="margin-top:30px;">Le cœur de l’enquête est une combinaison : <strong>accès documentaire + analyse technique + contextualisation sociale + transparence méthodologique</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="29" aria-label="Diapositive 29 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">29</div>
+<h2>La méthode est elle-même publiée</h2>
+<div class="grid2">
+<div class="card sky"><h3>Lighthouse Reports</h3><p>La méthodologie explique comment le modèle a été analysé, quelles hypothèses ont été testées et quelles limites subsistent.</p></div>
+<div class="card"><h3>Le Monde</h3><p>L’enquête donne accès à des critères, échanges et documents transmis par la CNAF, ce qui rend une partie du raisonnement inspectable.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:28px;">Publier la méthode transforme l’enquête en <strong>objet critiquable et réutilisable</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="30" aria-label="Diapositive 30 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">30</div>
+<h2>Architecture de l’information → score</h2>
+<div class="flow">
+<div class="step"><b>Catégories</b><span>décrire les situations</span></div><div class="arrow">→</div>
+<div class="step"><b>Variables</b><span>rendre calculable</span></div><div class="arrow">→</div>
+<div class="step"><b>Pondérations</b><span>donner du poids</span></div><div class="arrow">→</div>
+<div class="step"><b>Score</b><span>ordonner le risque</span></div><div class="arrow">→</div>
+<div class="step"><b>Contrôle</b><span>produire un effet</span></div>
+</div>
+
+<div class="callout" style="margin-top:27px;">Le lien avec l’architecture de l’information est direct : <strong>nommer et classer prépare parfois la possibilité de calculer</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="31" aria-label="Diapositive 31 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">31</div>
+<h2>Pourquoi ce cas est exemplaire</h2>
+<div class="grid4">
+<div class="card"><div class="num">01</div><h3>Documenter</h3><p>Obtenir les documents plutôt que spéculer.</p></div>
+<div class="card sky"><div class="num">02</div><h3>Reconstruire</h3><p>Relier variables, modèle, score et procédure.</p></div>
+<div class="card"><div class="num">03</div><h3>Mesurer</h3><p>Observer les effets sur les populations concernées.</p></div>
+<div class="card sky"><div class="num">04</div><h3>Rendre compte</h3><p>Publier méthode, limites et éléments probants.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="32" aria-label="Diapositive 32 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">32</div>
+<h2>Une boîte noire n’est pas un mur noir</h2>
+<div class="retro">
+<div class="side"><h3>Ce que vous ne voyez pas</h3><p>Tout le code, les données historiques, les arbitrages internes, les versions successives.</p></div>
+<div class="middle">⇄</div>
+<div class="side"><h3>Ce que vous pouvez observer</h3><p>Documents, interfaces, variables, sorties, effets, marchés, déclarations, API, témoignages, changements.</p></div>
+</div>
+
+<div class="callout" style="margin-top:25px;">La rétro-ingénierie documentaire consiste à <strong>maximiser ce qui devient observable</strong>, puis à indiquer clairement ce qui reste inconnu.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="33" aria-label="Diapositive 33 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">33</div>
+<div class="section-number">5 · Premiers gestes d’audit</div>
+
+<h1>Tester un système sans prétendre tout savoir</h1>
+<div class="big muted">Question · variation · observation · répétition · limites</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="34" aria-label="Diapositive 34 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">34</div>
+<h2>Six formes d’accès à un système algorithmique</h2>
+<div class="auditgrid">
+<div class="audit"><b>Documentation</b><span>Notices, modèles, politiques, rapports, marchés publics.</span></div>
+<div class="audit"><b>Code / données</b><span>Accès direct lorsque celui-ci est possible.</span></div>
+<div class="audit"><b>Entrées / sorties</b><span>Faire varier un paramètre et observer les résultats.</span></div>
+<div class="audit"><b>Comptes tests</b><span>Comparer des profils contrôlés ou « sock puppets ».</span></div>
+<div class="audit"><b>Dons de données</b><span>Travailler à partir des environnements réels d’utilisateurs volontaires.</span></div>
+<div class="audit"><b>Effets observés</b><span>Relier décisions, classements ou recommandations à des conséquences concrètes.</span></div>
+</div>
+
+<div class="sources">Voir aussi : AlgorithmWatch, travaux sur l’audit des systèmes de recommandation ; AI Forensics, outils et méthodes d’audit de plateformes.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="35" aria-label="Diapositive 35 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">35</div>
+<h2>Un mini-protocole de test</h2>
+<div class="axis"><div class="n">1</div><div><b>Formuler une question étroite</b><p>Ex. : ce changement de profil modifie-t-il l’ordre des recommandations ?</p></div></div>
+<div class="axis"><div class="n">2</div><div><b>Définir ce qui varie</b><p>Un paramètre à la fois si possible.</p></div></div>
+<div class="axis"><div class="n">3</div><div><b>Stabiliser le reste</b><p>Date, appareil, langue, localisation, historique, compte.</p></div></div>
+<div class="axis"><div class="n">4</div><div><b>Répéter et documenter</b><p>Captures, horodatage, résultats, anomalies, limites.</p></div></div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="36" aria-label="Diapositive 36 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">36</div>
+<h2>Attention : observer n’est pas expliquer</h2>
+<div class="grid3">
+<div class="card"><h3>Corrélation</h3><p>Deux phénomènes évoluent ensemble.</p></div>
+<div class="card sky"><h3>Effet reproductible</h3><p>Une variation contrôlée produit régulièrement un changement.</p></div>
+<div class="card signal"><h3>Mécanisme</h3><p>Vous disposez d’éléments suffisants pour expliquer comment l’effet est produit.</p></div>
+</div>
+
+<div class="callout" style="margin-top:27px;">Une bonne enquête sait dire <strong>jusqu’où elle peut conclure</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="37" aria-label="Diapositive 37 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">37</div>
+<h2>Les infrastructures d’accès peuvent elles-mêmes être enquêtées</h2>
+<div class="casebox">
+<h3>AI Forensics × TikTok Research API</h3>
+<p>En 2025, AI Forensics a testé l’API de recherche fournie aux chercheurs et signalé des métadonnées manquantes pour une partie des vidéos observées.</p>
+<p class="big">L’accès aux données n’est donc pas seulement un moyen d’enquête : <strong>la qualité de cet accès devient elle-même un objet d’enquête</strong>.</p>
+</div>
+
+<div class="sources">AI Forensics, « TikTok’s Research API: Problems without Explanations », 12 juin 2025 — https://aiforensics.org/work/tk-api</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="38" aria-label="Diapositive 38 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">38</div>
+<h2>Les acteurs à connaître</h2>
+<div class="grid4">
+<div class="card"><h3>AlgorithmWatch</h3><p>Recherche, enquêtes et plaidoyer sur les systèmes de décision automatisée.</p></div>
+<div class="card sky"><h3>AI Forensics</h3><p>Audits techniques, outils et collecte de preuves sur les plateformes et l’IA.</p></div>
+<div class="card"><h3>Lighthouse Reports</h3><p>Enquêtes collaboratives combinant données, documents et méthodes computationnelles.</p></div>
+<div class="card sky"><h3>ECAT</h3><p>Expertise scientifique et technique de la Commission européenne pour la transparence algorithmique sous le DSA.</p></div>
+</div>
+
+<div class="sources">algorithmwatch.org · aiforensics.org · lighthousereports.com · algorithmic-transparency.ec.europa.eu</div>
+
+
+</section></div><div class="slide-wrap"><section class="activity" data-slide="39" aria-label="Diapositive 39 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">39</div>
+<div class="activity-label">Atelier · 20 min</div>
+
+<h1>Démonter un petit système algorithmique</h1>
+<div class="grid2">
+<div class="card"><h3>Choisissez un objet</h3><p>Moteur de recherche, recommandation YouTube/TikTok, classement d’une plateforme, outil de scoring, moteur d’IA.</p></div>
+<div class="card sky"><h3>Votre objectif</h3><p>Produire une carte minimale du dispositif, sans chercher à « craquer » le système.</p></div>
+</div>
+
+<div class="callout" style="margin-top:28px;">Vous mobilisez vos acquis de recherche et d’OSINT ; le travail nouveau consiste à <strong>documenter l’architecture et le calcul</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="40" aria-label="Diapositive 40 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">40</div>
+<h2>La grille de démontage</h2>
+<div class="minimap">
+<div><b>1 · Objet</b><br>Quelle fonction remplit le système ?</div>
+<div><b>2 · Entrées</b><br>Quelles données ou actions semblent prises en compte ?</div>
+<div><b>3 · Organisation</b><br>Quelles catégories, labels et hiérarchies ?</div>
+<div><b>4 · Calcul</b><br>Tri, filtre, score, recommandation ?</div>
+<div><b>5 · Sorties</b><br>Que voit ou subit l’utilisateur ?</div>
+<div><b>6 · Documentation</b><br>Quelles sources permettent de comprendre le dispositif ?</div>
+<div><b>7 · Test</b><br>Quelle variation simple pourrait être observée ?</div>
+<div><b>8 · Limites</b><br>Qu’est-ce qui restera inconnu après votre test ?</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="41" aria-label="Diapositive 41 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">41</div>
+<h2>Variante ludique : « Can you break the algorithm? »</h2>
+<div class="grid2">
+<div>
+<p class="big">AlgorithmWatch propose un petit jeu où l’on incarne un journaliste enquêtant sur l’algorithme d’un réseau social.</p>
+<p>Il permet de tester une idée centrale du cours : <strong>une boîte noire peut être étudiée de l’extérieur</strong>.</p>
+</div>
+<div class="card signal"><h3>À essayer</h3><p>https://algorithmwatch.org/en/break-algorithm-game/</p><p class="small">À utiliser comme échauffement ou en autonomie.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="42" aria-label="Diapositive 42 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">42</div>
+<h2>Jalon pour votre projet</h2>
+<div class="grid3">
+<div class="card"><div class="num">À AJOUTER</div><h3>Une architecture</h3><p>Quels systèmes organisent votre terrain ou votre corpus ?</p></div>
+<div class="card sky"><div class="num">À REPÉRER</div><h3>Une médiation calculée</h3><p>Classement, score, recommandation, filtre ou automatisation.</p></div>
+<div class="card"><div class="num">À FORMULER</div><h3>Une question testable</h3><p>Une observation qui pourra être documentée ou mise à l’épreuve.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="43" aria-label="Diapositive 43 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">43</div>
+<h2>Lecture obligatoire + document exemplaire</h2>
+<div class="grid2">
+<div class="card sky">
+<div class="badge">Lecture obligatoire</div>
+<h3>Le Deuff & Roumanos</h3>
+<p>« Enjeux définitionnels et scientifiques de la littératie algorithmique : entre mécanologie et rétro-ingénierie documentaire », <em>tic&société</em>, 2022.</p>
+<p class="small">https://journals.openedition.org/ticetsociete/7105</p>
+</div>
+<div class="card">
+<div class="badge orange">À examiner</div>
+<h3>Lighthouse Reports × Le Monde</h3>
+<p>« How We Investigated France’s Mass Profiling Machine » + enquête sur l’algorithme de la CNAF.</p>
+<p class="small">https://www.lighthousereports.com/methodology/how-we-investigated-frances-mass-profiling-machine/</p>
+</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="44" aria-label="Diapositive 44 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">44</div>
+<h2>Pour approfondir</h2>
+<div class="grid2">
+<div class="card"><h3>Architecture de l’information</h3><p>Louis Rosenfeld, Peter Morville & Jorge Arango, <em>Information Architecture: For the Web and Beyond</em>, O’Reilly, 2015.</p></div>
+<div class="card sky"><h3>Pouvoir algorithmique</h3><p>Taina Bucher, <em>If...Then: Algorithmic Power and Politics</em>, Oxford University Press, 2018.</p></div>
+<div class="card sky"><h3>Plateformes</h3><p>Tarleton Gillespie, <em>Custodians of the Internet</em>, Yale University Press, 2018.</p></div>
+<div class="card"><h3>Audit</h3><p>Meßmer & Degeling, <em>Auditing Recommender Systems</em>, Stiftung Neue Verantwortung / interface, 2023.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="45" aria-label="Diapositive 45 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">45</div>
+<h2>À retenir</h2>
+<div class="flow">
+<div class="step"><b>Nommer</b><span>construit des catégories</span></div><div class="arrow">→</div>
+<div class="step"><b>Organiser</b><span>construit la trouvabilité</span></div><div class="arrow">→</div>
+<div class="step"><b>Calculer</b><span>construit un ordre</span></div><div class="arrow">→</div>
+<div class="step"><b>Tester</b><span>rend des effets observables</span></div><div class="arrow">→</div>
+<div class="step"><b>Documenter</b><span>rend l’enquête critiquable</span></div>
+</div>
+
+<div class="quote-large" style="margin-top:34px;">En hyperinvestigation, on ne demande pas seulement <strong>« que dit le système ? »</strong>, mais <strong>« comment ce résultat est-il devenu possible ? »</strong></div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="46" aria-label="Diapositive 46 sur 46">
+<header>Hyperinvestigation · S03</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="section-number">Prochaine étape</div>
+
+<h1>De la catégorie à l’<strong>indice</strong></h1>
+<div class="big muted">Séance 4 · Paradigme indiciaire, culture de l’enquête et paradigme inquisitorial</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-end" alt="" /></p>
+
+</section></div>
+</main>
+<div class="nav" aria-label="Navigation des diapositives">
+<button type="button" id="prev" aria-label="Diapositive précédente">‹</button>
+<div class="count" id="count"></div>
+<button type="button" id="next" aria-label="Diapositive suivante">›</button>
+<button type="button" id="fullscreen" class="fs" aria-label="Plein écran">⛶</button>
+</div>
+<div class="help">← → naviguer · F plein écran · H aide · Home/End début/fin</div>
+<script>
+(() => {
+ const wraps=[...document.querySelectorAll('.slide-wrap')];
+ let index=0;
+ const clamp=i=>Math.max(0,Math.min(wraps.length-1,i));
+ function fromHash(){const n=parseInt(location.hash.slice(1),10);if(Number.isFinite(n)) index=clamp(n-1)}
+ function scale(){const s=Math.min(innerWidth/1280,innerHeight/720);for(const w of wraps) w.style.transform=`translate(-50%,-50%) scale(${s})`}
+ function show(i,push=true){index=clamp(i);wraps.forEach((w,j)=>w.classList.toggle('active',j===index));document.getElementById('count').textContent=`${index+1} / ${wraps.length}`;if(push) history.replaceState(null,'',`#${index+1}`);document.title=`${wraps[index].querySelector('h1,h2')?.textContent?.trim() || 'Hyperlittératie, architecture de l’information et premiers algorithmes'} · Hyperlittératie, architecture de l’information et premiers algorithmes`}
+ function next(){show(index+1)} function prev(){show(index-1)}
+ addEventListener('resize',scale);addEventListener('hashchange',()=>{fromHash();show(index,false)});
+ document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;
+ document.getElementById('fullscreen').onclick=()=>{if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+ addEventListener('keydown',e=>{
+   if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+   else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();prev()}
+   else if(e.key==='Home'){e.preventDefault();show(0)}
+   else if(e.key==='End'){e.preventDefault();show(wraps.length-1)}
+   else if(e.key.toLowerCase()==='f'){document.getElementById('fullscreen').click()}
+   else if(e.key.toLowerCase()==='h'){document.body.classList.toggle('show-help')}
+ });
+ let sx=null;addEventListener('touchstart',e=>sx=e.changedTouches[0].clientX,{passive:true});addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60) dx<0?next():prev();sx=null},{passive:true});
+ fromHash();scale();show(index,false);
+})();
+</script>
+</body>
+</html>

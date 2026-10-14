@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Séance 1 — Enquêter, documenter et rendre compte dans les environnements numériques">
+<title>Introduction à l’hyperinvestigation</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#eee;font-family:Inter,Aptos,"Segoe UI",Arial,sans-serif}
+*{box-sizing:border-box}
+#deck{position:fixed;inset:0;overflow:hidden;background:#e9e7ea}
+.slide-wrap{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;display:none}
+.slide-wrap.active{display:block}
+.slide-wrap>section{position:absolute!important;inset:0!important;margin:0!important}
+.page-counter{position:absolute;right:28px;bottom:17px;color:var(--violet2,#7c7186);font-size:14px;z-index:20}
+.nav{position:fixed;z-index:1000;right:18px;bottom:18px;display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:999px;background:rgba(35,31,40,.72);backdrop-filter:blur(8px);opacity:.22;transition:opacity .2s}
+.nav:hover,.nav:focus-within{opacity:.95}
+.nav button{appearance:none;border:0;border-radius:999px;background:rgba(255,255,255,.14);color:white;width:34px;height:34px;font-size:18px;cursor:pointer}
+.nav button:hover{background:rgba(255,255,255,.25)}
+.nav .count{color:white;font-size:13px;min-width:58px;text-align:center;font-variant-numeric:tabular-nums}
+.nav .fs{font-size:15px}
+.help{position:fixed;left:18px;bottom:18px;z-index:1000;color:white;background:rgba(35,31,40,.65);border-radius:999px;padding:8px 12px;font-size:12px;opacity:0;transition:opacity .2s;pointer-events:none}
+body.show-help .help{opacity:.95}
+@media print{html,body{overflow:visible;background:white}#deck{position:static;background:white}.slide-wrap{position:relative;display:block!important;left:auto;top:auto;transform:none!important;page-break-after:always}.nav,.help{display:none}}
+
+/* =========================================================
+   HYPERION / S01 — LAVENDER LIGHT
+   Tout est volontairement contenu dans ce fichier .md.
+   Couleurs principales à modifier ici :
+   --paper / --lavender / --violet / --ink / --signal
+   ========================================================= */
+:root {
+  --paper: #fbfaf8;
+  --paper2: #f4f1f6;
+  --paper3: #ece8f1;
+  --lavender: #b9afc2;
+  --lavender2: #d8d1de;
+  --violet: #65586f;
+  --violet2: #84768e;
+  --ink: #2c2930;
+  --muted: #625c67;
+  --line: #d8d1dc;
+  --signal: #c7895b;
+  --signal2: #ead5c4;
+  --mint: #dcebe6;
+  --sky: #dfe9f0;
+  --white: #ffffff;
+}
+
+section {
+  width: 1280px;
+  height: 720px;
+  padding: 64px 76px 54px 84px;
+  background:
+    radial-gradient(circle at 91% 8%, rgba(185,175,194,.16), transparent 24%),
+    linear-gradient(135deg, var(--paper) 0%, #f8f6f8 100%);
+  color: var(--ink);
+  font-family: Inter, Aptos, "Segoe UI", Arial, sans-serif;
+  font-size: 27px;
+  line-height: 1.30;
+  letter-spacing: -.01em;
+  position: relative;
+}
+
+section::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 10px; height: 100%;
+  background: linear-gradient(180deg, var(--violet), var(--lavender), var(--signal));
+}
+
+section h1, section h2, section h3 {
+  color: var(--violet);
+  font-weight: 680;
+  letter-spacing: -.03em;
+  margin-top: 0;
+}
+section h1 { font-size: 66px; line-height: 1.02; margin-bottom: 22px; }
+section h2 { font-size: 43px; line-height: 1.08; margin-bottom: 23px; }
+section h3 { font-size: 27px; margin-bottom: 9px; }
+section p { margin: .35em 0 .68em; }
+section strong { color: var(--violet); font-weight: 760; }
+section em { color: var(--muted); }
+section ul { margin-top: .3em; }
+section li { margin: .22em 0; }
+section li::marker { color: var(--signal); }
+section blockquote {
+  margin: 22px 0;
+  padding: 17px 23px 17px 27px;
+  border-left: 5px solid var(--violet2);
+  background: rgba(244,241,246,.82);
+  border-radius: 0 14px 14px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  line-height: 1.28;
+}
+header, footer {
+  position: absolute;
+  left: 84px; right: 58px;
+  color: #7a727e;
+  font-size: 13px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+header { top: 23px; }
+footer { bottom: 18px; }
+section::after { right: 28px; bottom: 17px; color: var(--violet2); font-size: 14px; }
+
+/* typographie et repères */
+.kicker { color: var(--violet2); font-size: 16px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 13px; }
+.subtitle { max-width: 800px; color: var(--muted); font-size: 29px; line-height: 1.26; }
+.meta { margin-top: 30px; color: var(--muted); font-size: 18px; }
+.big { font-size: 39px; line-height: 1.16; letter-spacing: -.025em; }
+.huge { font-size: 57px; line-height: 1.05; letter-spacing: -.04em; }
+.small { font-size: 18px; color: var(--muted); }
+.tiny { font-size: 14px; color: var(--muted); }
+.muted { color: var(--muted); }
+.signal { color: #9c6239; }
+.rule { width: 82px; height: 4px; background: var(--signal); border-radius: 5px; margin: 16px 0 25px; }
+.sources { position: absolute; left: 84px; right: 70px; bottom: 39px; font-size: 11.5px; line-height: 1.23; color: #716a75; }
+
+/* cartes */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+.grid5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.card {
+  background: rgba(255,255,255,.82);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px 22px;
+  box-shadow: 0 10px 24px rgba(78,65,88,.045);
+}
+.card.soft { background: var(--paper2); }
+.card.mint { background: #f1f7f5; border-color: #ceded8; }
+.card.sky { background: #f2f6f9; border-color: #cedbe4; }
+.card.signal { background: #fbf3ed; border-color: #e6cdbc; color: var(--ink); }
+.card h3 { font-size: 24px; }
+.card p, .card li { font-size: 20px; }
+.num { font-size: 13px; font-weight: 850; letter-spacing: .14em; color: var(--violet2); margin-bottom: 7px; }
+
+.pill { display: inline-block; margin: 3px 5px 3px 0; padding: 7px 12px; border-radius: 999px; background: var(--paper3); color: var(--violet); font-size: 15px; font-weight: 750; }
+.pill.hot { background: var(--signal2); color: #7d4f2d; }
+.callout { padding: 16px 22px; border-radius: 14px; background: var(--paper2); border: 1px solid var(--lavender2); font-size: 22px; }
+.quote-large { font-family: Georgia, "Times New Roman", serif; font-size: 34px; line-height: 1.28; max-width: 990px; }
+
+/* chaînes / flux */
+.flow { display: flex; align-items: stretch; gap: 8px; margin-top: 27px; }
+.step { flex: 1; min-width: 0; padding: 17px 12px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255,255,255,.86); text-align: center; }
+.step b { display: block; color: var(--violet); font-size: 20px; margin-bottom: 5px; }
+.step span { display: block; color: var(--muted); font-size: 14px; }
+.arrow { align-self: center; color: var(--lavender); font-size: 27px; }
+.axis { display: grid; grid-template-columns: 60px 1fr; gap: 17px; align-items: start; margin: 13px 0; }
+.axis .n { width: 49px; height: 49px; border-radius: 50%; display:flex; align-items:center; justify-content:center; background: var(--violet); color:white; font-weight:800; font-size:18px; }
+.axis b { color: var(--violet); }
+.axis p { margin: 2px 0; font-size: 20px; }
+
+/* mini-terminal : touche fun mais lisible */
+.terminal { background: #f0edf2; border: 1px solid #d2cbd7; border-radius: 16px; padding: 18px 21px; font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; font-size: 18px; line-height: 1.42; color: #514858; box-shadow: inset 0 1px 0 rgba(255,255,255,.8); }
+.terminal .prompt { color: #9b633c; font-weight: 700; }
+
+/* section / activity */
+section.cover { background: linear-gradient(135deg, #fbfaf8 0%, #f5f2f7 58%, #eee9f1 100%); padding-top: 91px; }
+section.cover h1 { max-width: 770px; font-size: 72px; }
+section.cover::before { width: 14px; }
+section.section { background: linear-gradient(135deg, #f2eef5, #faf9f7); display:flex; flex-direction:column; justify-content:center; }
+section.section h1 { max-width: 930px; font-size: 70px; }
+.section-number { color: var(--violet2); font-size: 16px; font-weight: 850; letter-spacing: .17em; text-transform: uppercase; margin-bottom: 10px; }
+section.activity { background: linear-gradient(135deg, #faf5ef, #f8f5f7); }
+section.activity::before { background: linear-gradient(180deg, var(--signal), #d6aa83); }
+.activity-label { display:inline-block; background: var(--signal2); color:#785038; border-radius:999px; padding:7px 12px; font-size:14px; font-weight:850; letter-spacing:.12em; text-transform:uppercase; margin-bottom:13px; }
+
+/* logo HyperION : tesseract pastel PNG, fiable en Preview Marp et export PDF */
+.logo-cover, .logo-section, .logo-end {
+  position: absolute;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+.logo-cover { right: 76px; top: 132px; width: 270px; opacity: .72; }
+.logo-section { right: 76px; bottom: 70px; width: 122px; opacity: .22; }
+.logo-end { right: 82px; top: 150px; width: 235px; opacity: .28; }
+
+/* grille "struggle over traces" */
+.trace-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:24px; }
+.trace-grid div { padding:18px 12px; text-align:center; border-radius:14px; border:1px solid var(--line); background:white; font-weight:720; color:var(--violet); font-size:19px; }
+.trace-grid div:nth-child(2n) { background:var(--paper2); }
+
+/* tableau */
+table { width:100%; border-collapse:separate; border-spacing:0; font-size:19px; border:1px solid var(--line); border-radius:13px; overflow:hidden; background:rgba(255,255,255,.8); }
+th { background: var(--paper3); color:var(--violet); font-weight:780; }
+th, td { padding:11px 13px; border-bottom:1px solid var(--line); vertical-align:top; }
+tr:last-child td { border-bottom:0; }
+
+/* écran "résultat de recherche" */
+.research { border: 1.5px solid #c8bbcF; background: linear-gradient(135deg,#f7f4f8,#fff); border-radius:20px; padding:25px 28px; position:relative; }
+.research::after { content:"HYPERION · RECHERCHE EN COURS"; position:absolute; right:20px; top:15px; font-size:11px; letter-spacing:.15em; font-weight:850; color:#9a8da3; }
+.research h3 { margin-top:16px; }
+
+</style>
+</head>
+<body>
+<main id="deck" aria-live="polite">
+<div class="slide-wrap"><section class="cover" data-slide="1" aria-label="Diapositive 1 sur 41">
+
+<div class="kicker">Séance 01 · 2026–2027</div>
+
+<h1>Introduction à l’<strong>hyperinvestigation</strong></h1>
+<div class="subtitle">Enquêter, documenter et rendre compte dans des environnements saturés de traces, de données et d’algorithmes.</div>
+
+<div class="rule"></div>
+<div class="meta">Olivier Le Deuff · BUT Information-Communication · parcours INO · Chaire HyperION</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-cover" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="2" aria-label="Diapositive 2 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">2</div>
+<div class="section-number">Question directrice</div>
+
+<h1>Comment passer de compétences dispersées à une <strong>culture intégrée de l’enquête</strong> ?</h1>
+<div class="big muted">Chercher · vérifier · documenter · architecturer · rendre compte</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="3" aria-label="Diapositive 3 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">3</div>
+<h2>Pourquoi ce nouveau cours ?</h2>
+<div class="grid2">
+<div class="card soft">
+<div class="num">HÉRITAGE 01</div>
+<h3>Responsabilité sociétale</h3>
+<p>Impacts, parties prenantes, éthique, transparence, responsabilité et <strong>accountability</strong>.</p>
+</div>
+<div class="card soft">
+<div class="num">HÉRITAGE 02</div>
+<h3>Architecture de l’information</h3>
+<p>Organisation, classification, navigation, modèles de contenu, interfaces et <strong>design de la restitution</strong>.</p>
+</div>
+</div>
+
+<div class="callout" style="margin-top:24px;">Le cours les réorganise autour d’une pratique commune : <strong>construire une enquête dont le cheminement peut être inspecté, discuté et transmis.</strong></div>
+<div class="callout" style="margin-top:24px;"> Présentation du <strong><a href="https://oledeuff.github.io/Hyperion/syllabus/">syllabus</a></strong></div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="4" aria-label="Diapositive 4 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">4</div>
+<h2>Le point de départ : des <strong>milieux de traces</strong></h2>
+<div class="grid3">
+<div class="card"><div class="num">TRACES</div><h3>Des résidus</h3><p>Pages, images, vidéos, profils, métadonnées, historiques, journaux techniques, données de capteurs.</p></div>
+<div class="card"><div class="num">INFRASTRUCTURES</div><h3>Des conditions</h3><p>Plateformes, bases, moteurs, algorithmes, archives, API et systèmes de recommandation.</p></div>
+<div class="card"><div class="num">MÉDIATIONS</div><h3>Des formes</h3><p>Classements, interfaces, visualisations, formats, modèles, récits et dispositifs de preuve.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:28px;">L’enjeu consiste à comprendre <strong>comment une trace devient visible, interprétable, conservable et éventuellement probante.</strong></div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="5" aria-label="Diapositive 5 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">5</div>
+<h2>« Literacy is not enough » : le positionnement du cours</h2>
+<div class="grid2">
+<div class="card">
+<div class="num">LITTÉRATIES CLASSIQUES</div>
+<h3>Accéder · lire · évaluer</h3>
+<p>Compétences indispensables pour s’orienter dans l’information.</p>
+</div>
+<div class="card signal">
+<div class="num">DÉPLACEMENT</div>
+<h3>Tracer · documenter · vérifier · préserver · contester</h3>
+<p>Les environnements datafiés demandent aussi d’examiner les opérations et les infrastructures qui produisent l’information.</p>
+</div>
+</div>
+
+<div class="small" style="margin-top:20px;">Le but est de  positionner les littératies <strong>de manière plus critiques, politiques et offensives</strong>.</div>
+
+<div class="sources">Le Deuff, conférence « Hyperliteracy: From Information Skills to Hyperinvestigation and the Struggle over Traces », 2026.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="6" aria-label="Diapositive 6 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">6</div>
+<div class="section-number">1 · Généalogie documentaire</div>
+
+<h1>De la documentation à l’<strong>hyperdocumentation</strong></h1>
+<div class="big muted">L’enquête numérique commence par une question documentaire.</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-section" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="7" aria-label="Diapositive 7 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">7</div>
+<h2>Paul Otlet : documenter et relier des connaissances**</h2>
+<div class="grid2">
+<div>
+<p class="big">La documentation dépasse le stockage.</p>
+<p>Elle implique <strong>collecte</strong>, <strong>description</strong>, <strong>classement</strong>, <strong>mise en relation</strong> et <strong>circulation</strong>.</p>
+<p class="muted">Le document devient un objet d’action autant qu’un support de mémoire.</p>
+</div>
+<div>
+<div class="axis"><div class="n">1</div><div><b>Collecter</b><p>Rassembler des objets hétérogènes.</p></div></div>
+<div class="axis"><div class="n">2</div><div><b>Organiser</b><p>Décrire, classer, indexer.</p></div></div>
+<div class="axis"><div class="n">3</div><div><b>Relier</b><p>Construire des rapprochements et des parcours.</p></div></div>
+</div>
+</div>
+
+<div class="sources">Paul Otlet, <em>Traité de documentation</em>, 1934.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="8" aria-label="Diapositive 8 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">8</div>
+<h2>Documentation · documentologie · hyperdocumentation</h2>
+<div class="grid3">
+<div class="card"><div class="num">DOCUMENTATION</div><h3>Organiser</h3><p>Techniques, institutions et opérations qui permettent de traiter et faire circuler les documents.</p></div>
+<div class="card soft"><div class="num">DOCUMENTOLOGIE</div><h3>Étudier</h3><p>Étude scientifique du document, de ses propriétés, de ses transformations et de ses usages.</p></div>
+<div class="card"><div class="num">HYPERDOCUMENTATION</div><h3>Étendre</h3><p>Expansion des territoires documentables, des opérations techniques et des interrelations.</p></div>
+</div>
+
+<div class="callout" style="margin-top:23px;">L’hyperinvestigation s'inscrit dans ces trois logiques : <strong>organiser les documents, étudier leur statut, puis expliciter les opérations qui les transforment en éléments de preuve.</strong></div>
+
+<div class="sources">Robert Pagès ; Le Deuff, <em>Hyperdocumentation</em>, 2021 ; Le Deuff & Perret, 2019.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="9" aria-label="Diapositive 9 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">9</div>
+<h2>Hyperdocumentation : trois expansions</h2>
+<div class="grid3">
+<div class="card soft"><div class="num">01 · TERRITOIRES</div><h3>Tout devient documentable</h3><p>Activités, interactions, lieux, mouvements, interfaces et objets techniques produisent des traces.</p></div>
+<div class="card soft"><div class="num">02 · POTENTIALITÉS</div><h3>Les opérations se multiplient</h3><p>Bases, calcul, graphes, automatisation, archivage, recherche plein texte et extraction.</p></div>
+<div class="card soft"><div class="num">03 · INTERRELATIONS</div><h3>Les documents se connectent</h3><p>Liens, identifiants, métadonnées, graphes et relations entre entités.</p></div>
+</div>
+
+<div class="sources">Le Deuff, O. & Perret, A. (2019), « Hyperdocumentation: origin and evolution of a concept », <em>Journal of Documentation</em>, 75(6).</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="10" aria-label="Diapositive 10 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">10</div>
+<h2>De l’hyperdocumentation à l’enquête</h2>
+<div class="flow">
+<div class="step"><b>Documents</b><span>sources et corpus</span></div><div class="arrow">→</div>
+<div class="step"><b>Relations</b><span>liens, acteurs, contextes</span></div><div class="arrow">→</div>
+<div class="step"><b>Opérations</b><span>collecte, tri, calcul</span></div><div class="arrow">→</div>
+<div class="step"><b>Qualification</b><span>fiabilité et pertinence</span></div><div class="arrow">→</div>
+<div class="step"><b>Restitution</b><span>preuve et récit</span></div>
+</div>
+
+<div class="quote-large" style="margin-top:35px;">L’enquête contemporaine travaille moins sur des documents isolés que sur des <strong>configurations documentaires</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="11" aria-label="Diapositive 11 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">11</div>
+<div class="section-number">2 · Hyperlittératie</div>
+
+<h1>Une capacité <strong>inquisitoriale (investigative), documentaire et infrastructurale</strong></h1>
+<div class="big muted">Lire et interpréter les sources ainsi que les architectures qui organisent leur visibilité.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="12" aria-label="Diapositive 12 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">12</div>
+<h2>La prolifération des littératies est un symptôme</h2>
+<div>
+<span class="pill">information literacy</span>
+<span class="pill">media literacy</span>
+<span class="pill">digital literacy</span>
+<span class="pill">data literacy</span>
+<span class="pill">algorithm literacy</span>
+<span class="pill">AI literacy</span>
+<span class="pill hot">OSINT literacy</span>
+</div>
+
+<div class="grid2" style="margin-top:31px;">
+<div class="card"><h3>Le piège</h3><p>Accumuler des compétences spécialisées comme si chacune correspondait à un monde séparé.</p></div>
+<div class="card soft"><h3>Le problème scientifique</h3><p>Comprendre comment données, documents, algorithmes, interfaces et récits participent à une même situation informationnelle.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="13" aria-label="Diapositive 13 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">13</div>
+<h2>Hyperlittératie : une définition de travail</h2>
+<blockquote>
+L’hyperlittératie désigne la capacité à lire, interpréter, produire, documenter et contester des assemblages informationnels complexes composés de données, d’algorithmes, d’interfaces, de traces, de documents, de plateformes et de récits.
+</blockquote>
+
+<div class="callout" style="margin-top:23px;">Elle fournit un <strong>principe d’articulation</strong> entre littératies spécialisées plutôt qu’une « super-compétence » individuelle.</div>
+
+<div class="sources">Définition de travail, programme HyperION, 2026.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="14" aria-label="Diapositive 14 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">14</div>
+<h2>Une capacité <strong>distribuée</strong></h2>
+<div class="grid4">
+<div class="card"><div class="num">INDIVIDU</div><h3>Juger</h3><p>Interpréter, contextualiser, douter.</p></div>
+<div class="card soft"><div class="num">COLLECTIF</div><h3>Recouper</h3><p>Distribuer les expertises, relire, contredire.</p></div>
+<div class="card"><div class="num">TECHNIQUE</div><h3>Instrumenter</h3><p>Interroger, extraire, convertir, calculer.</p></div>
+<div class="card soft"><div class="num">DOCUMENTAIRE</div><h3>Tracer</h3><p>Décrire provenance, versions et transformations.</p></div>
+</div>
+
+<div class="small" style="margin-top:20px; text-align:center;">Le sujet compétent n’est pas un enquêteur omniscient, il opère au sein d' <strong>agencements humains, techniques et documentaires</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="15" aria-label="Diapositive 15 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">15</div>
+<h2>L’OSINT comme laboratoire de l’hyperlittératie</h2>
+<div class="grid5">
+<div class="card soft"><div class="num">01</div><h3>Collecter</h3><p>sources, requêtes, archives</p></div>
+<div class="card soft"><div class="num">02</div><h3>Vérifier</h3><p>source, temps, lieu, contexte</p></div>
+<div class="card soft"><div class="num">03</div><h3>Analyser</h3><p>motifs, réseaux, hypothèses</p></div>
+<div class="card soft"><div class="num">04</div><h3>Documenter</h3><p>méthode, provenance, versions</p></div>
+<div class="card soft"><div class="num">05</div><h3>Protéger</h3><p>éthique, droit, OPSEC</p></div>
+</div>
+
+<div class="callout" style="margin-top:22px;">Une littératie de l’OSINT est indissociable d’une <strong>littératie de ses limites</strong>.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="16" aria-label="Diapositive 16 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">16</div>
+<h2>De l’évaluation à l’investigation</h2>
+<div class="grid2">
+<div class="card">
+<div class="num">QUESTION CLASSIQUE</div>
+<h3>Cette information est-elle fiable ?</h3>
+<p class="muted">Auteur · source · date · qualité · intention</p>
+</div>
+<div class="card signal">
+<div class="num">QUESTION ÉLARGIE</div>
+<h3>Comment cette trace peut-elle devenir vérifiable ?</h3>
+<p class="muted">Provenance · contexte · conservation · opérations · contestabilité</p>
+</div>
+</div>
+
+<div class="huge" style="margin-top:30px;">Évaluer → <span class="signal">enquêter</span></div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="17" aria-label="Diapositive 17 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">17</div>
+<div class="section-number">3 · Hyperinvestigation</div>
+
+<h1>Un <strong>régime documentaire de preuve</strong></h1>
+<div class="big muted">Des traces aux affirmations publiques documentées.</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-section" alt="" /></p>
+
+</section></div><div class="slide-wrap"><section class="" data-slide="18" aria-label="Diapositive 18 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">18</div>
+<h2>Définition de travail</h2>
+<blockquote>
+<p>L’hyperinvestigation désigne des pratiques d’enquête qui articulent sources ouvertes, ingénierie documentaire, outillage logiciel, analyse de données, investigation visuelle, archivage et construction narrative afin de produire des affirmations <strong>documentées, vérifiables, préservables et contestables</strong>.</p>
+</blockquote>
+<div class="grid3" style="margin-top:22px;">
+<div class="card"><h3>Épistémologie</h3><p>Comment une affirmation acquiert-elle un statut de preuve ?</p></div>
+<div class="card"><h3>Ingénierie</h3><p>Comment rendre les opérations explicites et inspectables ?</p></div>
+<div class="card"><h3>Accountability</h3><p>Qui peut vérifier, contester et demander des comptes ?</p></div>
+</div>
+
+<div class="sources">Programme HyperION ; présentation officielle IUF, 2025–2026.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="19" aria-label="Diapositive 19 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">19</div>
+<h2>HyperION : trois axes de recherche</h2>
+<div class="grid3">
+<div class="card soft"><div class="num">01 · ÉPISTÉMOLOGIE</div><h3>Histoire et concepts</h3><p>Information, documentation, investigation, preuve, documentologie.</p></div>
+<div class="card soft"><div class="num">02 · PRATIQUES</div><h3>Terrains et méthodes</h3><p>Corpus, entretiens, OSINT, visual investigation, institutions et rédactions.</p></div>
+<div class="card soft"><div class="num">03 · INGÉNIERIE</div><h3>Recherche-création</h3><p>Graphes documentés, extensions de Cosma, protocoles et formats de restitution.</p></div>
+</div>
+
+<div class="callout" style="margin-top:23px;">Le cours sert aussi de <strong>laboratoire pédagogique</strong> à ce programme de recherche.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="20" aria-label="Diapositive 20 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">20</div>
+<h2>Une trace n’est jamais encore une preuve</h2>
+<div class="flow">
+<div class="step"><b>Trace</b><span>résidu d’une activité</span></div><div class="arrow">→</div>
+<div class="step"><b>Indice</b><span>trace interprétable</span></div><div class="arrow">→</div>
+<div class="step"><b>Document</b><span>objet stabilisé</span></div><div class="arrow">→</div>
+<div class="step"><b>Preuve</b><span>élément qualifié</span></div><div class="arrow">→</div>
+<div class="step"><b>Récit</b><span>mise en intelligibilité</span></div>
+</div>
+
+<div class="callout" style="margin-top:28px;">Chaque passage suppose des opérations, des choix et une qualification du degré de certitude. <strong>La chaîne elle-même fait partie de la preuve.</strong></div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="21" aria-label="Diapositive 21 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">21</div>
+<h2>Résultat de recherche : la preuve est <strong>relationnelle</strong></h2>
+<div class="research">
+<h3>Un indicateur isolé explique rarement une opération complexe.</h3>
+<p>Dans les enquêtes sur les ingérences numériques, les traces prennent sens par le rapprochement de <strong>comportements</strong>, de <strong>temporalités</strong>, d’<strong>infrastructures</strong> et d’<strong>indicateurs techniques</strong>.</p>
+<div class="flow" style="margin-top:20px;">
+<div class="step"><b>signaux</b><span>hétérogènes</span></div><div class="arrow">+</div>
+<div class="step"><b>relations</b><span>cohérentes</span></div><div class="arrow">+</div>
+<div class="step"><b>contexte</b><span>documenté</span></div><div class="arrow">→</div>
+<div class="step"><b>qualification</b><span>argumentée</span></div>
+</div>
+</div>
+
+<div class="sources">Résultats HyperION / MatrioscIA ; analyses des pratiques de VIGINUM, 2025–2026.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="22" aria-label="Diapositive 22 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">22</div>
+<h2>Résultat de recherche : la reproductibilité est aussi <strong>sociale</strong></h2>
+<div class="grid2">
+<div class="research">
+<h3>Rendre le chemin rejouable</h3>
+<p>Une méthode documentée permet à d’autres de refaire une partie du parcours : requêtes, localisation, calculs, synchronisations, rapprochements.</p>
+</div>
+<div class="research">
+<h3>Organiser la contradiction</h3>
+<p>La vérification passe aussi par la relecture, la contre-expertise et la recherche active des failles avant publication.</p>
+</div>
+</div>
+
+<div class="callout" style="margin-top:21px;">La reproductibilité n’est donc pas seulement technique : elle repose sur une <strong>organisation documentaire de la critique</strong>.</div>
+
+<div class="sources">Entretiens HyperION / MatrioscIA, 2025–2026 ; pratiques observées dans les rédactions d’investigation.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="23" aria-label="Diapositive 23 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">23</div>
+<h2>La <strong>lutte des traces</strong></h2>
+<div class="trace-grid">
+<div>Produire</div>
+<div>Capturer</div>
+<div>Manipuler</div>
+<div>Effacer</div>
+<div>Préserver</div>
+</div>
+
+<div class="quote-large" style="margin-top:31px;">Les traces ne sont pas de simples résidus. Elles sont <strong>produites, capturées, interprétées, effacées, archivées, exposées et contestées.</strong></div>
+
+<div class="small" style="margin-top:18px;">L’enquête se déroule donc dans un environnement où les acteurs peuvent agir sur les conditions mêmes de leur observation.</div>
+
+<div class="sources">Le Deuff, « La lutte des traces », article soumis, 2026.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="24" aria-label="Diapositive 24 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">24</div>
+<h2>Une trace peut être un <strong>piège</strong></h2>
+<div class="grid2">
+<div class="card signal">
+<div class="num">PROBLÈME</div>
+<h3>Les indices peuvent être fabriqués</h3>
+<p>Métadonnées modifiées, contenus sortis de leur contexte, faux comptes, traces techniques destinées à produire une attribution erronée.</p>
+</div>
+<div class="card">
+<div class="num">CONSÉQUENCE</div>
+<h3>Le recoupement devient central</h3>
+<p>Une trace accessible techniquement n’est pas encore une trace fiable. Sa provenance et sa cohérence doivent être éprouvées par d’autres éléments.</p>
+</div>
+</div>
+
+<div class="callout" style="margin-top:24px;">Il faut anticiper la possibilité d’une manipulation intentionnelle des indices.</div>
+
+<div class="sources">Entretiens HyperION, 2026 ; cas de métadonnées GPS manipulées rapporté par un enquêteur international.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="25" aria-label="Diapositive 25 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">25</div>
+<h2>Ingénierie documentaire : rendre les opérations inspectables</h2>
+<div class="grid2">
+<div>
+<div class="axis"><div class="n">1</div><div><b>Protocole</b><p>Qu’a-t-on cherché, quand, où et comment ?</p></div></div>
+<div class="axis"><div class="n">2</div><div><b>Provenance</b><p>D’où vient la source et comment a-t-elle été acquise ?</p></div></div>
+<div class="axis"><div class="n">3</div><div><b>Transformation</b><p>Qu’a-t-on converti, nettoyé, calculé ou annoté ?</p></div></div>
+</div>
+<div class="terminal"><span class="prompt">$</span> source.md<br><span class="prompt">$</span> evidence.csv<br><span class="prompt">$</span> graph.yml<br><span class="prompt">$</span> notes.md<br><span class="prompt">$</span> archive.wacz<br><br># la méthode devient visible</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="section" data-slide="26" aria-label="Diapositive 26 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">26</div>
+<div class="section-number">4 · Deux héritages, une méthode</div>
+
+<h1>Enquêter, <strong>architecturer</strong>, rendre compte</h1>
+<div class="big muted">Le protocole et la restitution participent ensemble à la solidité de l’enquête.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="27" aria-label="Diapositive 27 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">27</div>
+<h2>Ce que la responsabilité sociétale apporte</h2>
+<div class="grid2">
+<div>
+<div class="axis"><div class="n">1</div><div><b>Impacts</b><p>Que produit le dispositif étudié, et pour qui ?</p></div></div>
+<div class="axis"><div class="n">2</div><div><b>Parties prenantes</b><p>Qui agit, qui subit, qui peut répondre ?</p></div></div>
+</div>
+<div>
+<div class="axis"><div class="n">3</div><div><b>Accountability</b><p>Quelles décisions doivent être expliquées et justifiées ?</p></div></div>
+<div class="axis"><div class="n">4</div><div><b>Limites</b><p>Que faut-il protéger, contextualiser ou ne pas exposer ?</p></div></div>
+</div>
+</div>
+
+<div class="callout" style="margin-top:20px;">L’éthique devient une <strong>dimension du protocole</strong>, et pas une vérification ajoutée au dernier moment.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="28" aria-label="Diapositive 28 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">28</div>
+<h2>Ce que l’architecture de l’information apporte</h2>
+<div class="grid4">
+<div class="card"><h3>Structure</h3><p>Hiérarchie, relations, modèle de contenu.</p></div>
+<div class="card"><h3>Repérage</h3><p>Navigation, indexation, recherche, métadonnées.</p></div>
+<div class="card"><h3>Lisibilité</h3><p>Visualisations, parcours et niveaux de détail.</p></div>
+<div class="card"><h3>Vérifiabilité</h3><p>Accès aux sources, méthode, annexes et données.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:29px;">Une enquête bien structurée permet au lecteur de <strong>retrouver le chemin de la preuve</strong>.</div>
+
+<div class="sources">Voir Morville & Rosenfeld.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="29" aria-label="Diapositive 29 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">29</div>
+<h2>Cinq espaces de travail</h2>
+<div class="flow">
+<div class="step"><b>Terrain</b><span>observer · capter · collecter</span></div><div class="arrow">→</div>
+<div class="step"><b>Atelier</b><span>nettoyer · comparer · analyser</span></div><div class="arrow">→</div>
+<div class="step"><b>Studio</b><span>visualiser · éditorialiser</span></div><div class="arrow">→</div>
+<div class="step"><b>Forum</b><span>exposer · discuter · contester</span></div><div class="arrow">→</div>
+<div class="step"><b>Archives</b><span>conserver · transmettre</span></div>
+</div>
+
+<div class="callout" style="margin-top:31px;">Le projet final devra conserver la trace des passages entre ces espaces : <strong>du terrain jusqu’à l’archive.</strong></div>
+<div class="sources">Voir Fuller & Weizman</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="30" aria-label="Diapositive 30 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">30</div>
+<h2>Quelques mondes (et modes) de l’hyperinvestigation</h2>
+<div class="grid4">
+<div class="card soft"><div class="num">JOURNALISME</div><h3>Bellingcat</h3><p>Sources ouvertes, vérification collective, méthodes et archives.</p></div>
+<div class="card soft"><div class="num">INVESTIGATION VISUELLE</div><h3>Forensic Architecture</h3><p>Images, espace, chronologies, modèles et démonstration publique.</p></div>
+<div class="card soft"><div class="num">INSTITUTIONS</div><h3>VIGINUM</h3><p>Comportements, infrastructures, indicateurs et qualification d’opérations.</p></div>
+<div class="card soft"><div class="num">DATAJOURNALISME</div><h3>Données</h3><p>Corpus, traitements, visualisation et récit explicatif.</p></div>
+</div>
+
+<div class="small" style="margin-top:20px;">Mandats et légitimités diffèrent ; les problèmes documentaires de provenance, de preuve, de conservation et de restitution se recoupent.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="31" aria-label="Diapositive 31 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">31</div>
+<h2>IA générative : un instrument, jamais une preuve autonome</h2>
+<div class="grid3">
+<div class="card"><h3>Déclarer</h3><p>Signaler les usages qui influencent le résultat ou la forme de la production.</p></div>
+<div class="card"><h3>Conserver</h3><p>Garder les prompts utiles et les transformations lorsqu’ils comptent pour la méthode.</p></div>
+<div class="card"><h3>Vérifier</h3><p>Revenir aux sources et assumer les choix finaux.</p></div>
+</div>
+
+<div class="quote-large" style="margin-top:31px;">Une sortie générée peut assister une opération. Elle ne constitue ni une source ni une preuve par elle-même.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="32" aria-label="Diapositive 32 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">32</div>
+<h2>Le projet final : une investigation limitée mais <strong>complète</strong></h2>
+<div class="grid3">
+<div class="card"><div class="num">ENQUÊTER</div><h3>Question + protocole</h3><p>Terrain circonscrit, sources, risques, hypothèses et critères d’arrêt.</p></div>
+<div class="card"><div class="num">DOCUMENTER</div><h3>Journal + corpus</h3><p>Sources, opérations, versions, données, métadonnées et limites.</p></div>
+<div class="card"><div class="num">PUBLIER</div><h3>Site + data paper</h3><p>Récit, architecture, visualisations, annexes, archive et licences.</p></div>
+</div>
+
+<div class="callout" style="margin-top:23px;">La qualité du protocole, de la documentation et de la restitution prime sur l’ampleur du sujet.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="33" aria-label="Diapositive 33 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">33</div>
+<h2>La méthode fait partie de la preuve</h2>
+<div class="grid2">
+<div>
+<p class="big">Un résultat sans chaîne documentaire reste difficile à auditer.</p>
+<div class="callout">Requêtes, décisions, transformations, erreurs et bifurcations deviennent des <strong>objets à documenter</strong>.</div>
+</div>
+<div class="terminal"><span class="prompt">/enquete/</span><br>├── sources.md<br>├── registre-preuves.csv<br>├── journal.md<br>├── data/<br>├── scripts/<br>├── graph.yml<br>├── site/<br>└── archive/</div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="activity" data-slide="34" aria-label="Diapositive 34 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">34</div>
+<div class="activity-label">Activité · 25 à 30 minutes</div>
+
+<h2>Décomposer une enquête publiée</h2>
+<div class="grid3">
+<div class="card"><div class="num">01</div><h3>Sources</h3><p>Quels documents, images, données ou témoignages sont mobilisés ?</p></div>
+<div class="card"><div class="num">02</div><h3>Opérations</h3><p>Quelles recherches, vérifications, comparaisons ou calculs ?</p></div>
+<div class="card"><div class="num">03</div><h3>Preuves</h3><p>Quels éléments soutiennent réellement les affirmations ?</p></div>
+<div class="card"><div class="num">04</div><h3>Architecture</h3><p>Comment circule-t-on entre récit, méthode et sources ?</p></div>
+<div class="card"><div class="num">05</div><h3>Incertitudes</h3><p>Qu’est-ce qui reste hypothétique, incomplet ou contestable ?</p></div>
+<div class="card"><div class="num">06</div><h3>Responsabilité</h3><p>Quels effets produit la publication et qui peut demander des comptes ?</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="activity" data-slide="35" aria-label="Diapositive 35 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">35</div>
+<div class="activity-label">Grille de lecture</div>
+
+<h2>Une enquête comme <strong>architecture de preuve</strong></h2>
+<table>
+<thead><tr><th>Élément</th><th>Question à poser</th></tr></thead>
+<tbody>
+<tr><td><strong>Trace</strong></td><td>D’où vient-elle ? Dans quel contexte a-t-elle été produite ?</td></tr>
+<tr><td><strong>Opération</strong></td><td>Qu’a-t-on fait pour la collecter, la transformer ou la comparer ?</td></tr>
+<tr><td><strong>Qualification</strong></td><td>Pourquoi devient-elle pertinente pour l’hypothèse ?</td></tr>
+<tr><td><strong>Restitution</strong></td><td>Où le lecteur peut-il la retrouver et comprendre son rôle ?</td></tr>
+<tr><td><strong>Contestation</strong></td><td>Comment pourrait-on mettre ce raisonnement à l’épreuve ?</td></tr>
+</tbody>
+</table>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="36" aria-label="Diapositive 36 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">36</div>
+<h2>Premier jalon du projet</h2>
+<div class="grid2">
+<div class="card soft"><div class="num">GROUPES</div><h3>4 étudiants</h3><p>5 au maximum si la configuration de la promotion l’impose.</p></div>
+<div class="card soft"><div class="num">PROCHAINE SÉANCE</div><h3>3 terrains possibles</h3><p>Chaque groupe arrive avec trois sujets brièvement justifiés.</p></div>
+</div>
+
+<div class="callout" style="margin-top:25px;">Un bon terrain est <strong>circonscrit, documentable, légalement accessible et suffisamment riche en traces</strong> pour construire une chaîne de vérification.</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="37" aria-label="Diapositive 37 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">37</div>
+<h2>Comment reconnaître un terrain praticable ?</h2>
+<div class="grid3">
+<div class="card"><h3>Assez petit</h3><p>Une question précise, une période ou un dispositif délimité.</p></div>
+<div class="card"><h3>Assez ouvert</h3><p>Des sources accessibles sans intrusion ni collecte disproportionnée.</p></div>
+<div class="card"><h3>Assez incertain</h3><p>Une vraie question à instruire, plutôt qu’une réponse déjà connue.</p></div>
+<div class="card"><h3>Assez documentable</h3><p>Des opérations qui peuvent être consignées et rejouées.</p></div>
+<div class="card"><h3>Assez responsable</h3><p>Des risques identifiables et maîtrisables.</p></div>
+<div class="card"><h3>Assez publiable</h3><p>Une restitution compatible avec droits, licences et prudence.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="38" aria-label="Diapositive 38 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">38</div>
+<h2>Lecture principale</h2>
+<div class="card soft" style="padding:28px 32px;">
+<div class="num">★ NOYAU DU CORPUS</div>
+<h2 style="font-size:35px; margin-bottom:10px;">Olivier Le Deuff & Arthur Perret, 2019</h2>
+<p class="big"><em>« Hyperdocumentation: origin and evolution of a concept »</em></p>
+<p><em>Journal of Documentation</em>, 75(6), 1463–1474.</p>
+</div>
+
+<div class="grid2" style="margin-top:21px;">
+<div><h3>À repérer</h3><p>L’extension des territoires documentaires, des potentialités techniques et des interrelations.</p></div>
+<div><h3>Question de lecture</h3><p>À quel moment l’hyperdocumentation devient-elle une condition de l’enquête contemporaine ?</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="39" aria-label="Diapositive 39 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">39</div>
+<h2>Pour prolonger la séance</h2>
+<div class="grid3">
+<div class="card"><div class="num">DOCUMENT</div><h3>Le Deuff, 2021</h3><p><em>Hyperdocumentation</em>. Pour la généalogie théorique et politique.</p></div>
+<div class="card"><div class="num">PREUVE</div><h3>Fuller & Weizman, 2021</h3><p><em>Investigative Aesthetics</em>. Pour la construction et la mise en public des preuves.</p></div>
+<div class="card"><div class="num">MÉTHODE</div><h3>Berkeley Protocol</h3><p>Pour la collecte, la préservation et la vérification des contenus numériques.</p></div>
+</div>
+
+
+</section></div><div class="slide-wrap"><section class="" data-slide="40" aria-label="Diapositive 40 sur 41">
+<header>Hyperinvestigation · S01</header>
+<footer>HyperION · BUT Information-Communication · parcours INO · Olivier Le Deuff</footer>
+<div class="page-counter" aria-hidden="true">40</div>
+<h2>Quatre idées à garder</h2>
+<div class="axis"><div class="n">1</div><div><b>L’hyperlittératie articule des capacités dispersées.</b><p>Elle est investigative, documentaire et infrastructurale.</p></div></div>
+<div class="axis"><div class="n">2</div><div><b>L’hyperinvestigation est un régime documentaire de preuve.</b><p>La crédibilité dépend de la chaîne entre traces, opérations, qualifications et récit.</p></div></div>
+<div class="axis"><div class="n">3</div><div><b>Les traces sont disputées.</b><p>Elles peuvent être produites, manipulées, effacées, préservées et contestées.</p></div></div>
+<div class="axis"><div class="n">4</div><div><b>L’architecture et l’accountability appartiennent à la méthode.</b><p>La restitution doit rendre le raisonnement inspectable.</p></div></div>
+
+
+</section></div><div class="slide-wrap"><section class="cover" data-slide="41" aria-label="Diapositive 41 sur 41">
+
+<div class="kicker">HyperION · Hyperinvestigation</div>
+
+<h1>Enquêter, c’est construire les <strong>conditions de vérification</strong>.</h1>
+<div class="subtitle">Et accepter que les traces, les outils et les récits puissent eux-mêmes devenir des objets d’enquête.</div>
+
+<div class="rule"></div>
+<div class="meta">S01 · Introduction à l’hyperinvestigation</div>
+
+<p><img src="../assets/tesseract-couleurs.png" class="logo-end" alt="" /></p>
+
+</section></div>
+</main>
+<div class="nav" aria-label="Navigation des diapositives">
+<button type="button" id="prev" aria-label="Diapositive précédente">‹</button>
+<div class="count" id="count"></div>
+<button type="button" id="next" aria-label="Diapositive suivante">›</button>
+<button type="button" id="fullscreen" class="fs" aria-label="Plein écran">⛶</button>
+</div>
+<div class="help">← → naviguer · F plein écran · H aide · Home/End début/fin</div>
+<script>
+(() => {
+ const wraps=[...document.querySelectorAll('.slide-wrap')];
+ let index=0;
+ const clamp=i=>Math.max(0,Math.min(wraps.length-1,i));
+ function fromHash(){const n=parseInt(location.hash.slice(1),10);if(Number.isFinite(n)) index=clamp(n-1)}
+ function scale(){const s=Math.min(innerWidth/1280,innerHeight/720);for(const w of wraps) w.style.transform=`translate(-50%,-50%) scale(${s})`}
+ function show(i,push=true){index=clamp(i);wraps.forEach((w,j)=>w.classList.toggle('active',j===index));document.getElementById('count').textContent=`${index+1} / ${wraps.length}`;if(push) history.replaceState(null,'',`#${index+1}`);document.title=`${wraps[index].querySelector('h1,h2')?.textContent?.trim() || 'Introduction à l’hyperinvestigation'} · Introduction à l’hyperinvestigation`}
+ function next(){show(index+1)} function prev(){show(index-1)}
+ addEventListener('resize',scale);addEventListener('hashchange',()=>{fromHash();show(index,false)});
+ document.getElementById('next').onclick=next;document.getElementById('prev').onclick=prev;
+ document.getElementById('fullscreen').onclick=()=>{if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};
+ addEventListener('keydown',e=>{
+   if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();next()}
+   else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();prev()}
+   else if(e.key==='Home'){e.preventDefault();show(0)}
+   else if(e.key==='End'){e.preventDefault();show(wraps.length-1)}
+   else if(e.key.toLowerCase()==='f'){document.getElementById('fullscreen').click()}
+   else if(e.key.toLowerCase()==='h'){document.body.classList.toggle('show-help')}
+ });
+ let sx=null;addEventListener('touchstart',e=>sx=e.changedTouches[0].clientX,{passive:true});addEventListener('touchend',e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60) dx<0?next():prev();sx=null},{passive:true});
+ fromHash();scale();show(index,false);
+})();
+</script>
+</body>
+</html>
