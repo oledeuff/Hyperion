@@ -1,7 +1,108 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperinvestigation · Slides</title><style>
-:root{--paper:#fbfaf8;--lav:#b9afc2;--vio:#65586f;--ink:#2c2930;--muted:#625c67;--line:#d8d1dc;--signal:#c7895b}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,var(--paper),#f4f1f6);color:var(--ink);font-family:Inter,Aptos,"Segoe UI",Arial,sans-serif}main{max-width:1080px;margin:auto;padding:70px 28px 80px}.k{text-transform:uppercase;letter-spacing:.16em;font-weight:800;font-size:13px;color:#84768e}h1{font-size:clamp(42px,7vw,76px);line-height:1;margin:12px 0 20px;color:var(--vio)}.lead{font-size:21px;color:var(--muted);max-width:760px;line-height:1.45}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:44px}.card{text-decoration:none;color:inherit;background:rgba(255,255,255,.83);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 12px 30px rgba(78,65,88,.05);transition:.18s}.card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(78,65,88,.09)}.card .n{font-size:12px;font-weight:900;letter-spacing:.14em;color:#84768e}.card h2{color:var(--vio);font-size:24px;line-height:1.1}.card p{color:var(--muted);font-size:16px;line-height:1.42}.go{display:inline-block;margin-top:10px;color:#9c6239;font-weight:750}</style></head><body><main><div class="k">HyperION · BUT Information-Communication · parcours INO</div><h1>Hyperinvestigation</h1><p class="lead">Supports de cours interactifs — séances 1 à 5. Navigation au clavier, au tactile ou avec les commandes de chaque présentation.</p><div class="grid"><a class="card" href="seance-01.html"><span class="n">01</span><h2>Introduction à l’hyperinvestigation</h2><p>Séance 1 — Enquêter, documenter et rendre compte dans les environnements numériques</p><span class="go">Ouvrir les slides →</span></a>
-<a class="card" href="seance-02.html"><span class="n">02</span><h2>RSO : documenter la responsabilité</h2><p>Séance 2 — Responsabilité sociétale, communication, preuves et greenwashing</p><span class="go">Ouvrir les slides →</span></a>
-<a class="card" href="seance-03.html"><span class="n">03</span><h2>Hyperlittératie, architecture de l’information et premiers algorithmes</h2><p>Séance 3 — Organiser, classer, chercher, trier, scorer, recommander</p><span class="go">Ouvrir les slides →</span></a>
-<a class="card" href="seance-04.html"><span class="n">04</span><h2>Traces, indices et enquête : le paradigme indiciaire</h2><p>Séance 4 — De Ginzburg à la culture de l’enquête et au paradigme inquisitorial</p><span class="go">Ouvrir les slides →</span></a>
-<a class="card" href="seance-05.html"><span class="n">05</span><h2>Construire un protocole d’enquête</h2><p>Séance 5 — De l’hypothèse au corpus, du corpus aux opérations et aux paradata</p><span class="go">Ouvrir les slides →</span></a></div></main></body></html>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hyperinvestigation — syllabus 2026–2027</title>
+<style>body{font-family:system-ui,sans-serif;background:#fbfaf8;color:#27242b;max-width:780px;margin:80px auto;padding:0 24px;line-height:1.6}.loading{padding:22px;border:1px solid #ded8e1;border-radius:16px;background:#fff}</style>
+</head>
+<body>
+<div class="loading"><strong>Chargement du syllabus Hyperinvestigation…</strong></div>
+<script>
+(async()=>{
+  const response=await fetch('syllabus-base.html',{cache:'no-store'});
+  if(!response.ok) throw new Error('Impossible de charger le syllabus de référence.');
+  const html=await response.text();
+  const doc=new DOMParser().parseFromString(html,'text/html');
+
+  doc.title='Hyperinvestigation — syllabus 2026–2027';
+
+  const style=doc.createElement('style');
+  style.textContent=`
+    .version-note{margin:18px 0 0;display:inline-block;padding:7px 11px;border-radius:999px;background:var(--signal-bg);color:var(--violet-dark);font-size:.75rem;font-weight:800;letter-spacing:.05em}
+    .progress-note{margin:20px 0 28px;padding:16px 18px;border:1px solid var(--lav);border-radius:14px;background:#f7f3f8;color:var(--violet-dark)}
+    .support-link{display:inline-flex;align-items:center;gap:8px;margin:4px 0 14px;padding:9px 13px;border-radius:999px;background:var(--violet-dark);color:#fff!important;text-decoration:none!important;font-size:.84rem;font-weight:750}
+    .support-link:hover{background:var(--signal);color:#fff!important}
+    .session-status{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:-2px!important}
+  `;
+  doc.head.appendChild(style);
+
+  const kicker=doc.querySelector('.kicker');
+  if(kicker){
+    const badge=doc.createElement('div');
+    badge.className='version-note';
+    badge.textContent='Version de travail · 14 octobre 2026';
+    kicker.insertAdjacentElement('afterend',badge);
+  }
+
+  const org=doc.querySelector('#organisation-generale');
+  if(org){
+    const first=org.nextElementSibling;
+    if(first && first.tagName==='P'){
+      first.innerHTML='La structure ci-dessous conserve l’architecture générale prévue en début de semestre, mais elle est désormais <strong>mise à jour progressivement à partir du cours réellement dispensé</strong>. Les cinq premières séances correspondent aux supports effectivement mobilisés ; la suite reste indicative et pourra être réordonnée ou regroupée à mesure que les projets d’enquête des groupes se précisent.';
+    }
+    const note=doc.createElement('div');
+    note.className='progress-note';
+    note.innerHTML='<strong>Principe de cette version.</strong> Le syllabus devient un document vivant : les supports, lectures, enquêtes et opérations réellement travaillés sont intégrés au fil du semestre, sans reconstruire à chaque fois l’ensemble du programme.';
+    first?.insertAdjacentElement('afterend',note);
+  }
+
+  const timeline=doc.querySelector('.timeline');
+  if(timeline){
+    const cards=[...timeline.querySelectorAll('a')];
+    if(cards[0]) cards[0].querySelector('small').textContent='S1–S3 · parcours réalisé';
+    if(cards[1]) cards[1].querySelector('small').textContent='S4–S5 · parcours réalisé';
+    if(cards[2]) cards[2].querySelector('small').textContent='suite · à ajuster';
+  }
+
+  const sessions=[...doc.querySelectorAll('details.session')];
+  const slideLabels=[
+    'Voir les slides — séance 1',
+    'Voir les slides — séance 2',
+    'Voir les slides — séance 3',
+    'Voir les slides — séance 4',
+    'Voir les slides — séance 5'
+  ];
+  sessions.slice(0,5).forEach((session,i)=>{
+    const content=session.querySelector('.session-content');
+    if(!content) return;
+    const link=doc.createElement('a');
+    link.className='support-link';
+    link.href=`seance-0${i+1}.html`;
+    link.target='_blank';
+    link.rel='noopener';
+    link.textContent=slideLabels[i]+' ↗';
+    content.insertAdjacentElement('afterbegin',link);
+    const status=doc.createElement('p');
+    status.className='session-status';
+    status.textContent='Support intégré au syllabus à partir de la version effectivement enseignée.';
+    link.insertAdjacentElement('afterend',status);
+  });
+
+  if(sessions[4]){
+    const content=sessions[4].querySelector('.session-content');
+    const paras=[...content.querySelectorAll('p')];
+    const contenus=paras.find(p=>p.textContent.startsWith('Contenus.'));
+    if(contenus){
+      contenus.innerHTML='<strong>Contenus.</strong> Question enquêtable et possibilité d’échec ; hypothèses et contre-hypothèses ; délimitation du périmètre ; critères d’inclusion et d’arrêt ; corpus et paquet documentaire minimal ; journal d’enquête ; provenance ; métadonnées et paradata ; chaîne de conservation ; risques ; usages documentés de l’IA ; publication de la méthodologie.';
+    }
+    const objectifs=paras.find(p=>p.textContent.startsWith('Objectifs.'));
+    if(objectifs){
+      objectifs.innerHTML='<strong>Objectifs.</strong> Transformer une intuition en protocole révisable ; définir ce qui pourrait confirmer ou affaiblir une hypothèse ; documenter les opérations et les transformations ; rendre le cheminement suffisamment explicite pour qu’un tiers puisse le comprendre, le discuter et en tester une partie.';
+    }
+    const exemplaire=paras.find(p=>p.textContent.startsWith('Document exemplaire.'));
+    if(exemplaire){
+      exemplaire.innerHTML='<strong>Document exemplaire.</strong> Lighthouse Reports, « How we turned visa receipts into evidence of VFS’s add-on business » (2026), utilisé pour observer comment un corpus hétérogène est obtenu, OCRisé, parsé, normalisé, calculé et accompagné de limites explicites.';
+    }
+  }
+
+  const final='<!doctype html>\n'+doc.documentElement.outerHTML;
+  document.open();
+  document.write(final);
+  document.close();
+})().catch(err=>{
+  document.querySelector('.loading').innerHTML='<strong>Erreur de chargement.</strong><br>'+err.message;
+});
+</script>
+</body>
+</html>
