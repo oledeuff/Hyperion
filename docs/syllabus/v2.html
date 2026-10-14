@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hyperinvestigation — syllabus v2</title>
+<style>body{font-family:system-ui,sans-serif;background:#fbfaf8;color:#27242b;max-width:780px;margin:80px auto;padding:0 24px;line-height:1.6}.loading{padding:22px;border:1px solid #ded8e1;border-radius:16px;background:#fff}</style>
+</head>
+<body>
+<div class="loading"><strong>Chargement du syllabus Hyperinvestigation — version de travail 2…</strong></div>
+<script>
+(async()=>{
+  const response=await fetch('index.html',{cache:'no-store'});
+  if(!response.ok) throw new Error('Impossible de charger le syllabus de référence.');
+  const html=await response.text();
+  const doc=new DOMParser().parseFromString(html,'text/html');
+
+  doc.title='Hyperinvestigation — syllabus 2026–2027 · v2';
+
+  const style=doc.createElement('style');
+  style.textContent=`
+    .version-note{margin:18px 0 0;display:inline-block;padding:7px 11px;border-radius:999px;background:var(--signal-bg);color:var(--violet-dark);font-size:.75rem;font-weight:800;letter-spacing:.05em}
+    .progress-note{margin:20px 0 28px;padding:16px 18px;border:1px solid var(--lav);border-radius:14px;background:#f7f3f8;color:var(--violet-dark)}
+    .support-link{display:inline-flex;align-items:center;gap:8px;margin:4px 0 14px;padding:9px 13px;border-radius:999px;background:var(--violet-dark);color:#fff!important;text-decoration:none!important;font-size:.84rem;font-weight:750}
+    .support-link:hover{background:var(--signal);color:#fff!important}
+    .session-status{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:-2px!important}
+  `;
+  doc.head.appendChild(style);
+
+  const kicker=doc.querySelector('.kicker');
+  if(kicker){
+    const badge=doc.createElement('div');
+    badge.className='version-note';
+    badge.textContent='Version de travail · 14 octobre 2026';
+    kicker.insertAdjacentElement('afterend',badge);
+  }
+
+  const org=doc.querySelector('#organisation-generale');
+  if(org){
+    const first=org.nextElementSibling;
+    if(first && first.tagName==='P'){
+      first.innerHTML='La structure ci-dessous conserve l’architecture générale prévue en début de semestre, mais elle est désormais <strong>mise à jour progressivement à partir du cours réellement dispensé</strong>. Les cinq premières séances correspondent aux supports effectivement mobilisés ; la suite reste indicative et pourra être réordonnée ou regroupée à mesure que les projets d’enquête des groupes se précisent.';
+    }
+    const note=doc.createElement('div');
+    note.className='progress-note';
+    note.innerHTML='<strong>Principe de cette version.</strong> Le syllabus devient un document vivant : les supports, lectures, enquêtes et opérations réellement travaillés sont intégrés au fil du semestre, sans reconstruire à chaque fois l’ensemble du programme.';
+    first?.insertAdjacentElement('afterend',note);
+  }
+
+  const timeline=doc.querySelector('.timeline');
+  if(timeline){
+    const cards=[...timeline.querySelectorAll('a')];
+    if(cards[0]) cards[0].querySelector('small').textContent='S1–S3 · parcours réalisé';
+    if(cards[1]) cards[1].querySelector('small').textContent='S4–S5 · parcours réalisé';
+    if(cards[2]) cards[2].querySelector('small').textContent='suite · à ajuster';
+  }
+
+  const sessions=[...doc.querySelectorAll('details.session')];
+  const slideLabels=[
+    'Voir les slides — séance 1',
+    'Voir les slides — séance 2',
+    'Voir les slides — séance 3',
+    'Voir les slides — séance 4',
+    'Voir les slides — séance 5'
+  ];
+  sessions.slice(0,5).forEach((session,i)=>{
+    const content=session.querySelector('.session-content');
+    if(!content) return;
+    const link=doc.createElement('a');
+    link.className='support-link';
+    link.href=`seance-0${i+1}.html`;
+    link.target='_blank';
+    link.rel='noopener';
+    link.textContent=slideLabels[i]+' ↗';
+    content.insertAdjacentElement('afterbegin',link);
+    const status=doc.createElement('p');
+    status.className='session-status';
+    status.textContent='Support intégré au syllabus à partir de la version effectivement enseignée.';
+    link.insertAdjacentElement('afterend',status);
+  });
+
+  if(sessions[4]){
+    const content=sessions[4].querySelector('.session-content');
+    const paras=[...content.querySelectorAll('p')];
+    const contenus=paras.find(p=>p.textContent.startsWith('Contenus.'));
+    if(contenus){
+      contenus.innerHTML='<strong>Contenus.</strong> Question enquêtable et possibilité d’échec ; hypothèses et contre-hypothèses ; délimitation du périmètre ; critères d’inclusion et d’arrêt ; corpus et paquet documentaire minimal ; journal d’enquête ; provenance ; métadonnées et paradata ; chaîne de conservation ; risques ; usages documentés de l’IA ; publication de la méthodologie.';
+    }
+    const objectifs=paras.find(p=>p.textContent.startsWith('Objectifs.'));
+    if(objectifs){
+      objectifs.innerHTML='<strong>Objectifs.</strong> Transformer une intuition en protocole révisable ; définir ce qui pourrait confirmer ou affaiblir une hypothèse ; documenter les opérations et les transformations ; rendre le cheminement suffisamment explicite pour qu’un tiers puisse le comprendre, le discuter et en tester une partie.';
+    }
+    const exemplaire=paras.find(p=>p.textContent.startsWith('Document exemplaire.'));
+    if(exemplaire){
+      exemplaire.innerHTML='<strong>Document exemplaire.</strong> Lighthouse Reports, « How we turned visa receipts into evidence of VFS’s add-on business » (2026), utilisé pour observer comment un corpus hétérogène est obtenu, OCRisé, parsé, normalisé, calculé et accompagné de limites explicites.';
+    }
+  }
+
+  // La séance 6 et les suivantes sont volontairement conservées dans cette v2 :
+  // elles serviront de réserve de contenus et seront réorganisées progressivement.
+
+  const final='<!doctype html>\n'+doc.documentElement.outerHTML;
+  document.open();
+  document.write(final);
+  document.close();
+})().catch(err=>{
+  document.querySelector('.loading').innerHTML='<strong>Erreur de chargement.</strong><br>'+err.message;
+});
+</script>
+</body>
+</html>
