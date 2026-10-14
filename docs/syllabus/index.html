@@ -3,483 +3,106 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Enquêter sur les organisations, les données, les algorithmes et leurs traces">
 <title>Hyperinvestigation — syllabus 2026–2027</title>
-<style>
-:root{
-  --paper:#fbfaf8; --surface:#ffffff; --ink:#27242b; --muted:#6d6671;
-  --lav:#b9afc2; --lav2:#e9e4ed; --violet:#665873; --violet-dark:#4d4058;
-  --signal:#b97848; --signal-bg:#f5e7dc; --mint:#e3efea; --sky:#e5edf3;
-  --rose:#f2e3e7; --sand:#f3ead8; --line:#ded8e1;
-  --max:1180px; --radius:18px;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.58}
-a{color:var(--violet-dark);text-decoration-thickness:1px;text-underline-offset:3px}
-a:hover{color:var(--signal)}
-.hero{border-bottom:1px solid var(--line);background:
- radial-gradient(circle at 82% 15%,rgba(185,175,194,.35),transparent 25%),
- linear-gradient(135deg,#fff 0%,#f5f1f7 68%,#efe9f2 100%)}
-.hero-inner{max-width:var(--max);margin:auto;padding:72px 32px 52px;display:grid;grid-template-columns:1fr 280px;gap:56px;align-items:end}
-.kicker{font-size:.77rem;letter-spacing:.15em;text-transform:uppercase;color:var(--violet);font-weight:800;margin-bottom:16px}
-h1.hero-title{font-size:clamp(3.1rem,7vw,6.4rem);letter-spacing:-.055em;line-height:.92;margin:0 0 18px;color:var(--ink)}
-.hero-sub{font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.3rem,2.4vw,2rem);line-height:1.25;max-width:800px;color:var(--violet-dark);margin:0 0 24px}
-.hero-meta{font-size:.92rem;color:var(--muted);max-width:850px}
-.hero-verbs{border-left:2px solid var(--violet);padding-left:28px;font-size:1.25rem;line-height:1.55;font-weight:700;color:var(--violet-dark)}
-.shell{max-width:var(--max);margin:auto;padding:28px 32px 70px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:46px}
-.side{position:sticky;top:18px;align-self:start;padding-top:18px}
-.side strong{display:block;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem;color:var(--muted);margin-bottom:12px}
-.side nav{display:flex;flex-direction:column;gap:4px}
-.side nav a{padding:7px 9px;border-radius:9px;text-decoration:none;font-size:.86rem;color:var(--muted)}
-.side nav a:hover,.side nav a.active{background:var(--lav2);color:var(--violet-dark)}
-.side .tools{margin-top:18px;display:flex;gap:7px;flex-wrap:wrap}
-button{appearance:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font:inherit;font-size:.76rem;cursor:pointer;color:var(--muted)}
-button:hover{border-color:var(--lav);color:var(--violet-dark)}
-main{min-width:0}
-main>h1,main>h2{scroll-margin-top:20px}
-main>h1{font-size:2.25rem;letter-spacing:-.035em;margin:62px 0 20px;color:var(--violet-dark)}
-main>h2{font-size:1.75rem;letter-spacing:-.025em;margin:48px 0 16px;color:var(--violet-dark)}
-main>h3{font-size:1.25rem}
-main p{max-width:82ch}
-main li{margin:.33rem 0}
-main table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;font-size:.93rem}
-main th{background:var(--lav2);color:var(--violet-dark);text-align:left}
-main th,main td{padding:13px 15px;vertical-align:top;border-bottom:1px solid var(--line)}
-main tr:last-child td{border-bottom:0}
-main blockquote{margin:22px 0;padding:15px 20px;border-left:4px solid var(--violet);background:#f5f2f6;border-radius:0 12px 12px 0;font-family:Georgia,serif}
-.soft-rule{border:0;height:1px;background:var(--line);margin:34px 0}
-.timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:22px 0 45px}
-.timeline a{text-decoration:none;padding:14px 13px;border:1px solid var(--line);border-radius:13px;background:#fff;min-height:104px;display:flex;flex-direction:column}
-.timeline a:nth-child(1),.timeline a:nth-child(6){background:var(--sky)}
-.timeline a:nth-child(2){background:var(--mint)}
-.timeline a:nth-child(3){background:var(--sand)}
-.timeline a:nth-child(4),.timeline a:nth-child(5){background:var(--rose)}
-.timeline span{text-transform:uppercase;letter-spacing:.08em;font-size:.66rem;font-weight:800;color:var(--muted)}
-.timeline b{font-size:1rem;margin-top:5px;color:var(--violet-dark)}
-.timeline small{margin-top:auto;color:var(--muted)}
-.block-heading{margin:58px 0 8px!important;padding:20px 22px;border-radius:16px;background:linear-gradient(135deg,var(--violet-dark),var(--violet));color:#fff!important;font-size:1.4rem!important;letter-spacing:-.02em}
-.block-heading + p{font-size:.9rem;color:var(--muted);margin:7px 0 14px}
-.session{margin:13px 0;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.86);overflow:hidden;box-shadow:0 8px 24px rgba(60,45,70,.035)}
-.session-summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:92px 1fr auto;gap:14px;align-items:center;padding:16px 18px}
-.session-summary::-webkit-details-marker{display:none}
-.session-summary::after{content:"＋";grid-column:4;color:var(--violet);font-weight:700}
-.session[open] .session-summary::after{content:"−"}
-.session-num{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;font-weight:800;color:var(--signal)}
-.session-title{font-weight:750;color:var(--violet-dark);line-height:1.25}
-.session-date{font-size:.78rem;color:var(--muted);white-space:nowrap}
-.session-content{padding:4px 20px 20px;border-top:1px solid var(--line)}
-.session-content p{margin:.74rem 0}
-.session-content strong:first-child{color:var(--violet-dark)}
-.note-heading{padding:18px 20px;border-radius:16px 16px 0 0;margin-top:30px!important;margin-bottom:0!important}
-.note-one{background:var(--rose)}
-.note-two{background:var(--sand)}
-.note-heading + p{margin-top:0;padding-top:18px}
-.bibliography{columns:2;column-gap:38px;padding-left:24px}
-.bibliography li{break-inside:avoid;margin-bottom:12px}
-#sites-a-conserver-dans-vos-favoris + ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;padding-left:0;list-style:none}
-#sites-a-conserver-dans-vos-favoris + ul li{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px;overflow-wrap:anywhere}
-footer{max-width:var(--max);margin:auto;padding:26px 32px 42px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--line)}
-.mobile-nav{display:none}
-@media(max-width:900px){
-  .hero-inner{grid-template-columns:1fr;padding-top:48px}
-  .hero-verbs{border-left:0;border-top:2px solid var(--violet);padding:18px 0 0;display:flex;gap:16px;flex-wrap:wrap;font-size:1rem}
-  .shell{display:block;padding:18px 18px 54px}
-  .side{display:none}
-  .timeline{grid-template-columns:repeat(2,1fr)}
-  .session-summary{grid-template-columns:78px 1fr;gap:8px}
-  .session-date{grid-column:2}
-  .session-summary::after{grid-column:3;grid-row:1/3}
-  .bibliography{columns:1}
-  #sites-a-conserver-dans-vos-favoris + ul{grid-template-columns:1fr}
-  .mobile-nav{display:block;position:sticky;top:0;z-index:20;background:rgba(251,250,248,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:8px 12px}
-  .mobile-nav select{width:100%;border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px}
-}
-@media print{
-  @page{size:A4;margin:13mm}
-  body{background:#fff;font-size:9.5pt}
-  .hero-inner{padding:0 0 18px;display:block}
-  h1.hero-title{font-size:32pt}
-  .hero-verbs,.side,.mobile-nav,.tools{display:none!important}
-  .shell{display:block;padding:0}
-  .timeline{grid-template-columns:repeat(3,1fr);break-inside:avoid}
-  .session{break-inside:avoid;box-shadow:none}
-  details.session:not([open]) > .session-content{display:block!important}
-  .session-summary::after{display:none}
-  main>h1,main>h2,.block-heading{break-after:avoid}
-  a{color:inherit;text-decoration:none}
-  footer{padding:12px 0}
-}
-</style>
+<style>body{font-family:system-ui,sans-serif;background:#fbfaf8;color:#27242b;max-width:780px;margin:80px auto;padding:0 24px;line-height:1.6}.loading{padding:22px;border:1px solid #ded8e1;border-radius:16px;background:#fff}</style>
 </head>
 <body>
-<header class="hero">
-  <div class="hero-inner">
-    <div>
-      <div class="kicker">Syllabus · 2026–2027</div>
-      <h1 class="hero-title">Hyperinvestigation</h1>
-      <p class="hero-sub">Enquêter sur les organisations, les données, les algorithmes et leurs traces</p>
-      <div class="hero-meta">BUT Information-Communication — parcours INO — 3e année · Olivier Le Deuff · 2026–2027 · cours-ateliers de 2 h · environ 35 h</div>
-    </div>
-    <div class="hero-verbs">Observer<br>Documenter<br>Vérifier<br>Rendre compte</div>
-  </div>
-</header>
-
-<div class="mobile-nav">
-  <select id="jump" aria-label="Aller à une section">
-    <option value="">Navigation…</option>
-    <option value="#presentation-du-cours">Présentation du cours</option><option value="#objectifs-didactiques">Objectifs didactiques</option><option value="#organisation-generale">Organisation générale</option><option value="#projet-file-et-evaluation">Projet filé et évaluation</option><option value="#corpus-denquetes">Corpus d’enquêtes</option><option value="#bibliographie-complementaire">Bibliographie complémentaire</option><option value="#sites-a-conserver-dans-vos-favoris">Sites à conserver dans vos favoris</option>
-  </select>
-</div>
-
-<div class="shell">
-  <aside class="side">
-    <strong>Navigation</strong>
-    <nav><a href="#presentation-du-cours">Présentation du cours</a>
-<a href="#objectifs-didactiques">Objectifs didactiques</a>
-<a href="#organisation-generale">Organisation générale</a>
-<a href="#projet-file-et-evaluation">Projet filé et évaluation</a>
-<a href="#corpus-denquetes">Corpus d’enquêtes</a>
-<a href="#bibliographie-complementaire">Bibliographie complémentaire</a>
-<a href="#sites-a-conserver-dans-vos-favoris">Sites à conserver dans vos favoris</a></nav>
-    <div class="tools">
-      <button id="openAll" type="button">Tout ouvrir</button>
-      <button id="closeAll" type="button">Tout fermer</button>
-    </div>
-  </aside>
-  <main><h2 id="presentation-du-cours">Présentation du cours</h2>
-<p><strong>Hyperinvestigation</strong> rassemble et reconfigure deux enseignements antérieurs — <strong>Responsabilité sociale des organisations</strong> et <strong>Architecture de l’information</strong> — autour d’une même question : <strong>comment enquêter sur des organisations et des systèmes numériques qui produisent, classent, calculent, rendent visibles et documentent l’information ?</strong></p>
-<p>Les cours d'OSINT consituent un préalable. Vous avez déjà travaillé ces méthodes en première et deuxième année et vous disposez d’enseignements complémentaires. Nous utiliserons donc les techniques de recherche en sources ouvertes <strong>comme des moyens déjà disponibles</strong>, pour étudier des objets plus complexes : rapports de responsabilité, jeux de données, algorithmes, plateformes, architectures documentaires, preuves visuelles et controverses.</p>
-<p>Chaque séance associe quatre dimensions :</p>
-<ol>
-<li><p><strong>un problème scientifique ou professionnel</strong> ;</p>
-</li>
-<li><p><strong>un document ou dispositif à démonter</strong> ;</p>
-</li>
-<li><p><strong>une enquête exemplaire à lire, regarder ou explorer</strong> ;</p>
-</li>
-<li><p><strong>une opération à réutiliser dans le projet d’hyperinvestigation</strong>.</p>
-</li>
-</ol>
-<p>Le cours sert également de laboratoire pédagogique aux recherches menées dans le cadre du projet de recherche <strong>HyperION</strong>.</p>
-<hr class="soft-rule"/>
-<h2 id="objectifs-didactiques">Objectifs didactiques</h2>
-<p>L’hyperinvestigation suppose de tenir ensemble plusieurs savoirs que les enseignements séparent souvent : chercher, lire, classer, documenter, vérifier, tester, organiser et restituer. Le cours progresse donc de la compréhension des régimes documentaires vers la conduite d’une enquête dont les opérations restent visibles et discutables.</p>
-<table>
-<thead>
-<tr>
-<th>Niveau</th>
-<th>À l’issue du cours</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>JE CONNAIS</strong></td>
-<td>Les notions d’hyperdocumentation, hyperlittératie et hyperinvestigation ; les principaux régimes et cultures de l’enquête ; les différences entre déclaration, document, donnée, trace, indice et preuve ; les principes de la RSO et du rendre compte ; les bases de l’architecture de l’information ; les opérations algorithmiques de classement, recommandation et scoring ; les notions de provenance, métadonnées et paradata ; les principaux acteurs contemporains de l’investigation numérique.</td>
-</tr>
-<tr>
-<td><strong>JE COMPRENDS</strong></td>
-<td>Comment une trace acquiert une valeur au cours d’une enquête ; comment les recoupements transforment des éléments dispersés en preuve argumentée ; comment catégories, interfaces et algorithmes règlent une partie de la visibilité ; pourquoi un rapport, un indicateur ou un jeu de données doivent être replacés dans leurs conditions de production ; pourquoi l’enquête par indices exige de maintenir plusieurs hypothèses avant de conclure ; comment la documentation du processus renforce la critique et la transmission du travail.</td>
-</tr>
-<tr>
-<td><strong>JE MAÎTRISE</strong></td>
-<td>La formulation d’une question d’enquête circonscrite ; la constitution et l’architecture d’un corpus ; la recherche de contre-sources ; la qualification d’une affirmation ou d’un indicateur ; la formulation d’une question testable sur un système algorithmique ; la construction d’hypothèses concurrentes et d’une matrice de preuve ; la tenue d’un journal d’enquête ; l’explicitation des incertitudes ; la restitution d’une enquête en distinguant ce qui est établi, probable, possible ou inconnu.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="organisation-generale">Organisation générale</h2>
-<p>Les dates ci-dessous suivent l’emploi du temps connu au 1er septembre 2026. Les anciens intitulés administratifs <strong>RSO</strong> et <strong>Architecture de l’information</strong> subsistent dans l’EDT, mais les contenus sont désormais pensés comme un seul parcours Hyperinvestigation. Certains thèmes occupent <strong>4 h ou plus</strong> et traversent plusieurs créneaux.</p>
-<div aria-label="Parcours du semestre" class="timeline">
-<a href="#bloc-1-entrer-dans-lhyperinvestigation"><span>Bloc 1</span><b>Entrer</b><small>S1–S3 · 18 sept.</small></a>
-<a href="#bloc-2-traces-indices-et-protocole"><span>Bloc 2</span><b>Tracer</b><small>S4–S5 · 21–24 sept.</small></a>
-<a href="#bloc-3-donnees-et-algorithmes-fabriquer-classer-decider"><span>Bloc 3</span><b>Données</b><small>S6–S7 · 12–13 oct.</small></a>
-<a href="#bloc-4-voir-verifier-raconter"><span>Bloc 4</span><b>Voir</b><small>S8 · 22 oct.</small></a>
-<a href="#bloc-5-architectures-de-visibilite-et-responsabilite-algorithmique"><span>Bloc 5</span><b>Auditer</b><small>S9–S11 · 10–19 nov.</small></a>
-<a href="#bloc-6-organiser-eprouver-et-restituer-lenquete"><span>Bloc 6</span><b>Restituer</b><small>S12–S17 · 3–8 déc.</small></a>
-</div>
-
-<h3 class="block-heading" id="bloc-1-entrer-dans-lhyperinvestigation">Bloc 1 — Entrer dans l’hyperinvestigation</h3>
-<p><strong>18 septembre · 6 h</strong></p>
-<details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 1</span><span class="session-title">Introduction à l’hyperinvestigation</span><span class="session-date">18 septembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment passer de compétences dispersées à une culture intégrée de l’enquête ?</p>
-<p><strong>Contenus.</strong> Milieux de traces ; documentation, documentologie et hyperdocumentation ; hyperlittératie ; OSINT comme laboratoire de compétences distribuées ; régime documentaire de preuve ; preuve relationnelle ; reproductibilité sociale ; lutte des traces ; ingénierie documentaire ; responsabilité et architecture de l’information ; place raisonnée de l’IA générative dans l’enquête.</p>
-<p><strong>Objectifs.</strong> Comprendre le programme du cours et la notion d’hyperinvestigation ; distinguer traces, opérations, qualifications et preuves ; comprendre pourquoi la méthode, l’architecture documentaire et les conditions de vérification participent à la solidité d’une enquête.</p>
-<p><strong>Lecture obligatoire.</strong> Olivier Le Deuff &amp; Arthur Perret, « Hyperdocumentation: origin and evolution of a concept », <strong>Journal of Documentation</strong>, 2019, 75(6), p. 1463–1474. Version HAL : <a href="https://hal.science/hal-02294087/document" rel="noopener noreferrer" target="_blank">https://hal.science/hal-02294087/document</a></p>
-<p><strong>Enquête / document exemplaire.</strong> Une enquête récente choisie dans le corpus du cours est démontée selon six entrées : sources, opérations, preuves, architecture, incertitudes et responsabilité. L’objectif n’est pas d’apprendre un nouvel outil OSINT, mais d’identifier la chaîne documentaire qui rend la démonstration inspectable.</p>
-<p><strong>Opération à réutiliser.</strong> Décomposer une enquête publiée comme une architecture de preuve.</p>
-<p><strong>Premier jalon du projet filé.</strong> Groupes de <strong>4 étudiants</strong> — 5 au maximum si la configuration de la promotion l’impose. Chaque groupe prépare <strong>trois terrains possibles</strong>, brièvement justifiés. Un terrain pertinent doit être circonscrit, documentable, légalement accessible, suffisamment riche en traces et assez incertain pour qu’une véritable question puisse être instruite.</p>
-<p><strong>Acteurs à connaître.</strong> HyperION ; Bellingcat ; Forensic Architecture ; Lighthouse Reports ; VIGINUM.</p>
-<p><strong>Approfondir.</strong> Olivier Le Deuff, <strong>Hyperdocumentation</strong>, ISTE, 2021 ; Matthew Fuller &amp; Eyal Weizman, <strong>Investigative Aesthetics</strong>, Verso, 2021 ; <strong>Berkeley Protocol on Digital Open Source Investigations</strong>.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 2</span><span class="session-title">RSO : documenter la responsabilité</span><span class="session-date">18 septembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment passer du discours responsable à des engagements vérifiables ?</p>
-<p><strong>Contenus.</strong> RSE/RSO ; ISO 26000 ; parties prenantes et publics affectés ; responsabilité, conformité et rendre compte ; documents produits par les organisations sur elles-mêmes ; rapport RSE comme architecture de l’information ; affirmation, indicateur et preuve ; absences documentaires ; greenwashing et ethics-washing ; contre-documents et contre-sources.</p>
-<p><strong>Objectifs.</strong> Lire un rapport de responsabilité comme un corpus construit ; passer d’une affirmation à une question de vérification ; distinguer chiffre, indicateur et preuve ; identifier ce qui est documenté, mesuré, absent, contesté ou impossible à conclure.</p>
-<p><strong>Lecture obligatoire / document de travail.</strong> <strong>Ouest-France,</strong> <strong>Rapport RSE 2025</strong>.** Lire l’introduction et l’architecture générale du rapport, puis choisir un axe thématique. Chaque groupe relève <strong>une affirmation précise, un indicateur et une question de vérification</strong>.</p>
-<p><strong>Enquête exemplaire principale.</strong> Mediapart, série « GreenFakes : les permis de détruire des multinationales » (2025), utilisée pour examiner comment des rapports environnementaux deviennent des objets de contre-enquête.</p>
-<p><strong>Autre cas.</strong> <strong>Le Monde</strong> + SourceMaterial, enquête sur TotalEnergies et le projet Mozambique LNG, à partir de témoignages, rapports inédits et enquête vidéo.</p>
-<p><strong>Opération à réutiliser.</strong> Workflow RSO : <strong>cadrer → extraire → documenter → recouper → qualifier</strong>. La séance ne demande pas de « démasquer » une organisation, mais de construire une méthode transférable.</p>
-<p><strong>Acteurs / contre-sources.</strong> DGCCRF ; ClientEarth ; Reclaim Finance ; Notre Affaire à Tous ; Les Amis de la Terre ; SourceMaterial.</p>
-<p><strong>Approfondir.</strong> Michel Capron &amp; Françoise Quairel-Lanoizelée, travaux sur la responsabilité sociale d’entreprise ; ISO 26000 ; DGCCRF, travaux sur les allégations environnementales ; <strong>Banking on Climate Chaos</strong> 2026.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 3</span><span class="session-title">Hyperlittératie, architecture de l’information et premiers algorithmes</span><span class="session-date">18 septembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Que faut-il apprendre à lire lorsque l’accès à l’information dépend de catégories, d’interfaces et d’algorithmes ?</p>
-<p><strong>Contenus.</strong> Architecture de l’information ; systèmes d’organisation, d’étiquetage, de navigation et de recherche ; catégories, métadonnées, indexation et trouvabilité ; hyperlittératie ; littératie algorithmique ; approche mécanologique ; distinction entre algorithme et système algorithmique ; classement, recommandation et scoring ; couches sous l’interface ; rétro-ingénierie documentaire ; premiers protocoles de test.</p>
-<p><strong>Objectifs.</strong> Passer de l’interface au système d’organisation ; comprendre que classer et nommer produisent déjà un point de vue ; repérer une médiation calculée ; distinguer observation, effet reproductible et mécanisme ; formuler une question testable sans prétendre connaître ce qui demeure inaccessible.</p>
-<p><strong>Lecture obligatoire.</strong> Olivier Le Deuff &amp; Rayya Roumanos, « Enjeux définitionnels et scientifiques de la littératie algorithmique : entre mécanologie et rétro-ingénierie documentaire », <strong>tic&amp;société</strong>, 2022 : <a href="https://journals.openedition.org/ticetsociete/7105" rel="noopener noreferrer" target="_blank">https://journals.openedition.org/ticetsociete/7105</a></p>
-<p><strong>Enquête / document exemplaire.</strong> Lighthouse Reports + <strong>Le Monde</strong>, « How We Investigated France’s Mass Profiling Machine » et enquête sur l’algorithme de scoring de la CNAF. L’intérêt porte autant sur le système étudié que sur la méthodologie publiée.</p>
-<p><strong>Opération à réutiliser.</strong> Construire un mini-protocole : <strong>question étroite → variable observée → conditions stabilisées → répétition et documentation</strong>.</p>
-<p><strong>Jalon du projet filé.</strong> Chaque groupe ajoute à son terrain : <strong>une architecture</strong> à décrire ; <strong>une médiation calculée</strong> à repérer lorsqu’elle existe ; <strong>une question testable</strong> susceptible d’être documentée ou mise à l’épreuve.</p>
-<p><strong>Acteurs à connaître.</strong> Lighthouse Reports ; AlgorithmWatch ; AI Forensics ; European Centre for Algorithmic Transparency (ECAT).</p>
-<p><strong>Approfondir.</strong> Taina Bucher, <strong>If...Then: Algorithmic Power and Politics</strong>, Oxford University Press, 2018 ; Peter Morville, <strong>Ambient Findability</strong>, O’Reilly, 2005 ; travaux d’AlgorithmWatch et d’AI Forensics sur l’audit des plateformes.</p>
-<hr class="soft-rule"/>
-</div></details><h2 class="block-heading" id="bloc-2-traces-indices-et-protocole">Bloc 2 — Traces, indices et protocole</h2>
-<p><strong>21 et 24 septembre · 4 h</strong></p>
-<details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 4</span><span class="session-title">Traces, indices et enquête : le paradigme indiciaire</span><span class="session-date">21 septembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment une trace devient-elle un indice — puis éventuellement une preuve ?</p>
-<p><strong>Contenus.</strong> Trace, indice et preuve comme statuts distincts ; Carlo Ginzburg et le paradigme indiciaire ; Morelli, Freud et Holmes ; connaissance du singulier ; induction, déduction et abduction ; hypothèses concurrentes ; niveaux de confiance ; Dominique Kalifa et la culture de l’enquête ; paradigme inquisitorial et production historique du vrai chez Michel Foucault ; preuve relationnelle ; fabrication, manipulation, effacement, saturation et déplacement des traces.</p>
-<p><strong>Objectifs.</strong> Comprendre les logiques de raisonnement par indices ; distinguer une piste d’une conclusion ; construire plusieurs hypothèses possibles ; recouper des éléments hétérogènes ; qualifier un niveau de confiance ; comprendre que la preuve dépend d’une architecture de relations et de la visibilité des opérations qui la construisent.</p>
-<p><strong>Lecture obligatoire.</strong> Carlo Ginzburg, « Signes, traces, pistes. Racines d’un paradigme de l’indice », <strong>Le Débat</strong>, 1980/6, n° 6, p. 3–44. À lire en priorité : le début du texte et la séquence Morelli–Freud–Holmes.</p>
-<p><strong>Enquête exemplaire obligatoire.</strong> Bellingcat, « Shahed-Type Drones Filmed During Mali Village Attacks », 24 juillet 2026. L’enquête est lue pour repérer les degrés d’affirmation, les recoupements, les hypothèses laissées ouvertes et la manière dont le récit expose sa chaîne de preuve.</p>
-<p><strong>Opération à réutiliser.</strong> Classer les éléments rencontrés comme <strong>trace, indice, hypothèse ou preuve</strong>, puis construire des hypothèses concurrentes.</p>
-<p><strong>Jalon du projet filé.</strong> Réaliser une <strong>matrice de preuve</strong> comportant au moins trois propositions à établir : traces disponibles, hypothèses concurrentes, recoupements et niveau de confiance. Cette matrice est intégrée au journal d’enquête du groupe.</p>
-<p><strong>Acteurs / laboratoires.</strong> Bellingcat ; Forensic Architecture ; chercheurs travaillant sur les cultures de l’enquête et les régimes de preuve.</p>
-<p><strong>Approfondir.</strong> Dominique Kalifa, « Enquête et “culture de l’enquête” au XIXe siècle », <strong>Romantisme</strong>, 2010 ; Luc Boltanski, <strong>Énigmes et complots</strong>, Gallimard, 2012 ; Michel Foucault, <strong>La vérité et les formes juridiques</strong> et <strong>Théories et institutions pénales</strong> ; Eyal Weizman, <strong>Forensic Architecture</strong>, 2017.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 5</span><span class="session-title">Construire un protocole d’enquête</span><span class="session-date">24 septembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment transformer une intuition en enquête contrôlable et transmissible ?</p>
-<p><strong>Contenus.</strong> Question, périmètre, hypothèses, corpus, variables ; journal d’enquête ; provenance ; chaîne de conservation ; critères d’arrêt ; niveaux de confiance ; éthique de la collecte et de la publication.</p>
-<p><strong>Objectifs.</strong> Écrire un protocole v1 ; définir ce qui pourrait confirmer ou infirmer une hypothèse ; rendre les opérations suffisamment explicites pour qu’un tiers puisse les comprendre.</p>
-<p><strong>Lecture obligatoire.</strong> OHCHR &amp; Human Rights Center, UC Berkeley, <strong>Berkeley Protocol on Digital Open Source Investigations</strong>, 2022 : <a href="https://www.ohchr.org/sites/default/files/2022-04/OHCHR_BerkeleyProtocol.pdf" rel="noopener noreferrer" target="_blank">https://www.ohchr.org/sites/default/files/2022-04/OHCHR_BerkeleyProtocol.pdf</a></p>
-<p><strong>Document exemplaire.</strong> Une « methodology » de Lighthouse Reports, où les journalistes exposent données, tests, limites et choix de méthode.</p>
-<p><strong>Acteurs à connaître.</strong> Human Rights Center (UC Berkeley) ; Mnemonic ; WITNESS ; Amnesty Evidence Lab.</p>
-<p><strong>Approfondir.</strong> Sam Dubberley, Alexa Koenig &amp; Daragh Murray (dir.), <strong>Digital Witness</strong>, Oxford University Press, 2020.</p>
-<hr class="soft-rule"/>
-</div></details><h2 class="block-heading" id="bloc-3-donnees-et-algorithmes-fabriquer-classer-decider">Bloc 3 — Données et algorithmes : fabriquer, classer, décider</h2>
-<p><strong>12 et 13 octobre · 4 h</strong></p>
-<details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 6</span><span class="session-title">Les données sont construites</span><span class="session-date">12 octobre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Une donnée est-elle jamais « brute » ?</p>
-<p><strong>Contenus.</strong> Collecte, catégories, formulaires, mesure, nettoyage, agrégation ; données administratives ; biais de disponibilité ; métadonnées et paradata ; provenance ; ce qui disparaît lors de la transformation.</p>
-<p><strong>Objectifs.</strong> Reconstituer la généalogie d’un jeu de données ; identifier les choix qui transforment une situation en variables ; documenter les transformations.</p>
-<p><strong>Lecture obligatoire.</strong> Catherine D’Ignazio &amp; Lauren F. Klein, <strong>Data Feminism</strong>, chapitre « What Gets Counted Counts » ou introduction, MIT Press, accès libre : <a href="https://data-feminism.mitpress.mit.edu/" rel="noopener noreferrer" target="_blank">https://data-feminism.mitpress.mit.edu/</a></p>
-<p><strong>Document exemplaire.</strong> Un jeu de données public sera lu avec sa documentation, ses catégories et ses limites plutôt que simplement « exploité ».</p>
-<p><strong>Acteurs / laboratoires.</strong> Data + Feminism Lab (MIT) ; Data &amp; Society ; Datactivist ; Open Knowledge Foundation.</p>
-<p><strong>Approfondir.</strong> danah boyd, <strong>La fabrique des données. On ne trouve pas les données, on les construit</strong>, C&amp;F Éditions, 2026 (parution 24 septembre 2026) ; Geoffrey C. Bowker &amp; Susan Leigh Star, <strong>Sorting Things Out</strong>, MIT Press, 1999.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 7</span><span class="session-title">Enquêter sur un algorithme : de la boîte noire au test</span><span class="session-date">13 octobre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment enquêter sur un système de scoring ou de décision automatisée lorsqu’on n’en voit qu’une partie ?</p>
-<p><strong>Contenus.</strong> Objet algorithmique ; inputs/outputs ; modèle, seuils et variables ; documentation, code et données ; audits black-box / white-box ; tests comparatifs ; biais, fairness et effets concrets ; rétro-ingénierie documentaire.</p>
-<p><strong>Objectifs.</strong> Transformer « l’algorithme est biaisé » en hypothèses testables ; identifier les niveaux d’accès possibles ; distinguer fonctionnement, performance, effets et responsabilité.</p>
-<p><strong>Lecture obligatoire.</strong> Olivier Le Deuff &amp; Rayya Roumanos, <strong>Rapport final du projet MatrioscIA</strong>, 2025 — sections consacrées aux usages de l’IA et aux régimes de preuve : <a href="https://shs.hal.science/halshs-05404123" rel="noopener noreferrer" target="_blank">https://shs.hal.science/halshs-05404123</a>  </p>
-<p>(Le texte sera également fourni dans l’espace de cours.)</p>
-<p><strong>Enquête exemplaire principale.</strong> Lighthouse Reports, « How we investigated Amsterdam’s attempt to build a ‘fair’ fraud detection model », 2025 : <a href="https://www.lighthousereports.com/methodology/amsterdam-fairness/" rel="noopener noreferrer" target="_blank">https://www.lighthousereports.com/methodology/amsterdam-fairness/</a></p>
-<p><strong>Autres cas.</strong> Lighthouse, CNAF / « France’s Mass Profiling Machine » ; Lighthouse, Kenya, « Hiding Behind AI » (2026).</p>
-<p><strong>Acteurs à connaître.</strong> Lighthouse Reports ; Amnesty Algorithmic Accountability Lab ; AlgorithmWatch ; AI Forensics.</p>
-<p><strong>Approfondir.</strong> Christian Sandvig et al., « Auditing Algorithms » ; Nicholas Diakopoulos, <strong>Automating the News</strong>, Harvard University Press, 2019.</p>
-<hr class="soft-rule"/>
-</div></details><h2 class="block-heading" id="bloc-4-voir-verifier-raconter">Bloc 4 — Voir, vérifier, raconter</h2>
-<p><strong>22 octobre · 2 h + prolongements dans les études de cas</strong></p>
-<details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 8</span><span class="session-title">Enquêtes visuelles et audiovisuelles</span><span class="session-date">22 octobre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Que peut prouver une image — et que faut-il lui ajouter pour qu’elle devienne un élément probant ?</p>
-<p><strong>Contenus.</strong> Image comme document ; vidéo, satellite, cartes, images de réseaux sociaux ; provenance ; synchronisation ; comparaison diachronique ; montage probatoire ; articulation image–témoignage–donnée ; limites du visible et IA générative.</p>
-<p><strong>Objectifs.</strong> Lire une visual investigation comme une chaîne de preuve ; décrire précisément l’opération qui permet d’aller d’une image à une conclusion ; distinguer illustration et preuve.</p>
-<p><strong>Lecture / visionnage obligatoire.</strong> Bellingcat, choisir une enquête récente dans le corpus fourni, par exemple « DRC’s Coltan Belt: Verifying Deadly Landslides at Mines Under M23 Control » (12 mai 2026) : <a href="https://www.bellingcat.com/news/africa/2026/05/12/congos-coltan-belt-verifying-deadly-landslides-at-mines-under-m23-control/" rel="noopener noreferrer" target="_blank">https://www.bellingcat.com/news/africa/2026/05/12/congos-coltan-belt-verifying-deadly-landslides-at-mines-under-m23-control/</a></p>
-<p><strong>Documents exemplaires.</strong> <strong>Le Monde</strong>, « Comment Le Monde a mesuré les destructions par Israël dans le sud du Liban » (28 mai 2026) ; <strong>New York Times Visual Investigations</strong> ; Bellingcat ; Forensic Architecture.</p>
-<p><strong>Acteurs à connaître.</strong> Cellule Enquête vidéo du <strong>Monde</strong> ; NYT Visual Investigations ; Bellingcat ; Forensic Architecture ; Centre for Information Resilience ; WITNESS.</p>
-<p><strong>Approfondir.</strong> Olivier Le Deuff &amp; Rayya Roumanos, « OSINT et Imago : Boutcha comme lieu de mémoire du journalisme d’investigation », 2026 : <a href="https://hal.science/hal-05672743" rel="noopener noreferrer" target="_blank">https://hal.science/hal-05672743</a></p>
-<hr class="soft-rule"/>
-</div></details><h2 class="block-heading" id="bloc-5-architectures-de-visibilite-et-responsabilite-algorithmique">Bloc 5 — Architectures de visibilité et responsabilité algorithmique</h2>
-<p><strong>10, 16 et 19 novembre · 6 h</strong></p>
-<details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 9</span><span class="session-title">Algorithmes et architectures de visibilité</span><span class="session-date">10 novembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment une plateforme ou un moteur décide-t-il de ce qui devient visible ?</p>
-<p><strong>Contenus.</strong> Moteurs, ranking, recommandation, personnalisation, résumés génératifs ; architecture de l’information et ordre documentaire ; circulation et visibilité ; métriques ; conséquences pour l’accès à l’information.</p>
-<p><strong>Objectifs.</strong> Décrire un mécanisme de visibilité sans l’anthropomorphiser ; concevoir un protocole de comparaison ; identifier les effets de médiation sur les sources et les publics.</p>
-<p><strong>Lecture obligatoire.</strong> AlgorithmWatch, « Are Google AI Overviews killing media pluralism? », 30 octobre 2025 : <a href="https://algorithmwatch.org/en/google-ai-overviews-media-pluralism-data-access-rules/" rel="noopener noreferrer" target="_blank">https://algorithmwatch.org/en/google-ai-overviews-media-pluralism-data-access-rules/</a></p>
-<p><strong>Document exemplaire.</strong> AlgorithmWatch, enquête 2026 sur les sources mobilisées par les AI Overviews lors de requêtes électorales ; comparaison possible avec les résultats de moteurs classiques.</p>
-<p><strong>Acteurs à connaître.</strong> AlgorithmWatch ; AI Forensics ; ECAT ; Mozilla Foundation.</p>
-<p><strong>Approfondir.</strong> Dominique Cardon, <strong>À quoi rêvent les algorithmes. Nos vies à l’heure des big data</strong>, Seuil, 2015 ; Safiya Umoja Noble, <strong>Algorithms of Oppression</strong>, NYU Press, 2018 ; Tarleton Gillespie, « The Relevance of Algorithms », 2014.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 10</span><span class="session-title">Audits algorithmiques : méthodes, droits et contre-pouvoirs</span><span class="session-date">16 novembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment passer de la critique d’un système à un audit documenté ?</p>
-<p><strong>Contenus.</strong> L’audit algorithmique sera abordé comme une forme d’enquête organisée autour d’un objet, d’une question et d’un protocole. Nous distinguerons audits internes et externes, approches black-box et white-box, profils synthétiques, panels, scraping, accès aux données, tests répétés et comparaison de résultats. Le DSA, l’AI Act et les démarches de responsabilité algorithmique replaceront ces méthodes dans un environnement juridique et politique où l’accès aux systèmes reste lui-même un enjeu.</p>
-<p><strong>Objectifs.</strong> Construire un audit à partir d’une question limitée ; choisir des observations et des données compatibles avec cette question ; distinguer fonctionnement supposé, comportement observable et effets documentés ; comprendre ce que l’audit peut établir et ce qu’il laisse hors de portée.</p>
-<p><strong>Lecture obligatoire.</strong> Amnesty International, <strong>Guide sur la responsabilité algorithmique</strong>, 9 décembre 2025 : <a href="https://www.amnesty.org/fr/latest/research/2025/12/algorithmic-accountability-toolkit/" rel="noopener noreferrer" target="_blank">https://www.amnesty.org/fr/latest/research/2025/12/algorithmic-accountability-toolkit/</a></p>
-<p><strong>Documents exemplaires.</strong> ECAT/JRC, travaux sur les méthodologies d’audit dans le cadre du DSA ; Lighthouse Reports, Amsterdam 2025 et Kenya 2026.</p>
-<p><strong>Dispositif à explorer.</strong> <strong>WeAudit</strong> — <a href="https://forum.weaudit.org/" rel="noopener noreferrer" target="_blank">https://forum.weaudit.org/</a> — propose un environnement participatif où des utilisateurs signalent, discutent et qualifient des exemples possibles de biais algorithmiques. Le site sera mobilisé pour observer comment un audit peut distribuer la collecte, la discussion et la qualification des cas, mais aussi pour discuter les limites d’une telle participation.</p>
-<p><strong>Acteurs à connaître.</strong> Amnesty Algorithmic Accountability Lab ; ECAT ; AlgorithmWatch ; Lighthouse Reports ; La Quadrature du Net ; équipe WeAudit.</p>
-<p><strong>Approfondir.</strong> The Marquand House Collective, <strong>Auditing AI</strong>, MIT Press, 2026, coll. <strong>Essential Knowledge</strong> ; Inioluwa Deborah Raji et al., « Closing the AI Accountability Gap », <strong>FAccT</strong>, 2020 ; Wesley Hanwen Deng et al., « WeAudit: Scaffolding User Auditors and AI Practitioners in Auditing Generative AI », <strong>Proceedings of the ACM on Human-Computer Interaction</strong>, 2025.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 11</span><span class="session-title">Lutte des traces : capture, effacement, manipulation, contre-enquête</span><span class="session-date">19 novembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Que devient l’enquête lorsque les acteurs agissent sur les traces mêmes qui permettent de les observer ?</p>
-<p><strong>Contenus.</strong> Trace comme preuve, piège, marchandise, cible et mémoire ; suppression, flooding, manipulation, faux comptes, métadonnées falsifiées ; archivage ; opérations informationnelles ; attribution prudente ; preuve relationnelle ; contre-enquête.</p>
-<p><strong>Objectifs.</strong> Prendre en compte la possibilité de traces fabriquées, manipulées, effacées, déplacées ou saturées ; documenter leurs conditions de production et de conservation ; construire une conclusion graduée plutôt qu’une certitude artificielle.</p>
-<p><strong>Lecture obligatoire.</strong> Olivier Le Deuff, <strong>« La lutte des traces »</strong>, article à paraître, 2026–2027. Texte fourni par l’enseignant.</p>
-<p><strong>Document exemplaire.</strong> VIGINUM, <strong>Portal Kombat : un réseau structuré et coordonné de propagande prorusse</strong>, rapport technique : <a href="https://www.sgdsn.gouv.fr/viginum/publications/portal-kombat-un-reseau-structure-et-coordonne-de-propagande-prorusse" rel="noopener noreferrer" target="_blank">https://www.sgdsn.gouv.fr/viginum/publications/portal-kombat-un-reseau-structure-et-coordonne-de-propagande-prorusse</a></p>
-<p><strong>Autres enquêtes.</strong> VIGINUM, rapports 2026 ; Bellingcat sur réseaux, navires, désinformation ou trafics ; investigations sur l’archivage d’éléments supprimés.</p>
-<p><strong>Acteurs à connaître.</strong> VIGINUM ; DFRLab ; Bellingcat ; Mnemonic ; Internet Archive ; EUvsDisinfo (à étudier comme acteur institutionnel, avec distance critique).</p>
-<p><strong>Approfondir.</strong> Dominique Boullier, <strong>Propagations. Un nouveau paradigme pour les sciences sociales</strong>, Armand Colin, 2023.</p>
-<hr class="soft-rule"/>
-</div></details><h2 class="block-heading" id="bloc-6-organiser-eprouver-et-restituer-lenquete">Bloc 6 — Organiser, éprouver et restituer l’enquête</h2>
-<p><strong>3–8 décembre · bloc intensif de 12 h</strong></p>
-<p>La dernière séquence du semestre accompagne le passage du corpus constitué à une enquête publiable, critiquable et défendable. Les premières séances portent sur l’architecture documentaire, la provenance, le design de la preuve et la relecture critique. Les dernières heures sont réservées à la finalisation des projets et à leur restitution. La répartition précise des créneaux de ce bloc pourra être ajustée selon l’emploi du temps définitif.</p>
-<details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 12</span><span class="session-title">Architecture de l’information de l’enquête</span><span class="session-date">3 décembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment organiser un corpus pour pouvoir réellement raisonner avec lui ?</p>
-<p><strong>Contenus.</strong> Systèmes d’organisation ; entités, relations, catégories ; dossiers, graphes, index ; navigation ; taxonomies ; conventions de nommage ; granularité documentaire ; Cosma et graphes documentés.</p>
-<p><strong>Objectifs.</strong> Concevoir l’architecture du corpus et celle du site qui donnera accès à l’enquête ; construire des parcours de navigation cohérents ; relier les documents sans surinterpréter ; préparer un environnement où les sources, les données et les résultats puissent être retrouvés.</p>
-<p><strong>Lecture obligatoire.</strong> Robert J. Glushko, « The Discipline of Organizing », présentation et ressources iSchools : <a href="https://www.ischools.org/discipline-of-organizing" rel="noopener noreferrer" target="_blank">https://www.ischools.org/discipline-of-organizing</a></p>
-<p><strong>Document exemplaire.</strong> Graphes et livrables HyperOtlet / Cosma ; organisation du corpus MatrioscIA.</p>
-<p><strong>Acteurs / outils.</strong> Cosma ; Obsidian ; Zotero ; Tropy ; Hypothes.is ; The Programming Historian.</p>
-<p><strong>Approfondir.</strong> Rosenfeld, Morville &amp; Arango, <strong>Information Architecture: For the Web and Beyond</strong>, O’Reilly, 2015 ; Geoffrey Bowker &amp; Susan Leigh Star, <strong>Sorting Things Out</strong>.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 13</span><span class="session-title">Provenance, métadonnées, paradata et data paper</span><span class="session-date">3 décembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment raconter ce qui a été fait aux données sans transformer la méthode en boîte noire ?</p>
-<p><strong>Contenus.</strong> Provenance ; transformations ; paradata ; dictionnaire de données ; versions ; README ; data paper ; réutilisabilité ; qualité documentaire ; liens pérennes ; archivage des sources fragiles ; distinction entre corpus de travail, dossier de preuve et éléments publiables.</p>
-<p><strong>Objectifs.</strong> Documenter les transformations ; produire un dictionnaire de variables ; écrire une fiche de provenance ; versionner les éléments importants ; rendre le corpus réutilisable, archivable et critiquable.</p>
-<p><strong>Lecture obligatoire.</strong> Gérald Kembellec &amp; Olivier Le Deuff, « Poétique et ingénierie des data papers », <strong>RFSIC</strong>, 2022 : <a href="https://journals.openedition.org/rfsic/12938" rel="noopener noreferrer" target="_blank">https://journals.openedition.org/rfsic/12938</a></p>
-<p><strong>Document exemplaire.</strong> Data paper et base d’enquêtes MatrioscIA ; jeux de données accompagnés d’un README et d’un dictionnaire.</p>
-<p><strong>Acteurs à connaître.</strong> Recherche Data Gouv ; Zenodo ; Nakala / Huma-Num ; DataCite.</p>
-<p><strong>Approfondir.</strong> Christine Borgman, <strong>Big Data, Little Data, No Data</strong>, MIT Press, 2015.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 14</span><span class="session-title">Design de la preuve : montrer sans sur-vendre</span><span class="session-date">4 décembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment faire voir un raisonnement complexe sans transformer la visualisation en argument d’autorité ?</p>
-<p><strong>Contenus.</strong> Visualisation comme argument ; choix d’échelle ; annotations ; chronologies ; cartes ; graphes ; montage audiovisuel ; preuve négative et zones d’incertitude ; lisibilité ; articulation entre dossier de preuve, note de méthode et site de restitution.</p>
-<p><strong>Objectifs.</strong> Choisir une forme adaptée à une conclusion ; faire apparaître sources et incertitudes ; intégrer cartes, graphes, chronologies ou documents au site sans transformer la visualisation en décoration.</p>
-<p><strong>Lecture obligatoire.</strong> Johanna Drucker, « Humanities Approaches to Graphical Display », <strong>Digital Humanities Quarterly</strong>, 2011 : <a href="http://www.digitalhumanities.org/dhq/vol/5/1/000091/000091.html" rel="noopener noreferrer" target="_blank">http://www.digitalhumanities.org/dhq/vol/5/1/000091/000091.html</a></p>
-<p><strong>Documents exemplaires.</strong> <strong>Le Monde</strong> — enquêtes vidéo et visualisations ; NYT Visual Investigations ; Forensic Architecture ; Bellingcat.</p>
-<p><strong>Approfondir.</strong> Alberto Cairo, <strong>How Charts Lie</strong>, W. W. Norton, 2019 ; Edward Tufte, <strong>Visual Explanations</strong>, Graphics Press, 1997.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 15</span><span class="session-title">Mettre l’enquête à l’épreuve</span><span class="session-date">7 décembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Comment organiser la contradiction avant la publication ?</p>
-<p><strong>Contenus.</strong> Relecture adversariale ; réplication partielle ; tests de robustesse ; recherche de contre-exemples ; droit de réponse ; limites ; erreurs ; documentation des désaccords.</p>
-<p><strong>Objectifs.</strong> Identifier les points faibles de sa propre démonstration ; distinguer reproductibilité, réplication et robustesse ; transformer une objection en opération de vérification.</p>
-<p><strong>Lecture obligatoire.</strong> <strong>The Turing Way</strong>, « Overview of Reproducible Research » : <a href="https://book.the-turing-way.org/reproducible-research/overview.html" rel="noopener noreferrer" target="_blank">https://book.the-turing-way.org/reproducible-research/overview.html</a></p>
-<p><strong>Document exemplaire.</strong> Les pages « Methodology » de Lighthouse Reports, qui rendent explicites limites, jeux de données, code et contraintes d’accès.</p>
-<p><strong>Approfondir.</strong> Naomi Oreskes, <strong>Why Trust Science?</strong>, Princeton University Press, 2019.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 16</span><span class="session-title">Atelier de finalisation des hyperinvestigations</span><span class="session-date">8 décembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Que faut-il encore vérifier, organiser ou expliciter avant de considérer l’enquête comme achevée ?</p>
-<p><strong>Contenus.</strong> Travail accompagné par groupes ; vérification de la chaîne de preuve ; cohérence entre assertions et sources ; organisation finale du corpus ; provenance et versions ; contrôle des citations et des liens ; archivage des sources fragiles ; traitement des incertitudes ; finalisation de la note de méthode ; stabilisation du site web ; préparation de la présentation.</p>
-<p><strong>Objectifs.</strong> Identifier les derniers points faibles de l’enquête ; corriger les problèmes de documentation ou de cohérence ; stabiliser le corpus et la note de méthode ; préparer une restitution capable de montrer aussi bien les résultats que la manière dont ils ont été établis.</p>
-<p><strong>Lecture obligatoire.</strong> Aucune nouvelle lecture. Les groupes travaillent à partir de leur corpus, de leur journal d’enquête, de la matrice de preuve et des retours obtenus lors de la séance 15.</p>
-<p><strong>Travail attendu.</strong> Chaque groupe arrive avec une version presque complète de son enquête. La séance est consacrée à la reprise, à la vérification et à la préparation de la restitution finale.</p>
-<hr class="soft-rule"/>
-</div></details><details class="session" open=""><summary class="session-summary"><span class="session-num">Séance 17</span><span class="session-title">Restitution : défendre une enquête et sa chaîne de preuve</span><span class="session-date">8 décembre</span></summary><div class="session-content">
-<p><strong>Question.</strong> Pouvez-vous expliquer non seulement ce que vous affirmez, mais <strong>comment vous le savez</strong> ?</p>
-<p><strong>Contenus.</strong> Présentations finales ; discussion ; contre-questions ; provenance ; limites ; responsabilités de publication ; retour sur les méthodes. La restitution constitue l’aboutissement du projet filé et met à l’épreuve la capacité du groupe à revenir aux documents, aux opérations et aux niveaux de confiance qui soutiennent ses conclusions.</p>
-<p><strong>Objectifs.</strong> Défendre un raisonnement ; expliciter les opérations ; répondre à une objection en revenant aux documents ; distinguer ce qui est établi, probable, possible ou inconnu.</p>
-<p><strong>Lecture obligatoire.</strong> Aucune nouvelle lecture. Relire votre dossier, la note de méthode de votre groupe et le retour critique reçu lors de la séance 15.</p>
-<p><strong>Livrable final.</strong> Enquête + corpus documenté + note de méthode + présentation synthétique.</p>
-<hr class="soft-rule"/>
-<h1 id="projet-file-et-evaluation">Projet filé et évaluation</h1>
-<p>Le semestre repose sur un <strong>même projet d’hyperinvestigation</strong>, travaillé par groupes et repris d’une séance à l’autre. Le projet peut porter sur une organisation, une plateforme, un service numérique, un système algorithmique, une politique de données ou une controverse suffisamment documentable pour soutenir une enquête.</p>
-<p>Deux dimensions structurent ce travail et donnent lieu à <strong>deux notes distinctes</strong>. Elles correspondent aux deux héritages du cours. La première prolonge la responsabilité, l’enquête et les littératies ; la seconde reprend les questions d’architecture de l’information en les déplaçant vers la gestion des données et la conception d’un environnement web.</p>
-</div></details><h2 class="note-heading note-one" id="note-1-enquete-accountability-et-litteraties">Note 1 — Enquête, accountability et littératies</h2>
-<p>La première note porte sur l’enquête proprement dite. Une bonne investigation commence par une question circonscrite, mais sa valeur tient surtout au passage maîtrisé entre documents, données, traces, indices, contre-sources et conclusions. Les étudiants devront pouvoir revenir sur leurs opérations, montrer ce qui soutient une affirmation et indiquer ce qui résiste encore à la vérification.</p>
-<p>L’<strong>accountability</strong> concerne ici autant l’objet étudié que l’enquête elle-même. Une organisation peut être interrogée sur ses engagements, ses indicateurs ou ses systèmes de décision ; les enquêteurs doivent, de leur côté, rendre compte de leur méthode, de leurs choix et des limites du travail produit.</p>
-<p>Pour cette première note, l’évaluation porte sur :</p>
-<p>- la formulation et le périmètre de la question ;</p>
-<p>- la qualité du corpus primaire et des contre-sources ;</p>
-<p>- la qualification des documents, données, traces et indices ;</p>
-<p>- la pertinence des opérations de recherche, de recoupement ou de test ;</p>
-<p>- la construction des hypothèses et de la chaîne de preuve ;</p>
-<p>- la capacité à distinguer ce qui est établi, probable, possible ou inconnu ;</p>
-<p>- la traçabilité des principales opérations ;</p>
-<p>- les choix éthiques de collecte, de conservation et de publication (également pris en compte dans la note 2) ;</p>
-<p>- la qualité de la restitution et de la défense orale.</p>
-<p>Le journal d’enquête, les matrices de preuve et les jalons produits en séance nourrissent cette première évaluation. Ils conservent la mémoire du cheminement sans constituer une note supplémentaire.</p>
-<h3 id="livrables-associes-a-la-note-1">Livrables associés à la note 1</h3>
-<p>Le groupe remet une <strong>production d’enquête</strong> accompagnée d’une <strong>note de méthode</strong>. Celle-ci présente la question, le corpus, les principales opérations, les décisions qui ont orienté le travail, les limites rencontrées et le niveau de confiance accordé aux conclusions. La présentation finale complète cet ensemble en mettant la chaîne de preuve à l’épreuve des questions.</p>
-<hr class="soft-rule"/>
-<h2 class="note-heading note-two" id="note-2-design-de-linformation-et-data-management">Note 2 — Design de l’information et data management</h2>
-<p>La seconde note porte sur la manière dont l’enquête est organisée, documentée et rendue consultable. Chaque groupe construit un <strong>site web qui sert de support au travail d’enquête</strong>. Le site ne vient pas habiller un résultat déjà terminé : il constitue l’architecture documentaire à partir de laquelle un tiers doit pouvoir comprendre le terrain, parcourir les sources, retrouver les données utiles et suivre les principales articulations du raisonnement.</p>
-<p>Cette dimension reprend les acquis de l’architecture de l’information tout en accordant une place plus nette au <strong>data management</strong>. Les étudiants devront donc penser simultanément les systèmes d’organisation, les formats, les métadonnées, les conventions de nommage, les versions, la provenance, les relations entre documents et les formes de visualisation.</p>
-<p>Pour cette seconde note, l’évaluation porte sur :</p>
-<p>- l’architecture générale du site ;</p>
-<p>- la hiérarchie de l’information et la qualité des parcours de navigation ;</p>
-<p>- l’articulation entre résultats, sources, documents, données et éléments de preuve ;</p>
-<p>- l’organisation et la granularité du corpus ;</p>
-<p>- les conventions de nommage et la gestion des versions ;</p>
-<p>- la documentation de la provenance et des transformations ;</p>
-<p>- l’usage pertinent des métadonnées et des paradata ;</p>
-<p>- la présence, lorsque le corpus le nécessite, d’un README, d’un dictionnaire de données ou d’une documentation équivalente ;</p>
-<p>- la qualité des cartes, graphes, chronologies, tableaux ou autres dispositifs de visualisation ;</p>
-<p>- la possibilité, pour un tiers, de retrouver les sources et de comprendre la logique générale de l’enquête ;</p>
-<p>- la lisibilité, l’accessibilité et la cohérence du site.</p>
-<h3 id="livrables-associes-a-la-note-2">Livrables associés à la note 2</h3>
-<p>Le groupe remet un <strong>site web fonctionnel</strong>, accompagné du <strong>corpus organisé et documenté</strong> qui soutient l’enquête. Lorsque des données sont produites ou transformées, leur provenance et leurs principales transformations doivent être décrites. Le site doit garder la trace de cette organisation sans exposer les informations qui doivent rester protégées.</p>
-<hr class="soft-rule"/>
-<h2 id="deux-notes-pour-un-seul-projet">Deux notes pour un seul projet</h2>
-<p>Les deux évaluations portent sur le même objet, mais elles ne mesurent pas la même chose.</p>
-<p>La première pose une question simple : <strong>qu’avez-vous établi et comment le savez-vous ?</strong></p>
-<p>La seconde en pose une autre : <strong>comment avez-vous organisé les informations, les documents et les données pour que cette démonstration puisse être comprise, parcourue et discutée ?</strong></p>
-<p>L’hyperinvestigation se situe précisément à l’articulation de ces deux exigences. L’enquête a besoin d’une architecture documentaire pour rester intelligible ; le site et le corpus n’ont de sens que s’ils soutiennent un travail d’investigation réel.</p>
-<hr class="soft-rule"/>
-<h1 id="corpus-denquetes">Corpus d’enquêtes</h1>
-<p>Un <strong>corpus évolutif d’enquêtes exemplaires 2025–2026</strong> accompagne le syllabus. Il sert de bibliothèque de formes et de méthodes : enquête audiovisuelle, analyse satellitaire, audit algorithmique, data investigation, enquête RSO/greenwashing, investigation institutionnelle, documentation de conflits.</p>
-<hr class="soft-rule"/>
-<h1 id="bibliographie-complementaire">Bibliographie complémentaire</h1>
-<p>Les lectures obligatoires sont indiquées séance par séance. La bibliographie ci-dessous rassemble dix ouvrages qui prolongent l’ensemble du cours et couvrent ses principaux axes.</p>
-<ol class="bibliography">
-<li><p><strong>Boltanski, Luc</strong> (2012). <strong>Énigmes et complots. Une enquête à propos d’enquêtes</strong>. Gallimard.</p>
-</li>
-<li><p><strong>Boullier, Dominique</strong> (2023). <strong>Propagations. Un nouveau paradigme pour les sciences sociales</strong>. Armand Colin.</p>
-</li>
-<li><p><strong>Bowker, Geoffrey C. &amp; Star, Susan Leigh</strong> (1999). <strong>Sorting Things Out: Classification and Its Consequences</strong>. MIT Press.</p>
-</li>
-<li><p><strong>Cardon, Dominique</strong> (2015). <strong>À quoi rêvent les algorithmes. Nos vies à l’heure des big data</strong>. Seuil, coll. « La République des idées ».</p>
-</li>
-<li><p><strong>Fuller, Matthew &amp; Weizman, Eyal</strong> (2021). <strong>Investigative Aesthetics: Conflicts and Commons in the Politics of Truth</strong>. Verso.</p>
-</li>
-<li><p><strong>Le Deuff, Olivier</strong> (2021). <strong>Hyperdocumentation</strong>. ISTE.</p>
-</li>
-<li><p><strong>The Marquand House Collective</strong> (2026). <strong>Auditing AI</strong>. MIT Press, coll. <strong>Essential Knowledge</strong>. Édition en accès ouvert.</p>
-</li>
-<li><p><strong>Rosenfeld, Louis, Morville, Peter &amp; Arango, Jorge</strong> (2015). <strong>Information Architecture: For the Web and Beyond</strong>. O’Reilly.</p>
-</li>
-<li><p><strong>Schuppli, Susan</strong> (2020). <strong>Material Witness: Media, Forensics, Evidence</strong>. MIT Press.</p>
-</li>
-<li><p><strong>Weizman, Eyal</strong> (2017). <strong>Forensic Architecture: Violence at the Threshold of Detectability</strong>. Zone Books.</p>
-</li>
-</ol>
-<hr class="soft-rule"/>
-<h1 id="sites-a-conserver-dans-vos-favoris">Sites à conserver dans vos favoris</h1>
-<p>- Bellingcat — <a href="https://www.bellingcat.com/" rel="noopener noreferrer" target="_blank">https://www.bellingcat.com/</a></p>
-<p>- Le Monde, Enquêtes vidéo — <a href="https://www.lemonde.fr/enquetes-video/" rel="noopener noreferrer" target="_blank">https://www.lemonde.fr/enquetes-video/</a></p>
-<p>- Lighthouse Reports — <a href="https://www.lighthousereports.com/" rel="noopener noreferrer" target="_blank">https://www.lighthousereports.com/</a></p>
-<p>- Mediapart, Enquêtes — <a href="https://www.mediapart.fr/" rel="noopener noreferrer" target="_blank">https://www.mediapart.fr/</a></p>
-<p>- Forensic Architecture — <a href="https://forensic-architecture.org/" rel="noopener noreferrer" target="_blank">https://forensic-architecture.org/</a></p>
-<p>- Amnesty Tech — <a href="https://www.amnesty.org/en/tech/" rel="noopener noreferrer" target="_blank">https://www.amnesty.org/en/tech/</a></p>
-<p>- AlgorithmWatch — <a href="https://algorithmwatch.org/" rel="noopener noreferrer" target="_blank">https://algorithmwatch.org/</a></p>
-<p>- WeAudit — <a href="https://forum.weaudit.org/" rel="noopener noreferrer" target="_blank">https://forum.weaudit.org/</a></p>
-<p>- European Centre for Algorithmic Transparency — <a href="https://algorithmic-transparency.ec.europa.eu/" rel="noopener noreferrer" target="_blank">https://algorithmic-transparency.ec.europa.eu/</a></p>
-<p>- VIGINUM — <a href="https://www.sgdsn.gouv.fr/viginum" rel="noopener noreferrer" target="_blank">https://www.sgdsn.gouv.fr/viginum</a></p>
-<p>- Data + Feminism Lab — <a href="https://dataplusfeminism.mit.edu/" rel="noopener noreferrer" target="_blank">https://dataplusfeminism.mit.edu/</a></p>
-<p>- Internet Archive — <a href="https://archive.org/" rel="noopener noreferrer" target="_blank">https://archive.org/</a></p>
-<p>- Webrecorder — <a href="https://webrecorder.net/" rel="noopener noreferrer" target="_blank">https://webrecorder.net/</a></p>
-</main>
-</div>
-
-<footer>
-  Hyperinvestigation · BUT Information-Communication — parcours INO · Olivier Le Deuff · 2026–2027
-</footer>
+<div class="loading"><strong>Chargement du syllabus Hyperinvestigation…</strong></div>
 <script>
-const sessions=[...document.querySelectorAll('details.session')];
-document.getElementById('openAll')?.addEventListener('click',()=>sessions.forEach(d=>d.open=true));
-document.getElementById('closeAll')?.addEventListener('click',()=>sessions.forEach(d=>d.open=false));
+(async()=>{
+  const response=await fetch('syllabus-base.html',{cache:'no-store'});
+  if(!response.ok) throw new Error('Impossible de charger le syllabus de référence.');
+  const html=await response.text();
+  const doc=new DOMParser().parseFromString(html,'text/html');
 
-const links=[...document.querySelectorAll('.side nav a')];
-const targets=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
+  doc.title='Hyperinvestigation — syllabus 2026–2027';
+
+  const style=doc.createElement('style');
+  style.textContent=`
+    .version-note{margin:18px 0 0;display:inline-block;padding:7px 11px;border-radius:999px;background:var(--signal-bg);color:var(--violet-dark);font-size:.75rem;font-weight:800;letter-spacing:.05em}
+    .progress-note{margin:20px 0 28px;padding:16px 18px;border:1px solid var(--lav);border-radius:14px;background:#f7f3f8;color:var(--violet-dark)}
+    .support-link{display:inline-flex;align-items:center;gap:8px;margin:4px 0 14px;padding:9px 13px;border-radius:999px;background:var(--violet-dark);color:#fff!important;text-decoration:none!important;font-size:.84rem;font-weight:750}
+    .support-link:hover{background:var(--signal);color:#fff!important}
+    .session-status{font-size:.76rem;color:var(--muted);font-style:italic;margin-top:-2px!important}
+  `;
+  doc.head.appendChild(style);
+
+  const kicker=doc.querySelector('.kicker');
+  if(kicker){
+    const badge=doc.createElement('div');
+    badge.className='version-note';
+    badge.textContent='Version de travail · 14 octobre 2026';
+    kicker.insertAdjacentElement('afterend',badge);
+  }
+
+  const org=doc.querySelector('#organisation-generale');
+  if(org){
+    const first=org.nextElementSibling;
+    if(first && first.tagName==='P'){
+      first.innerHTML='La structure ci-dessous conserve l’architecture générale prévue en début de semestre, mais elle est désormais <strong>mise à jour progressivement à partir du cours réellement dispensé</strong>. Les cinq premières séances correspondent aux supports effectivement mobilisés ; la suite reste indicative et pourra être réordonnée ou regroupée à mesure que les projets d’enquête des groupes se précisent.';
     }
-  })
-},{rootMargin:'-18% 0px -72% 0px'});
-targets.forEach(t=>obs.observe(t));
+    const note=doc.createElement('div');
+    note.className='progress-note';
+    note.innerHTML='<strong>Principe de cette version.</strong> Le syllabus devient un document vivant : les supports, lectures, enquêtes et opérations réellement travaillés sont intégrés au fil du semestre, sans reconstruire à chaque fois l’ensemble du programme.';
+    first?.insertAdjacentElement('afterend',note);
+  }
 
-const sel=document.getElementById('jump');
-if(sel) sel.addEventListener('change',e=>{ if(e.target.value) location.hash=e.target.value; });
+  const timeline=doc.querySelector('.timeline');
+  if(timeline){
+    const cards=[...timeline.querySelectorAll('a')];
+    if(cards[0]) cards[0].querySelector('small').textContent='S1–S3 · parcours réalisé';
+    if(cards[1]) cards[1].querySelector('small').textContent='S4–S5 · parcours réalisé';
+    if(cards[2]) cards[2].querySelector('small').textContent='suite · à ajuster';
+  }
+
+  const sessions=[...doc.querySelectorAll('details.session')];
+  const slideLabels=[
+    'Voir les slides — séance 1',
+    'Voir les slides — séance 2',
+    'Voir les slides — séance 3',
+    'Voir les slides — séance 4',
+    'Voir les slides — séance 5'
+  ];
+  sessions.slice(0,5).forEach((session,i)=>{
+    const content=session.querySelector('.session-content');
+    if(!content) return;
+    const link=doc.createElement('a');
+    link.className='support-link';
+    link.href=`seance-0${i+1}.html`;
+    link.target='_blank';
+    link.rel='noopener';
+    link.textContent=slideLabels[i]+' ↗';
+    content.insertAdjacentElement('afterbegin',link);
+    const status=doc.createElement('p');
+    status.className='session-status';
+    status.textContent='Support intégré au syllabus à partir de la version effectivement enseignée.';
+    link.insertAdjacentElement('afterend',status);
+  });
+
+  if(sessions[4]){
+    const content=sessions[4].querySelector('.session-content');
+    const paras=[...content.querySelectorAll('p')];
+    const contenus=paras.find(p=>p.textContent.startsWith('Contenus.'));
+    if(contenus){
+      contenus.innerHTML='<strong>Contenus.</strong> Question enquêtable et possibilité d’échec ; hypothèses et contre-hypothèses ; délimitation du périmètre ; critères d’inclusion et d’arrêt ; corpus et paquet documentaire minimal ; journal d’enquête ; provenance ; métadonnées et paradata ; chaîne de conservation ; risques ; usages documentés de l’IA ; publication de la méthodologie.';
+    }
+    const objectifs=paras.find(p=>p.textContent.startsWith('Objectifs.'));
+    if(objectifs){
+      objectifs.innerHTML='<strong>Objectifs.</strong> Transformer une intuition en protocole révisable ; définir ce qui pourrait confirmer ou affaiblir une hypothèse ; documenter les opérations et les transformations ; rendre le cheminement suffisamment explicite pour qu’un tiers puisse le comprendre, le discuter et en tester une partie.';
+    }
+    const exemplaire=paras.find(p=>p.textContent.startsWith('Document exemplaire.'));
+    if(exemplaire){
+      exemplaire.innerHTML='<strong>Document exemplaire.</strong> Lighthouse Reports, « How we turned visa receipts into evidence of VFS’s add-on business » (2026), utilisé pour observer comment un corpus hétérogène est obtenu, OCRisé, parsé, normalisé, calculé et accompagné de limites explicites.';
+    }
+  }
+
+  const final='<!doctype html>\n'+doc.documentElement.outerHTML;
+  document.open();
+  document.write(final);
+  document.close();
+})().catch(err=>{
+  document.querySelector('.loading').innerHTML='<strong>Erreur de chargement.</strong><br>'+err.message;
+});
 </script>
 </body>
 </html>
