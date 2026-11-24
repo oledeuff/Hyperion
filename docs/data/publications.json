@@ -1,0 +1,149 @@
+{
+  "version": "2026.11.24-rc1",
+  "checked_on": "2026-11-24",
+  "selection": "Public references only. No private records or draft attachments.",
+  "publications": [
+    {
+      "id": "osint-literacies",
+      "year": 2026,
+      "type": "chapitre",
+      "status": "Paru",
+      "authors": "Olivier Le Deuff, Rayya Roumanos, Thais Barbosa de Almeida",
+      "title": "OSINT and Literacies: Towards a Political and Technical Vision of Information and Media Literacies",
+      "venue": "Information Literacy in an AI-Driven World, Communications in Computer and Information Science, vol. 2864, Springer, p. 312–323.",
+      "description": "Les pratiques d’enquête en sources ouvertes nourrissent une approche politique et technique des littératies informationnelles et médiatiques.",
+      "en": "Open-source investigative practices inform a political and technical approach to information and media literacies.",
+      "links": [
+        [
+          "HAL",
+          "https://hal.science/hal-05579644v1"
+        ],
+        [
+          "DOI",
+          "https://doi.org/10.1007/978-3-032-17272-3_26"
+        ]
+      ],
+      "source": "https://www.iut.u-bordeaux-montaigne.fr/notre-institut/recherche/publications/2026-osint-and-literacies-towards-a-political-and-technical-vision-of-information-and-media-literacies/"
+    },
+    {
+      "id": "boutcha",
+      "year": 2026,
+      "type": "chapitre",
+      "status": "Paru",
+      "authors": "Olivier Le Deuff, Rayya Roumanos",
+      "title": "OSINT et Imago : Boutcha comme lieu de mémoire du journalisme d’investigation",
+      "venue": "Faire preuve par l’image ? Enquêtes filmiques, usages judiciaires et enjeux esthétiques, p. 36–55. ISBN 978-2-37896-583-9.",
+      "description": "L’étude du massacre de Boutcha interroge le travail des images, leur transformation en preuves et la mémoire documentaire de l’événement.",
+      "en": "The study of the Bucha massacre examines images, their transformation into evidence and the documentary memory of the event.",
+      "links": [
+        [
+          "HAL",
+          "https://hal.science/hal-05672743v1"
+        ]
+      ],
+      "source": "https://www.iut.u-bordeaux-montaigne.fr/notre-institut/recherche/publications/2026-osint-et-imago-boutcha-comme-lieu-de-memoire-du-journalisme-d-investigation/"
+    },
+    {
+      "id": "question-algorithmique",
+      "year": 2026,
+      "type": "chapitre",
+      "status": "Paru",
+      "authors": "Rayya Roumanos, Olivier Le Deuff",
+      "title": "S’emparer de la question algorithmique : un triple défi socio-professionnel, technique et épistémique pour les journalistes",
+      "venue": "(Des)ordres informationnels. Journalisme, IA & Datas, p. 62–94. ISBN 978-2-493458-47-6.",
+      "description": "Une analyse des compétences et des conditions professionnelles requises pour enquêter sur les systèmes algorithmiques.",
+      "en": "An analysis of the skills and professional conditions required to investigate algorithmic systems.",
+      "links": [
+        [
+          "HAL",
+          "https://hal.science/hal-05672699v1"
+        ]
+      ],
+      "source": "https://cv.hal.science/olivier-le-deuff"
+    },
+    {
+      "id": "mediation-donnees",
+      "year": 2026,
+      "type": "article",
+      "status": "Paru",
+      "authors": "Ugo Verdi, Olivier Le Deuff, Nathalie Pinède",
+      "title": "Repenser la culture des données à travers une première étude exploratoire du concept de médiation des données",
+      "venue": "Approches Théoriques en Information-Communication, n° 12 (2), p. 235–255.",
+      "description": "Une étude exploratoire du travail de médiation qui rend les données intelligibles et discutables.",
+      "en": "An exploratory study of the mediation work that makes data understandable and open to discussion.",
+      "links": [
+        [
+          "HAL",
+          "https://hal.science/hal-05713888v1"
+        ],
+        [
+          "DOI",
+          "https://doi.org/10.3917/atic.012.0235"
+        ]
+      ],
+      "source": "https://cv.hal.science/olivier-le-deuff"
+    },
+    {
+      "id": "pocl",
+      "year": 2026,
+      "type": "actes",
+      "status": "Paru",
+      "authors": "Olivier Le Deuff",
+      "title": "Des données à l’objet. Les POCL (Petits objets connectés ludiques) entre culture technique et œuvre ouverte",
+      "venue": "Dans Fabrique des données dans les organisations. Nouvelles épistémologies, pratiques et gouvernances, actes de CiDE.24, dir. Nathalie Pinède, Ugo Verdi et Guy Melançon. Europia. ISBN 979-10-90094-78-9. Communication initiale en novembre 2025.",
+      "description": "Les petits objets connectés interrogent la culture technique, l’expérimentation et les formes ouvertes de production de connaissances.",
+      "en": "Small connected objects raise questions about technical culture, experimentation and open forms of knowledge production.",
+      "links": [
+        [
+          "Éditeur",
+          "https://europia.org/edition/livres/doc/Cide24.htm"
+        ],
+        [
+          "HAL · communication 2025",
+          "https://shs.hal.science/halshs-05379049v2"
+        ]
+      ],
+      "source": "https://europia.org/edition/livres/doc/Cide24.htm"
+    },
+    {
+      "id": "matrioscia",
+      "year": 2025,
+      "type": "rapport",
+      "status": "Rapport disponible",
+      "authors": "Olivier Le Deuff, Rayya Roumanos",
+      "title": "Rapport final du projet MatrioscIA. MATRIce Osint pour les Cas d’usage de l’IA",
+      "venue": "Institut des hautes études du ministère de l’Intérieur ; MICA. Novembre 2025.",
+      "description": "Un projet lancé avant HyperION, dont les résultats alimentent le programme IUF. Le rapport examine les usages de l’IA dans l’OSINT et leurs conditions techniques, professionnelles et éthiques.",
+      "en": "A project launched before HyperION whose results inform the IUF programme. The report studies AI in OSINT and its technical, professional and ethical conditions.",
+      "links": [
+        [
+          "HAL",
+          "https://shs.hal.science/halshs-05404123v1"
+        ],
+        [
+          "Dépôt du projet",
+          "https://github.com/oledeuff/MatrioscIA"
+        ]
+      ],
+      "source": "https://www.iut.u-bordeaux-montaigne.fr/notre-institut/recherche/publications/2025-rapport-final-du-projet-matrioscia-matrice-osint-pour-les-cas-d-usage-de-l-ia/"
+    },
+    {
+      "id": "orbicom",
+      "year": 2025,
+      "type": "communication",
+      "status": "Communication déposée",
+      "authors": "Rayya Roumanos, Thais Barbosa de Almeida, Olivier Le Deuff",
+      "title": "Le recours à l’IA dans les enquêtes OSINT : innover depuis les marges",
+      "venue": "Congrès Orbicom – GTnum – ITI LiRic CIAREI, « Communication, intelligence artificielle, remédiation, éthique et inclusion », Strasbourg, septembre 2025.",
+      "description": "Cette communication précède l’entrée à l’IUF et documente les usages de l’IA dans les enquêtes en sources ouvertes.",
+      "en": "This conference contribution predates the IUF appointment and documents the use of AI in open-source investigations.",
+      "links": [
+        [
+          "HAL",
+          "https://hal.science/hal-05311206v1"
+        ]
+      ],
+      "source": "https://cv.hal.science/olivier-le-deuff"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "hyperion-public-site",
+  "private": true,
+  "version": "2026.11.24",
+  "scripts": {
+    "dev": "python3 scripts/serve.py",
+    "check": "python3 scripts/check_site.py",
+    "export:humanum": "python3 scripts/export_humanum.py"
+  }
+}

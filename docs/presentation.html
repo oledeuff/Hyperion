@@ -1,616 +1,32 @@
-<!DOCTYPE html>
-<html lang="fr" data-theme="dark">
-<head>
-  <meta charset="UTF-8" />
-  <title>HyperION · Présentation du projet / Project overview</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="favicon-hyperion.svg" />
-  <style>
-    :root {
-      --bg: #020617;
-      --bg-soft: #050816;
-      --fg: #f9fafb;
-      --muted: #9ca3af;
-      --border-soft: rgba(148, 163, 184, 0.45);
-      --accent: #1db6c3;
-      --accent-soft: #76CDCD;
-      --accent-warm: #F9968B;
-      --glass-bg: rgba(15, 23, 42, 0.78);
-      --glass-border: rgba(148, 163, 184, 0.6);
-      --shadow-soft: 0 22px 40px rgba(15, 23, 42, 0.7);
-      --header-height: 64px;
-    }
-
-    [data-theme="light"] {
-      --bg: #f5f5f7;
-      --bg-soft: #e5e7eb;
-      --fg: #020617;
-      --muted: #6b7280;
-      --border-soft: rgba(148, 163, 184, 0.35);
-      --glass-bg: rgba(255, 255, 255, 0.9);
-      --glass-border: rgba(148, 163, 184, 0.3);
-      --shadow-soft: 0 12px 28px rgba(15, 23, 42, 0.18);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #0b1220 0, var(--bg) 45%, #000 100%);
-      color: var(--fg);
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .app-shell {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* HEADER / TOPBAR */
-
-    header.topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      height: var(--header-height);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 18px;
-      border-bottom: 1px solid var(--border-soft);
-      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.75), transparent);
-      backdrop-filter: blur(18px);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: radial-gradient(circle at top left, #3b82f6, #1db6c3, #F9968B);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.8);
-      overflow: hidden;
-    }
-
-    .brand-logo-inner {
-      width: 70%;
-      height: 70%;
-      position: relative;
-    }
-
-    .brand-logo-inner::before,
-    .brand-logo-inner::after {
-      content: "";
-      position: absolute;
-      border-radius: 4px;
-      border: 2px solid rgba(15, 23, 42, 0.9);
-    }
-
-    .brand-logo-inner::before {
-      inset: 5px 9px 13px 5px;
-    }
-
-    .brand-logo-inner::after {
-      inset: 11px 5px 5px 9px;
-      opacity: 0.9;
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .brand-title {
-      font-size: 1.1rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .brand-subtitle {
-      font-size: 0.7rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      white-space: nowrap;
-    }
-
-    .topbar-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      position: relative;
-    }
-
-    .pill-toggle,
-    .icon-button {
-      border-radius: 999px;
-      border: 1px solid var(--border-soft);
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.6));
-      color: var(--fg);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      height: 30px;
-    }
-
-    .pill-toggle span {
-      opacity: 0.5;
-    }
-
-    .pill-toggle span.is-active {
-      opacity: 1;
-      font-weight: 600;
-    }
-
-    .icon-button {
-      width: 30px;
-      justify-content: center;
-      padding-inline: 0;
-    }
-
-    .icon-button svg {
-      width: 14px;
-      height: 14px;
-    }
-
-    .menu-toggle {
-      display: inline-flex;
-      border-radius: 999px;
-      border: 1px solid var(--border-soft);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--fg);
-      width: 30px;
-      height: 30px;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .main-nav {
-      display: none;
-      position: absolute;
-      right: 0;
-      top: calc(var(--header-height) - 4px);
-      flex-direction: column;
-      align-items: flex-end;
-      padding: 8px;
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.96);
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow-soft);
-      min-width: 220px;
-    }
-
-    .main-nav.is-open {
-      display: flex;
-    }
-
-    .nav-link {
-      border-radius: 999px;
-      border: 1px solid transparent;
-      padding: 6px 12px;
-      font-size: 0.74rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      background: transparent;
-      cursor: pointer;
-      white-space: nowrap;
-      text-align: right;
-      width: 100%;
-      text-decoration: none;
-    }
-
-    .nav-link:hover {
-      border-color: rgba(148, 163, 184, 0.5);
-      color: var(--fg);
-      background: rgba(15, 23, 42, 0.6);
-    }
-
-    .nav-link.is-active {
-      border-color: var(--accent);
-      color: var(--fg);
-      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.6), rgba(15, 23, 42, 0.5));
-    }
-
-    /* LAYOUT */
-
-    main {
-      flex: 1;
-      padding: 12px 16px 18px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .page-main {
-      width: 100%;
-      max-width: 1240px;
-      display: grid;
-      grid-template-columns: minmax(0, 3.2fr) minmax(260px, 1fr);
-      gap: 18px;
-      align-items: flex-start;
-    }
-
-    .page-article {
-      border-radius: 20px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--shadow-soft);
-      padding: 18px 20px 20px;
-      backdrop-filter: blur(18px);
-    }
-
-    .page-aside {
-      border-radius: 18px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      box-shadow: var(--shadow-soft);
-      padding: 14px 16px;
-      color: var(--fg);
-      position: sticky;
-      top: calc(var(--header-height) + 10px);
-      align-self: flex-start;
-    }
-
-    .page-aside-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      margin: 0 0 8px;
-    }
-
-    .page-aside-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .page-aside-tag-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--accent);
-      box-shadow: 0 0 10px rgba(29, 182, 195, 0.9);
-    }
-
-    .page-aside-list {
-      list-style: none;
-      padding-left: 0;
-      margin: 12px 0 10px;
-      font-size: 0.78rem;
-    }
-
-    .page-aside-list li {
-      margin-bottom: 6px;
-    }
-
-    .page-aside-list a {
-      color: var(--accent-soft);
-      text-decoration: none;
-    }
-
-    .page-aside-list a:hover {
-      text-decoration: underline;
-    }
-
-    .page-aside-meta {
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-
-    /* TYPO CONTENU */
-
-    .page-article h1 {
-      font-size: 1.4rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin: 0 0 10px;
-    }
-
-    .page-article h2 {
-      font-size: 1.1rem;
-      margin: 18px 0 6px;
-    }
-
-    .page-article h3 {
-      font-size: 0.98rem;
-      margin: 14px 0 4px;
-    }
-
-    .page-article p {
-      font-size: 0.86rem;
-      line-height: 1.6;
-      margin: 0 0 8px;
-    }
-
-    .page-article ul {
-      margin: 4px 0 8px 1.2rem;
-      padding-left: 0;
-      font-size: 0.86rem;
-      line-height: 1.5;
-    }
-
-    .page-article li {
-      margin-bottom: 4px;
-    }
-
-    .page-article strong {
-      font-weight: 600;
-    }
-
-    .page-article em {
-      font-style: italic;
-    }
-
-    .page-article a {
-      color: var(--accent-soft);
-      text-decoration: none;
-    }
-
-    .page-article a:hover {
-      text-decoration: underline;
-    }
-
-    .hero-meta-line {
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .content-note {
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    figure.hero-figure {
-      margin: 10px 0 12px;
-      text-align: center;
-    }
-
-    figure.hero-figure figcaption {
-      margin-top: 6px;
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
-
-    /* Logo tesseract light */
-
-    .hyperion-logo-light {
-      max-width: 220px;
-      width: 100%;
-    }
-    .hyperion-logo-light .orbit {
-      transform-origin: 50% 50%;
-      animation: orbit-spin 36s linear infinite;
-    }
-    @keyframes orbit-spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .biblio-list {
-      list-style: none;
-      padding-left: 0;
-      font-size: 0.83rem;
-    }
-
-    .biblio-list li {
-      margin-bottom: 6px;
-    }
-
-    /* LANG BLOCKS */
-
-    .lang-block {
-      display: none;
-    }
-
-    .lang-block.is-active {
-      display: grid;
-    }
-
-    /* FOOTER */
-
-    footer.site-footer {
-      border-top: 1px solid var(--border-soft);
-      padding: 8px 18px 12px;
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    footer.site-footer a {
-      color: var(--accent-soft);
-      text-decoration: none;
-    }
-
-    footer.site-footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 960px) {
-      main {
-        padding-inline: 10px;
-      }
-      .page-main {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .page-aside {
-        position: static;
-        margin-top: 6px;
-      }
-    }
-
-    @media (max-width: 640px) {
-      header.topbar {
-        padding-inline: 12px;
-      }
-      .brand-subtitle {
-        display: none;
-      }
-      .page-article {
-        padding-inline: 14px;
-      }
-    }
-  </style>
-</head>
-<body>
-<div class="app-shell">
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-logo">
-        <div class="brand-logo-inner"></div>
-      </div>
-      <div class="brand-text">
-        <span class="brand-title">HyperION</span>
-        <span class="brand-subtitle" data-i18n-subtitle>
-          Méthodes et technologies de l’hyperinvestigation
-        </span>
-      </div>
-    </div>
-    <div class="topbar-controls">
-      <button class="pill-toggle" id="lang-toggle" type="button" aria-label="Basculer la langue">
-        <span data-lang-label-fr class="is-active">FR</span>
-        <span>/</span>
-        <span data-lang-label-en>EN</span>
-      </button>
-      <button class="icon-button" id="theme-toggle" type="button" aria-label="Basculer thème">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M12 3.1a1 1 0 0 1 1 1v1.3a1 1 0 1 1-2 0V4.1a1 1 0 0 1 1-1Zm6.36 3.05a1 1 0 0 1 0 1.42l-.92.92a1 1 0 1 1-1.42-1.41l.92-.93a1 1 0 0 1 1.42 0ZM12 7.1a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm8 4.9a1 1 0 0 1 1 1v.3a1 1 0 1 1-2 0v-.3a1 1 0 0 1 1-1ZM6.34 7.57a1 1 0 0 1-1.41 0l-.93-.92A1 1 0 0 1 5.43 5.2l.92.93a1 1 0 0 1 0 1.42ZM4 12a1 1 0 0 1 1 1v.3a1 1 0 1 1-2 0V13a1 1 0 0 1 1-1Zm2.34 5.66a1 1 0 0 1 1.42 0l.92.93a1 1 0 0 1-1.41 1.41l-.93-.92a1 1 0 0 1 0-1.42Zm9.9 0a1 1 0 0 1 0 1.42l-.93.92a1 1 0 1 1-1.41-1.41l.92-.93a1 1 0 0 1 1.42 0Z"/>
-        </svg>
-      </button>
-      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Afficher le menu">
-        ☰
-      </button>
-      <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
-        <a href="index.html" class="nav-link">Hypercube</a>
-        <a href="presentation.html" class="nav-link is-active">Présentation</a>
-        <a href="epistemologie.html" class="nav-link">Épistémologie</a>
-        <a href="typologie.html" class="nav-link">Typologie</a>
-        <a href="#" class="nav-link">BDD</a>
-        <a href="#" class="nav-link">Carnet</a>
-        <a href="#" class="nav-link">GitHub</a>
-        <a href="#" class="nav-link">Évènements</a>
-        <a href="#" class="nav-link">Publications</a>
-        <a href="#" class="nav-link">Cosma Skritch</a>
-        <a href="#" class="nav-link">Futurologie</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <!-- Bloc FR -->
-    <div class="page-main lang-block is-active" data-lang="fr">
-      <article class="page-article">
+<!doctype html>
+<html lang="fr" data-theme="dark"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le projet · HyperION</title>
+<meta name="description" content="Présentation scientifique de la chaire IUF HyperION 2025–2030.">
+<meta name="robots" content="noindex,follow">
+<meta name="hyperion-version" content="2026.11.24-rc1">
+<meta name="theme-color" content="#080f1c">
+<link rel="icon" type="image/svg+xml" href="favicon-hyperion.svg">
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/site.js"></script>
+</head><body>
+<a class="skip-link" href="#main-content"><span data-fr="Aller au contenu" data-en="Skip to content" >Aller au contenu</span></a>
+<header class="topbar"><div class="header-inner">
+<a class="brand" href="index.html" aria-label="HyperION — accueil"><svg class="brand-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M10 11H40V41H10zM24 24H54V54H24z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 11L24 24M40 11L54 24M40 41L54 54M10 41L24 54" stroke="currentColor" stroke-width="1.5"/><circle cx="40" cy="11" r="3" fill="#f9968b"/><circle cx="24" cy="54" r="3" fill="#1db6c3"/></svg><span class="brand-text"><span class="brand-title">HyperION</span><span data-fr="Méthodes et technologies de l’hyperinvestigation" data-en="Methods and technologies of hyperinvestigation" class="brand-subtitle">Méthodes et technologies de l’hyperinvestigation</span></span></a>
+<div class="topbar-controls">
+<button id="lang-toggle" class="control" type="button" data-js-only aria-label="Read this page in English"><span data-lang-label="fr" class="lang-current">FR</span><span aria-hidden="true">/</span><span data-lang-label="en">EN</span></button>
+<button id="theme-toggle" class="control" type="button" data-js-only aria-label="Thème clair" aria-pressed="false"><span data-theme-symbol aria-hidden="true">☼</span><span data-fr="Thème" data-en="Theme" class="control-label">Thème</span></button>
+<details class="menu-disclosure"><summary class="control" aria-label="Menu" aria-expanded="false" aria-controls="main-nav"><span aria-hidden="true">☰</span> <span data-fr="Menu" data-en="Menu" class="control-label">Menu</span></summary><nav class="main-nav" id="main-nav" aria-label="Navigation principale"><a href="index.html"><span data-fr="L’hypercube" data-en="The hypercube" >L’hypercube</span></a><a href="presentation.html" aria-current="page"><span data-fr="Le projet" data-en="The project" >Le projet</span></a><a href="recherches.html"><span data-fr="Axes de recherche" data-en="Research areas" >Axes de recherche</span></a><a href="travaux.html"><span data-fr="Travaux &amp; actualités" data-en="Work &amp; updates" >Travaux &amp; actualités</span></a><a href="publications.html"><span data-fr="Publications" data-en="Publications" >Publications</span></a><a href="explorations.html"><span data-fr="Explorations visuelles" data-en="Visual explorations" >Explorations visuelles</span></a><a href="ressources.html"><span data-fr="Corpus &amp; ressources" data-en="Corpora &amp; resources" >Corpus &amp; ressources</span></a><a href="syllabus/"><span data-fr="Enseignement" data-en="Teaching" >Enseignement</span></a><a href="accessibilite.html"><span data-fr="Accessibilité" data-en="Accessibility" >Accessibilité</span></a></nav></details>
+</div></div></header>
+<div class="test-notice"><strong data-fr="Version de test sur GitHub Pages" data-en="Test version on GitHub Pages" >Version de test sur GitHub Pages</strong> · 2026.11.24-rc1</div>
+<main id="main-content" class="document-main" tabindex="-1"><div class="page-main lang-block" data-lang="fr"><article class="page-article">
         <div class="hero-meta-line">
           PROJET DE RECHERCHE IUF 2025–2030 · HYPERION
         </div>
-        <h1>HyperION : de l’hyperdocumentation à l’HYPERInvestigatON</h1>
-        <div class="content-note">
-          Version principale en français · version anglaise disponible via le sélecteur FR/EN
-        </div>
+        <h1>HyperION : de l’hyperdocumentation à l’hyperinvestigation</h1>
 
-        <figure class="hero-figure">
-          <svg class="hyperion-logo-light" viewBox="0 0 200 200" role="img" aria-label="Logo HyperION inspiré du tesseract">
-            <defs>
-              <linearGradient id="hyperionGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#1db6c3" />
-                <stop offset="50%" stop-color="#76CDCD" />
-                <stop offset="100%" stop-color="#F9968B" />
-              </linearGradient>
-              <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(148,163,184,0.5)" />
-                <stop offset="100%" stop-color="rgba(15,23,42,0)" />
-              </radialGradient>
-            </defs>
 
-            <circle cx="100" cy="100" r="84" fill="url(#haloGrad)" />
-            <circle cx="100" cy="100" r="88" fill="none"
-                    stroke="rgba(148,163,184,0.4)" stroke-width="1.4" />
 
-            <g class="orbit" stroke="url(#hyperionGrad)" stroke-width="2" fill="none">
-              <rect x="55" y="55" width="60" height="60" rx="6" />
-              <rect x="90" y="70" width="60" height="60" rx="6" />
-              <line x1="55"  y1="55"  x2="90"  y2="70" />
-              <line x1="115" y1="55"  x2="150" y2="70" />
-              <line x1="55"  y1="115" x2="90"  y2="130" />
-              <line x1="115" y1="115" x2="150" y2="130" />
-            </g>
-
-            <g fill="#f9fafb">
-              <circle cx="55"  cy="55"  r="3" />
-              <circle cx="115" cy="55"  r="3" />
-              <circle cx="55"  cy="115" r="3" />
-              <circle cx="115" cy="115" r="3" />
-              <circle cx="90"  cy="70"  r="3" />
-              <circle cx="150" cy="70"  r="3" />
-              <circle cx="90"  cy="130" r="3" />
-              <circle cx="150" cy="130" r="3" />
-            </g>
-
-            <g transform="translate(100 100)">
-              <rect x="-20" y="-9" width="40" height="18" rx="9"
-                    fill="rgba(15,23,42,0.85)"
-                    stroke="rgba(148,163,184,0.6)" stroke-width="0.8" />
-              <text x="0" y="4" text-anchor="middle"
-                    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
-                    font-size="7" letter-spacing="2" fill="#f9fafb">
-                H·ION
-              </text>
-            </g>
-          </svg>
-          <figcaption>
-            HyperION – Variante “light” de l’hypercube, identité visuelle du projet.
-          </figcaption>
-        </figure>
 
         <p>
           Le projet HyperION explore les méthodes et technologies de l’hyperinvestigation, un concept qui allie
@@ -645,7 +61,7 @@
           « titanesque » de l’hyperdocumentation chez Paul Otlet.
         </p>
 
-        <h2 id="articuler-hyperdoc-hyperinvestigation">1. Articuler hyperdocumentation et hyperinvestigation</h2>
+        <h2 id="articuler-hyperdoc-hyperinvestigation">Articuler hyperdocumentation et hyperinvestigation</h2>
         <p>
           Alors que les discours dominants tendent à se centrer sur les données et l’IA, notre proposition est de
           considérer que les formes documentaires demeurent importantes tant dans la collecte que dans la production en
@@ -673,7 +89,7 @@
           configurations documentaires.
         </p>
 
-        <h2 id="double-tradition">2. Associer deux traditions scientifiques</h2>
+        <h2 id="double-tradition">Associer deux traditions scientifiques</h2>
         <p>
           Au sein des sciences de l’information et de la communication, articuler hyperdocumentation et
           hyperinvestigation revient à associer deux traditions scientifiques :
@@ -699,7 +115,7 @@
           instruments de documentation.
         </p>
 
-        <h2 id="etudier-hyperinvestigation">3. Étudier l’hyperinvestigation</h2>
+        <h2 id="etudier-hyperinvestigation">Étudier l’hyperinvestigation</h2>
         <p>
           HyperION propose d’étudier l’hyperinvestigation à travers trois axes :
         </p>
@@ -709,7 +125,7 @@
           <li>montrer l’émergence d’un journalisme hyperdocumenté.</li>
         </ul>
 
-        <h3 id="epistemo-hyperinvestigation">3.1. Retracer et définir l’épistémologie de l’hyperinvestigation</h3>
+        <h3 id="epistemo-hyperinvestigation">Retracer et définir l’épistémologie de l’hyperinvestigation</h3>
         <p>
           L’articulation entre hyperdocumentation et hyperinvestigation appelle un travail épistémologique qui dépasse
           la période récente pour examiner les continuités et les travaux précurseurs. Nous nous intéressons
@@ -724,7 +140,7 @@
           repérage de l’information (Le Deuff, 2017).
         </p>
 
-        <h3 id="methodologies-hyperinvestigation">3.2. Étudier les méthodologies de l’hyperinvestigation</h3>
+        <h3 id="methodologies-hyperinvestigation">Étudier les méthodologies de l’hyperinvestigation</h3>
         <p>
           L’axe central du projet repose sur la constitution d’un corpus d’enquêtes de type OSINT et d’investigations
           visuelles, sur l’analyse des méthodes et outils déployés, ainsi que sur l’étude des récits qui en résultent.
@@ -742,7 +158,7 @@
           sont intégrés, tout en considérant les continuités méthodologiques et documentaires à l’œuvre.
         </p>
 
-        <h3 id="journalisme-hyperdocumente">3.3. Montrer l’émergence d’un journalisme hyperdocumenté</h3>
+        <h3 id="journalisme-hyperdocumente">Montrer l’émergence d’un journalisme hyperdocumenté</h3>
         <p>
           Nous avons proposé, avec Rayya Roumanos, le concept de <strong>journalisme hyperdocumenté</strong> pour
           désigner des formes d’écriture journalistique où les sources sont rendues visibles au sein même des articles
@@ -767,7 +183,7 @@
           </li>
         </ul>
 
-        <h2 id="ingenierie-technologique">4. Développer une ingénierie technologique de l’hyperinvestigation</h2>
+        <h2 id="ingenierie-technologique">Développer une ingénierie technologique de l’hyperinvestigation</h2>
         <p>
           Les enjeux logiciels sont pleinement intégrés au projet, à la fois pour observer les instruments existants
           dans le champ de l’OSINT et de l’investigation journalistique, et pour produire de nouveaux dispositifs
@@ -784,7 +200,7 @@
           documentées.
         </p>
 
-        <h3 id="cosma-skritch">4.1. Vers une version hyperinvestigation de Cosma : Cosma Skritch</h3>
+        <h3 id="cosma-skritch">Vers une version hyperinvestigation de Cosma : Cosma Skritch</h3>
         <p>
           Un livrable central du projet est <strong>Cosma Skritch</strong>, une version dédiée de Cosma pour
           l’hyperinvestigation. L’objectif est d’ajouter aux graphes existants la possibilité d’« épingler » des
@@ -802,110 +218,28 @@
           lien avec la TGIR Huma-Num et le projet Revue 3.0.
         </p>
 
-        <h2 id="biblio-fr">5. Bibliographie des références citées</h2>
+        <h2 id="biblio-fr">Bibliographie des références citées</h2>
         <ul class="biblio-list">
           <li>Briet, S. (1951). <em>Qu’est-ce que la documentation?</em> ÉDIT.</li>
           <li>Buckland, M. K. (2012). Lodewyk Bendikson and photographic techniques in documentation, 1910–1943.</li>
           <li>Escarpit, R. (1976). <em>Théorie générale de l’information et de la communication.</em> Hachette.</li>
           <li>Le Deuff, O. (2017). <em>Les humanités digitales.</em> Hermes Science Publishing.</li>
-          <li>Le Deuff, O. (2021). <em>Hyperdocumentation.</em> ISTE Editions.</li>
+          <li>Le Deuff, O. (2022). <em>Hyperdocumentation.</em> ISTE Éditions. <span class="figure-caption">Version anglaise publiée en 2021.</span></li>
           <li>Le Deuff, O., &amp; Perret, A. (2019). Hyperdocumentation: Origin and evolution of a concept. <em>Journal of Documentation.</em></li>
           <li>Le Deuff, O., &amp; Roumanos, R. (2021). Open source intelligence (OSINT): Retour aux sources. <em>I2D</em>.</li>
           <li>Mor, N., &amp; Reich, Z. (2018). From « trust me » to « show me » journalism. <em>Journalism Practice</em>, 12(9).</li>
           <li>Otlet, P. (1934). <em>Traité de documentation: Le livre sur le livre: Théorie et pratique.</em></li>
         </ul>
-      </article>
-
-      <aside class="page-aside">
-        <h2 class="page-aside-title">HyperION · Présentation</h2>
-        <div class="page-aside-tag">
-          <span class="page-aside-tag-dot"></span>
-          <span>Projet IUF 2025–2030</span>
-        </div>
-        <p style="font-size:0.8rem;">
-          Présentation générale du projet HyperION : articulation entre hyperdocumentation et hyperinvestigation,
-          ancrage disciplinaire en SIC, axes épistémologiques, méthodologiques et logiciels.
-        </p>
-        <ul class="page-aside-list">
-          <li><a href="#articuler-hyperdoc-hyperinvestigation">1. Hyperdocumentation &amp; hyperinvestigation</a></li>
-          <li><a href="#double-tradition">2. Deux traditions scientifiques</a></li>
-          <li><a href="#etudier-hyperinvestigation">3. Étudier l’hyperinvestigation</a></li>
-          <li><a href="#ingenierie-technologique">4. Ingénierie technologique</a></li>
-          <li><a href="#biblio-fr">5. Bibliographie</a></li>
-        </ul>
-        <div class="page-aside-meta">
-          Retour à l’entrée : <a href="index.html">Hypercube</a>.
-        </div>
-      </aside>
-    </div>
-
-    <!-- Bloc EN -->
-    <div class="page-main lang-block" data-lang="en">
-      <article class="page-article">
+      </article><aside class="page-aside"><h2>Dans cette page</h2><ul class="page-aside-list"><li><a href="#articuler-hyperdoc-hyperinvestigation">Hyperdocumentation &amp; hyperinvestigation</a></li><li><a href="#double-tradition">Deux traditions scientifiques</a></li><li><a href="#etudier-hyperinvestigation">Étudier l’hyperinvestigation</a></li><li><a href="#ingenierie-technologique">Ingénierie technologique</a></li><li><a href="#biblio-fr">Bibliographie</a></li></ul><div class="page-aside-meta"><a href="index.html">Retour à l’hypercube</a></div></aside></div><div class="page-main lang-block" data-lang="en" lang="en"><article class="page-article">
         <div class="hero-meta-line">
           IUF RESEARCH PROJECT 2025–2030 · HYPERION
         </div>
         <h1>HyperION: From Hyperdocumentation to HyperInvestigation</h1>
-        <div class="content-note">
-          Main overview in English · French version available via the FR/EN selector
-        </div>
 
-        <figure class="hero-figure">
-          <!-- même logo SVG -->
-          <svg class="hyperion-logo-light" viewBox="0 0 200 200" role="img" aria-label="HyperION tesseract-inspired logo">
-            <defs>
-              <linearGradient id="hyperionGrad-en" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#1db6c3" />
-                <stop offset="50%" stop-color="#76CDCD" />
-                <stop offset="100%" stop-color="#F9968B" />
-              </linearGradient>
-              <radialGradient id="haloGrad-en" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(148,163,184,0.5)" />
-                <stop offset="100%" stop-color="rgba(15,23,42,0)" />
-              </radialGradient>
-            </defs>
 
-            <circle cx="100" cy="100" r="84" fill="url(#haloGrad-en)" />
-            <circle cx="100" cy="100" r="88" fill="none"
-                    stroke="rgba(148,163,184,0.4)" stroke-width="1.4" />
 
-            <g class="orbit" stroke="url(#hyperionGrad-en)" stroke-width="2" fill="none">
-              <rect x="55" y="55" width="60" height="60" rx="6" />
-              <rect x="90" y="70" width="60" height="60" rx="6" />
-              <line x1="55"  y1="55"  x2="90"  y2="70" />
-              <line x1="115" y1="55"  x2="150" y2="70" />
-              <line x1="55"  y1="115" x2="90"  y2="130" />
-              <line x1="115" y1="115" x2="150" y2="130" />
-            </g>
 
-            <g fill="#f9fafb">
-              <circle cx="55"  cy="55"  r="3" />
-              <circle cx="115" cy="55"  r="3" />
-              <circle cx="55"  cy="115" r="3" />
-              <circle cx="115" cy="115" r="3" />
-              <circle cx="90"  cy="70"  r="3" />
-              <circle cx="150" cy="70"  r="3" />
-              <circle cx="90"  cy="130" r="3" />
-              <circle cx="150" cy="130" r="3" />
-            </g>
-
-            <g transform="translate(100 100)">
-              <rect x="-20" y="-9" width="40" height="18" rx="9"
-                    fill="rgba(15,23,42,0.85)"
-                    stroke="rgba(148,163,184,0.6)" stroke-width="0.8" />
-              <text x="0" y="4" text-anchor="middle"
-                    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif"
-                    font-size="7" letter-spacing="2" fill="#f9fafb">
-                H·ION
-              </text>
-            </g>
-          </svg>
-          <figcaption>
-            HyperION – Light tesseract logo, visual identity of the project.
-          </figcaption>
-        </figure>
-
-        <h2 id="project-overview">1. Project overview</h2>
+        <h2 id="project-overview">Project overview</h2>
         <p>
           The HyperION project explores the methods and technologies of <strong>hyperinvestigation</strong>, understood
           as the encounter between online investigation and software and document engineering. It is grounded in
@@ -935,7 +269,7 @@
           Otlet’s “titanic” documentary ambitions and the symbolic figure of Prometheus in Jean Delville’s painting.
         </p>
 
-        <h2 id="combining-hyperdocumentation-hyperinvestigation">2. Combining hyperdocumentation and hyperinvestigation</h2>
+        <h2 id="combining-hyperdocumentation-hyperinvestigation">Combining hyperdocumentation and hyperinvestigation</h2>
         <p>
           While current debates often focus on data and AI, HyperION starts from the hypothesis that documentary forms
           remain essential for understanding contemporary investigations. Hyperinvestigation is thus conceived as one of
@@ -958,14 +292,14 @@
           HyperION explicitly works at this intersection.
         </p>
 
-        <h2 id="study-hyperinvestigation">3. Studying hyperinvestigation</h2>
+        <h2 id="study-hyperinvestigation">Studying hyperinvestigation</h2>
         <p>
           HyperION proposes to study hyperinvestigation along three main lines: the epistemology of hyperinvestigation,
           the methodologies deployed in OSINT and visual inquiries, and the emergence of <strong>hyperdocumented
           journalism</strong>.
         </p>
 
-        <h3 id="epistemology-hyperinvestigation">3.1 Tracing the epistemology of hyperinvestigation</h3>
+        <h3 id="epistemology-hyperinvestigation">1 Tracing the epistemology of hyperinvestigation</h3>
         <p>
           The link between documentation, information and investigation calls for a dedicated epistemological inquiry
           that goes beyond recent digital developments. HyperION adopts a media-archaeological perspective, revisiting
@@ -978,7 +312,7 @@
           history of tools and methods for indexing, retrieving and transforming knowledge.
         </p>
 
-        <h3 id="methodologies-hyperinvestigation-en">3.2 Methodologies of hyperinvestigation</h3>
+        <h3 id="methodologies-hyperinvestigation-en">2 Methodologies of hyperinvestigation</h3>
         <p>
           A central task of the project is to build a corpus of OSINT and visual investigations, analyse the methods and
           tools used, and reconstruct the narrative strategies at play. This empirical work includes interviews with key
@@ -991,7 +325,7 @@
           isolated incidents to structured regimes of proof and memory.
         </p>
 
-        <h3 id="hyperdocumented-journalism-en">3.3 Hyperdocumented journalism</h3>
+        <h3 id="hyperdocumented-journalism-en">3 Hyperdocumented journalism</h3>
         <p>
           HyperION extends previous work on <strong>hyperdocumented journalism</strong>, where articles embed sources,
           datasets and documents that can be explored directly by readers. This practice is seen as one expression of
@@ -1004,7 +338,7 @@
               as the investigations into the Bucha massacre.</li>
         </ul>
 
-        <h2 id="technological-engineering">4. Technological engineering for hyperinvestigation</h2>
+        <h2 id="technological-engineering">Technological engineering for hyperinvestigation</h2>
         <p>
           The software dimension is fully integrated into the project. HyperION both observes existing tools used in
           OSINT and investigative journalism and develops new instruments designed “by and for” researchers and
@@ -1021,7 +355,7 @@
           documented investigations rather than purely automated, reputation-based mappings.
         </p>
 
-        <h3 id="cosma-skritch-en">4.1 Cosma Skritch and new interfaces</h3>
+        <h3 id="cosma-skritch-en">1 Cosma Skritch and new interfaces</h3>
         <p>
           A key deliverable is <strong>Cosma Skritch</strong>, a dedicated version of Cosma for hyperinvestigation. The
           aim is to attach documents directly to nodes and edges in investigative graphs, making the underlying evidence
@@ -1038,114 +372,17 @@
           educators.
         </p>
 
-        <h2 id="references-en">5. Selected references</h2>
+        <h2 id="references-en">Selected references</h2>
         <ul class="biblio-list">
           <li>Briet, S. (1951). <em>Qu’est-ce que la documentation?</em> ÉDIT.</li>
           <li>Buckland, M. K. (2012). Lodewyk Bendikson and photographic techniques in documentation, 1910–1943.</li>
           <li>Escarpit, R. (1976). <em>Théorie générale de l’information et de la communication.</em> Hachette.</li>
           <li>Le Deuff, O. (2017). <em>Les humanités digitales.</em> Hermes Science Publishing.</li>
-          <li>Le Deuff, O. (2021). <em>Hyperdocumentation.</em> ISTE Editions.</li>
+          <li>Le Deuff, O. (2022). <em>Hyperdocumentation.</em> ISTE Éditions. <span class="figure-caption">Version anglaise publiée en 2021.</span></li>
           <li>Le Deuff, O., &amp; Perret, A. (2019). Hyperdocumentation: Origin and evolution of a concept. <em>Journal of Documentation.</em></li>
           <li>Mor, N., &amp; Reich, Z. (2018). From “trust me” to “show me” journalism. <em>Journalism Practice</em>, 12(9).</li>
           <li>Otlet, P. (1934). <em>Traité de documentation: Le livre sur le livre: Théorie et pratique.</em></li>
         </ul>
-      </article>
-
-      <aside class="page-aside">
-        <h2 class="page-aside-title">HyperION · Project overview</h2>
-        <div class="page-aside-tag">
-          <span class="page-aside-tag-dot"></span>
-          <span>Research project 2025–2030</span>
-        </div>
-        <p style="font-size:0.8rem;">
-          General overview of the HyperION project: connecting hyperdocumentation and hyperinvestigation, disciplinary
-          anchoring in information and communication sciences, epistemological, methodological and software components.
-        </p>
-        <ul class="page-aside-list">
-          <li><a href="#project-overview">1. Project overview</a></li>
-          <li><a href="#combining-hyperdocumentation-hyperinvestigation">2. Hyperdocumentation &amp; hyperinvestigation</a></li>
-          <li><a href="#study-hyperinvestigation">3. Studying hyperinvestigation</a></li>
-          <li><a href="#technological-engineering">4. Technological engineering</a></li>
-          <li><a href="#references-en">5. References</a></li>
-        </ul>
-        <div class="page-aside-meta">
-          Back to entry: <a href="index.html">Hypercube</a>.
-        </div>
-      </aside>
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    <span>
-      Projet HyperION · Olivier Le Deuff · 2025–2030 · Licence CC BY
-    </span>
-    <span>
-      Contact : <a href="mailto:oledeuff@gmail.com">oledeuff@gmail.com</a>
-    </span>
-  </footer>
-</div>
-
-<script>
-  // Thème
-  const themeToggle = document.getElementById("theme-toggle");
-  function getCurrentTheme() {
-    return document.documentElement.getAttribute("data-theme") || "dark";
-  }
-  function setTheme(theme) {
-    document.documentElement.setAttribute("data-theme", theme);
-  }
-  themeToggle.addEventListener("click", () => {
-    const next = getCurrentTheme() === "dark" ? "light" : "dark";
-    setTheme(next);
-  });
-
-  // Menu burger
-  const menuToggle = document.getElementById("menu-toggle");
-  const navEl = document.getElementById("main-nav");
-  menuToggle.addEventListener("click", () => {
-    navEl.classList.toggle("is-open");
-  });
-
-  // Gestion FR / EN
-  let currentLang = "fr";
-  const langToggle = document.getElementById("lang-toggle");
-  const langLabelFr = document.querySelector("[data-lang-label-fr]");
-  const langLabelEn = document.querySelector("[data-lang-label-en]");
-  const langBlocks = document.querySelectorAll(".lang-block");
-  const subtitleEl = document.querySelector("[data-i18n-subtitle]");
-
-  function applyLang() {
-    document.documentElement.setAttribute("lang", currentLang);
-
-    if (currentLang === "fr") {
-      langLabelFr.classList.add("is-active");
-      langLabelEn.classList.remove("is-active");
-      if (subtitleEl) {
-        subtitleEl.textContent = "Méthodes et technologies de l’hyperinvestigation";
-      }
-    } else {
-      langLabelFr.classList.remove("is-active");
-      langLabelEn.classList.add("is-active");
-      if (subtitleEl) {
-        subtitleEl.textContent = "Methods and technologies of hyperinvestigation";
-      }
-    }
-
-    langBlocks.forEach(block => {
-      if (block.getAttribute("data-lang") === currentLang) {
-        block.classList.add("is-active");
-      } else {
-        block.classList.remove("is-active");
-      }
-    });
-  }
-
-  langToggle.addEventListener("click", () => {
-    currentLang = currentLang === "fr" ? "en" : "fr";
-    applyLang();
-  });
-
-  applyLang();
-</script>
-</body>
-</html>
+      </article><aside class="page-aside"><h2>On this page</h2><ul class="page-aside-list"><li><a href="#project-overview">Project overview</a></li><li><a href="#combining-hyperdocumentation-hyperinvestigation">Hyperdocumentation &amp; hyperinvestigation</a></li><li><a href="#study-hyperinvestigation">Studying hyperinvestigation</a></li><li><a href="#technological-engineering">Technological engineering</a></li><li><a href="#references-en">References</a></li></ul><div class="page-aside-meta"><a href="index.html">Back to the hypercube</a></div></aside></div></main>
+<footer class="site-footer"><div class="footer-inner"><div><p>HyperION · Olivier Le Deuff · IUF 2025–2030</p><p>Université Bordeaux Montaigne · Laboratoire MICA</p><p><span data-fr="Mise à jour" data-en="Updated" >Mise à jour</span> 24 novembre 2026 · CC BY</p></div><div class="footer-links"><a href="accessibilite.html"><span data-fr="Accessibilité" data-en="Accessibility" >Accessibilité</span></a><a href="ressources.html"><span data-fr="Ressources" data-en="Resources" >Ressources</span></a><a href="https://github.com/oledeuff/Hyperion">GitHub</a><a href="mailto:oledeuff@gmail.com">Contact</a></div></div></footer>
+</body></html>

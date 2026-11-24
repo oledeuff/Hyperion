@@ -1,0 +1,6 @@
+{
+  "version": "2026.11.24-rc1",
+  "date": "2026-11-24",
+  "environment": "github-test",
+  "production": "https://hyperion.huma-num.fr/"
+}
