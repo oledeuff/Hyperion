@@ -14,10 +14,12 @@ PUBLIC=['index.html','presentation.html','epistemologie.html','typologie.html','
 
 class Page(HTMLParser):
     def __init__(self, text):
-        super().__init__(); self.ids=[]; self.refs=[]; self.meta={}; self.mains=0; self.h1s=0
+        super().__init__(); self.ids=[]; self.refs=[]; self.meta={}; self.mains=0; self.h1s=0; self.theme=None; self.hotspots=[]
         self.feed(text)
     def handle_starttag(self, tag, attrs):
         d=dict(attrs)
+        if tag=='html': self.theme=d.get('data-theme')
+        if tag=='a' and 'cube-hotspot' in d.get('class','').split(): self.hotspots.append(d.get('href'))
         if d.get('id'): self.ids.append(d['id'])
         if tag in ['a','link'] and d.get('href'): self.refs.append(d['href'])
         if tag in ['img','script'] and d.get('src'): self.refs.append(d['src'])
@@ -28,6 +30,7 @@ class Page(HTMLParser):
 errors=[]
 pages={p:Page((DOCS/p).read_text()) for p in PUBLIC}
 for name,p in pages.items():
+    if p.theme!='light': errors.append(f'{name}: expected light theme by default')
     if p.mains!=1: errors.append(f'{name}: expected exactly one main landmark')
     if p.h1s<1: errors.append(f'{name}: missing page title')
     if p.meta.get('robots')!='noindex,follow': errors.append(f'{name}: test site must be marked noindex')
@@ -45,6 +48,15 @@ for name,p in pages.items():
         if url.fragment and target.suffix=='.html':
             other=pages.get(str(target.relative_to(DOCS))) or Page(target.read_text())
             if unquote(url.fragment) not in other.ids: errors.append(f'{name}: missing fragment {ref}')
+if len(pages['index.html'].hotspots)!=6 or len(set(pages['index.html'].hotspots))!=6:
+    errors.append('Homepage cube must offer six distinct native links without WebGL')
+for ref in pages['explorations.html'].refs:
+    if urlsplit(ref).path in ['tesseract.html','hinton-planche.html','sitestrates.html','hyperstrates.html','hyperstratessimple.html']:
+        errors.append(f'Unfinished exploration advertised: {ref}')
+for name in ['stratescubes.html','rouletabille.html']:
+    retained=Page((DOCS/name).read_text())
+    if retained.theme!='light' or 'atelier-pause' not in retained.ids or 'atelier-theme' not in retained.ids:
+        errors.append(f'{name}: retained exploration lacks reading controls')
 data=json.loads((DOCS/'data/publications.json').read_text())
 if len(data['publications'])!=7: errors.append('Expected seven verified references')
 for pub in data['publications']:
@@ -67,6 +79,7 @@ for name in PUBLIC:
     html=(DOCS/name).read_text()
     if 'docs.google.com' in html or 'mail.google.com' in html: errors.append(f'{name}: private workspace link in public page')
     if 'sysadmin@huma-num' in html: errors.append(f'{name}: administrative access details must not be published')
+    if 'digital sleuth' in html.lower(): errors.append(f'{name}: unannounced work must remain discreet')
 if errors:
     for error in errors: print('ERROR:',error)
     raise SystemExit(1)

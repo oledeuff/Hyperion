@@ -6,8 +6,9 @@
   const read = key => { try { return localStorage.getItem(key); } catch { return null; } };
   const save = (key, value) => { try { localStorage.setItem(key, value); } catch { /* Private browsing still works. */ } };
   let lang = read('hyperion-language') === 'en' ? 'en' : 'fr';
-  let theme = read('hyperion-theme') || 'dark';
-  if (!['light', 'dark'].includes(theme)) theme = 'dark';
+  // Reset the old automatically saved default; remember future explicit choices.
+  let theme = read('hyperion-theme-v2') || 'light';
+  if (!['light', 'dark'].includes(theme)) theme = 'light';
   function setLanguage(value) {
     lang = value;
     root.lang = lang;
@@ -33,7 +34,7 @@
     document.dispatchEvent(new CustomEvent('hyperion:language', {detail: lang}));
     filterPublications();
   }
-  function setTheme(value) {
+  function setTheme(value, persist = false) {
     theme = value;
     root.dataset.theme = theme;
     const button = document.getElementById('theme-toggle');
@@ -42,7 +43,7 @@
       button.setAttribute('aria-label', lang === 'fr' ? 'Thème clair' : 'Light theme');
       button.querySelector('[data-theme-symbol]').textContent = theme === 'dark' ? '☼' : '◐';
     }
-    save('hyperion-theme', theme);
+    if (persist) save('hyperion-theme-v2', theme);
     document.dispatchEvent(new CustomEvent('hyperion:theme', {detail: theme}));
   }
   const menu = document.querySelector('.menu-disclosure');
@@ -54,7 +55,7 @@
     menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => { menu.open = false; }));
   }
   document.getElementById('lang-toggle')?.addEventListener('click', () => { setLanguage(lang === 'fr' ? 'en' : 'fr'); setTheme(theme); });
-  document.getElementById('theme-toggle')?.addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
+  document.getElementById('theme-toggle')?.addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark', true));
   const search = document.getElementById('publication-search');
   const year = document.getElementById('publication-year');
   const type = document.getElementById('publication-type');

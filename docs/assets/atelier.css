@@ -1,0 +1,32 @@
+/* Reading surfaces for the two retained documentary explorations. */
+.hyperion-return { align-items: center; }
+.atelier-control { font: inherit; padding: 8px 12px; min-height: 44px; border: 1px solid currentColor; border-radius: 6px; color: inherit; background: transparent; cursor: pointer; }
+.atelier-control:focus-visible, .index-item:focus-visible { outline: 3px solid #bc652c; outline-offset: 3px; }
+html[data-theme="light"] { color-scheme: light; --bg: #f3f7fa; --bg-elevated: #fff; --text: #152b40; --muted: #485f73; --text-muted: #485f73; --border: #bccdd9; --accent: #076d79; --accent-soft: #076d79; --shadow-soft: 0 8px 24px #152b4010; }
+html[data-theme="light"] body { background: #f3f7fa; color: #152b40; }
+html[data-theme="light"] header, html[data-theme="light"] .hyperion-return { background: #f3f7fa; color: #152b40; border-color: #bccdd9; }
+html[data-theme="light"] .hyperion-return a, html[data-theme="light"] .header-links a { color: #076d79; }
+html[data-theme="light"] .panel, html[data-theme="light"] .fiche-card, html[data-theme="light"] .fiche, html[data-theme="light"] .intro { background: #fff; border-color: #bccdd9; }
+html[data-theme="light"] .index-search, html[data-theme="light"] .pill, html[data-theme="light"] .flip-toggle, html[data-theme="light"] .header-links a, html[data-theme="light"] .badge { background: #e8f0f5; color: #152b40; border-color: #bccdd9; }
+html[data-theme="light"] .flip-toggle:hover { color: #076d79; }
+html[data-theme="light"] .index-item.active { background: #dcecf2; border-color: #076d79; }
+html[data-theme="light"] .cube-overlay-label, html[data-theme="light"] .cube-overlay-hover { color: #d4e3ec; }
+html[data-theme="light"] .boite-title, html[data-theme="light"] .boite-legend { color: #f0e0b5; }
+html[data-atelier="strates"] .lang-switch { display: none; }
+html[data-atelier="strates"] .fiche-body { font-size: 1rem; }
+html[data-atelier="strates"] .index-item { min-height: 44px; border-radius: 6px; }
+html[data-atelier="strates"] .index-item > div { min-width: 0; }
+html[data-atelier="strates"] .index-search { min-height: 44px; }
+html[data-atelier="rouletabille"] .fiche p, html[data-atelier="rouletabille"] .fiche ul { font-size: 1rem; line-height: 1.7; }
+html[data-atelier="rouletabille"] .fiche { scroll-margin-top: 180px; }
+@media (max-width: 960px) {
+  html[data-atelier="strates"] .column { width: 100%; min-width: 0; }
+  html[data-atelier="strates"] header { position: static; flex-wrap: wrap; gap: 12px; }
+  html[data-atelier="strates"] .header-controls { flex-wrap: wrap; }
+}
+@media (max-width: 600px) {
+  html[data-atelier="strates"] main { padding: 14px 12px; }
+  .panel-header, .index-header { flex-wrap: wrap; gap: 6px; }
+  html[data-atelier="rouletabille"] header { position: static; }
+  html[data-atelier="rouletabille"] .header-inner { flex-wrap: wrap; }
+}
